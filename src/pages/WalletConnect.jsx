@@ -5,7 +5,7 @@ import Footer from '../components/footer/Footer';
 import Connex from '@vechain/connex';
 import img1 from '../assets/images/icon/VeThor.jpg'
 import img2 from '../assets/images/icon/Sync2.jpg'
-const vendor = new Connex.Vendor('main');
+const vendor = new Connex.Vendor('test');
 
 const signCertID = () => {
     vendor
