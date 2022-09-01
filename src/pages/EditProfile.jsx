@@ -33,17 +33,17 @@ const EditProfile = () => {
                 <div className="themesflat-container">
                     <div className="row">
                          <div className="col-xl-3 col-lg-4 col-md-6 col-12">
+                            
                             <div className="sc-card-profile text-center">
                                 <div className="card-media">
                                     <img id="profileimg" src={avt} alt="Axies" />                         
                                 </div>
-                            <div id="upload-profile">
-                                <Link to="#" className="btn-upload">
-                                    Upload New Photo </Link>
-                                    <input id="tf-upload-img" type="file" name="profile" required="" />
-                            </div>
-                            <Link to="#" className="btn-upload style2">
-                                Delete</Link>
+                                <div id="upload-profile">
+                                    <Link to="#" className="btn-upload">
+                                        Upload New Photo </Link>
+                                        <input id="tf-upload-img" type="file" name="profile" required="" />
+                                </div>
+                                <Link to="#" className="btn-upload style2">Delete</Link>
                             </div>
                          </div>
                          <div className="col-xl-9 col-lg-8 col-md-12 col-12">
@@ -101,11 +101,11 @@ const EditProfile = () => {
                                                     <input type="text" placeholder="Discord username" required />
                                                     <Link to="#" className="connect"><i className="icon-fl-vt"></i>Connect to Discord</Link>
                                                 </fieldset>
-                                        </div> 
+                                        </div>
                                     </div>
                                     <button className="tf-button-submit mg-t-15" type="submit">
                                         Update Profile
-                                    </button>           
+                                    </button>
                                 </form>
                             </div>
                          </div>
