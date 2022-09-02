@@ -10,10 +10,59 @@ import avt from "../assets/images/avatar/avt-9.jpg";
 
 const CreateItem = () => {
   const [selectedFile, setSelectedFile] = useState(null);
+  const [formData, setFormData] = useState({
+    price: "",
+    title: "",
+    description: "",
+    royalties: "",
+    size: "",
+    abstract: "",
+  });
+  const [formData1, setFormData1] = useState({
+    bid_starting_date: "",
+    title: "",
+    description: "",
+    bid_expiration_date: "",
+    minimum_bid: "",
+  });
+  const [url, setUrl] = useState(null);
+
+  const [formData2, setFormData2] = useState({
+    minimum_bid: "",
+    bid_starting_date: "",
+    title: "",
+    description: "",
+    bid_expiration_date: "",
+  });
 
   const onFileUpload = (e) => {
     setSelectedFile(e.target.files[0]);
     console.log(e.target.files[0]);
+    setUrl(URL.createObjectURL(e.target.files[0]));
+  };
+
+  const changeValue = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const changeValue1 = (e) => {
+    setFormData1({ ...formData1, [e.target.name]: e.target.value });
+  };
+
+  const changeValue2 = (e) => {
+    setFormData2({ ...formData2, [e.target.name]: e.target.value });
+  };
+
+  const createbutton1 = () => {
+    console.log("formData:", formData);
+  };
+
+  const createbutton2 = () => {
+    console.log("formData1:", formData1);
+  };
+
+  const createbutton3 = () => {
+    console.log("formData2:", formData2);
   };
 
   return (
@@ -48,9 +97,9 @@ const CreateItem = () => {
             <div className="col-xl-3 col-lg-6 col-md-6 col-12">
               <h4 className="title-create-item">Preview item</h4>
               <div className="sc-card-product">
-                <div className="card-media">
+                <div className="card-media c-img-area-2">
                   <Link to="/item-details-01">
-                    <img src={img1} alt="Axies" />
+                    <img src={url ? url : img1} alt="Axies" />
                   </Link>
                   <Link to="/login" className="wishlist-button heart">
                     <span className="number-like"> 100</span>
@@ -64,7 +113,12 @@ const CreateItem = () => {
                 </div>
                 <div className="card-title">
                   <h5>
-                    <Link to="/item-details-01">"Cyber Doberman #766”</Link>
+                    <Link to="/item-details-01">
+                      {formData.title ||
+                        formData1.title ||
+                        formData2.title ||
+                        "Title"}
+                    </Link>
                   </h5>
                   <div className="tags">bsc</div>
                 </div>
@@ -83,7 +137,7 @@ const CreateItem = () => {
                   </div>
                   <div className="price">
                     <span>Current Bid</span>
-                    <h5> 4.89 ETH</h5>
+                    <h5> {formData.price || formData2.price || 0} ETH</h5>
                   </div>
                 </div>
                 <div className="card-bottom">
@@ -135,23 +189,44 @@ const CreateItem = () => {
                         <h4 className="title-create-item">Price</h4>
                         <input
                           type="text"
+                          name="price"
                           placeholder="Enter price for one item (ETH)"
+                          onChange={changeValue}
                         />
 
                         <h4 className="title-create-item">Title</h4>
-                        <input type="text" placeholder="Item Name" />
+                        <input
+                          type="text"
+                          placeholder="Item Name"
+                          name="title"
+                          onChange={changeValue}
+                        />
 
                         <h4 className="title-create-item">Description</h4>
-                        <textarea placeholder="e.g. “This is very limited item”"></textarea>
+                        <textarea
+                          placeholder="e.g. “This is very limited item”"
+                          name="description"
+                          onChange={changeValue}
+                        ></textarea>
 
                         <div className="row-form style-3 mg-bt-22">
                           <div className="inner-row-form">
                             <h4 className="title-create-item">Royalties</h4>
-                            <input type="text" placeholder="5%" />
+                            <input
+                              type="text"
+                              placeholder="5%"
+                              name="royalties"
+                              onChange={changeValue}
+                            />
                           </div>
                           <div className="inner-row-form">
                             <h4 className="title-create-item">Size</h4>
-                            <input type="text" placeholder="e.g. “size”" />
+                            <input
+                              type="text"
+                              placeholder="e.g. “size”"
+                              name="size"
+                              onChange={changeValue}
+                            />
                           </div>
                           <div className="inner-row-form style-2">
                             <div className="seclect-box">
@@ -189,7 +264,8 @@ const CreateItem = () => {
 
                         <button
                           className="tf-button-submit mg-t-15"
-                          type="submit"
+                          type="button"
+                          onClick={() => createbutton1()}
                         >
                           Create
                         </button>
@@ -198,7 +274,12 @@ const CreateItem = () => {
                     <TabPanel>
                       <form className="form-profile" action="#">
                         <h4 className="title-create-item">Minimum bid</h4>
-                        <input type="text" placeholder="enter minimum bid" />
+                        <input
+                          type="text"
+                          placeholder="enter minimum bid"
+                          name="minimum_bid"
+                          onChange={changeValue2}
+                        />
                         <div className="row">
                           <div className="col-md-6">
                             <h5 className="title-create-item">Starting date</h5>
@@ -208,6 +289,7 @@ const CreateItem = () => {
                               id="bid_starting_date"
                               className="form-control"
                               min="1997-01-01"
+                              onChange={changeValue1}
                             />
                           </div>
                           <div className="col-md-6">
@@ -219,18 +301,29 @@ const CreateItem = () => {
                               name="bid_expiration_date"
                               id="bid_expiration_date"
                               className="form-control"
+                              onChange={changeValue1}
                             />
                           </div>
                         </div>
 
                         <h4 className="title-create-item">Title</h4>
-                        <input type="text" placeholder="Item Name" />
+                        <input
+                          type="text"
+                          placeholder="Item Name"
+                          name="title"
+                          onChange={changeValue1}
+                        />
 
                         <h4 className="title-create-item">Description</h4>
-                        <textarea placeholder="e.g. “This is very limited item”"></textarea>
+                        <textarea
+                          placeholder="e.g. “This is very limited item”"
+                          name="description"
+                          onChange={changeValue1}
+                        ></textarea>
                         <button
                           className="tf-button-submit mg-t-15"
-                          type="submit"
+                          type="button"
+                          onClick={() => createbutton2()}
                         >
                           Create
                         </button>
@@ -242,10 +335,17 @@ const CreateItem = () => {
                         <input
                           type="text"
                           placeholder="Enter price for one item (ETH)"
+                          name="price"
+                          onChange={changeValue2}
                         />
 
                         <h4 className="title-create-item">Minimum bid</h4>
-                        <input type="text" placeholder="enter minimum bid" />
+                        <input
+                          type="text"
+                          placeholder="enter minimum bid"
+                          name="minimum_bid"
+                          onChange={changeValue2}
+                        />
 
                         <div className="row">
                           <div className="col-md-6">
@@ -256,6 +356,7 @@ const CreateItem = () => {
                               id="bid_starting_date2"
                               className="form-control"
                               min="1997-01-01"
+                              onChange={changeValue2}
                             />
                           </div>
                           <div className="col-md-6">
@@ -267,19 +368,30 @@ const CreateItem = () => {
                               name="bid_expiration_date"
                               id="bid_expiration_date2"
                               className="form-control"
+                              onChange={changeValue2}
                             />
                           </div>
                         </div>
 
                         <h4 className="title-create-item">Title</h4>
-                        <input type="text" placeholder="Item Name" />
+                        <input
+                          type="text"
+                          placeholder="Item Name"
+                          name="title"
+                          onChange={changeValue2}
+                        />
 
                         <h4 className="title-create-item">Description</h4>
-                        <textarea placeholder="e.g. “This is very limited item”"></textarea>
+                        <textarea
+                          placeholder="e.g. “This is very limited item”"
+                          name="description"
+                          onChange={changeValue2}
+                        ></textarea>
 
                         <button
                           className="tf-button-submit mg-t-15"
-                          type="submit"
+                          type="button"
+                          onClick={() => createbutton3()}
                         >
                           Create
                         </button>
