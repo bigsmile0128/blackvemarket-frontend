@@ -7484,6 +7484,10 @@ button.accordion-button {
   width: calc(48.5% - 33px);
 }
 
+.sc-box-icon {
+  cursor: pointer;
+}
+
 .heading-fill {
   background: linear-gradient(178.56deg, #6d9aff 5.32%, #4b50e6 94.32%);
   -webkit-background-clip: text;

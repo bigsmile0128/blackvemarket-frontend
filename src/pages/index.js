@@ -15,25 +15,27 @@ import EditProfile from "./EditProfile";
 import NoResult from "./NoResult";
 import FAQ from "./FAQ";
 import Contact02 from "./Contact02";
+import PopularCollection from "../components/layouts/PopularCollection";
 
 const routes = [
-    { path: '/', component: < Home01 / > },
-    { path: '/explore-04', component: < Explore04 / > },
-    { path: '/live-auctions', component: < LiveAuctions / > },
-    { path: '/item-details-01', component: < ItemDetails01 / > },
-    { path: '/item-details-02', component: < ItemDetails02 / > },
-    { path: '/activity-01', component: < Activity01 / > },
-    { path: '/blog', component: < Blog / > },
-    { path: '/blog-details', component: < BlogDetails / > },
-    { path: '/help-center', component: < HelpCenter / > },
-    { path: '/authors-01', component: < Authors01 / > },
-    { path: '/authors-02', component: < Authors02 / > },
-    { path: '/wallet-connect', component: < WalletConnect / > },
-    { path: '/create-item', component: < CreateItem / > },
-    { path: '/edit-profile', component: < EditProfile / > },
-    { path: '/no-result', component: < NoResult / > },
-    { path: '/faq', component: < FAQ / > },
-    { path: '/contact-02', component: < Contact02 / > },
-]
+  { path: "/", component: <Home01 /> },
+  { path: "/explore-04", component: <Explore04 /> },
+  { path: "/live-auctions", component: <LiveAuctions /> },
+  { path: "/item-details-01", component: <ItemDetails01 /> },
+  { path: "/item-details-02", component: <ItemDetails02 /> },
+  { path: "/activity-01", component: <Activity01 /> },
+  { path: "/blog", component: <Blog /> },
+  { path: "/blog-details", component: <BlogDetails /> },
+  { path: "/help-center", component: <HelpCenter /> },
+  { path: "/authors-01", component: <Authors01 /> },
+  { path: "/authors-02", component: <Authors02 /> },
+  { path: "/wallet-connect", component: <WalletConnect /> },
+  { path: "/create-item", component: <CreateItem /> },
+  { path: "/edit-profile", component: <EditProfile /> },
+  { path: "/no-result", component: <NoResult /> },
+  { path: "/faq", component: <FAQ /> },
+  { path: "/contact-02", component: <Contact02 /> },
+  { path: "/colletion", component: <PopularCollection /> },
+];
 
 export default routes;
