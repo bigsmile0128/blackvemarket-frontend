@@ -85,6 +85,11 @@ const menus = [
         sub: "Create Item",
         links: "/create-item",
       },
+      {
+        id: 4,
+        sub: "Create Collection",
+        links: "/create-collection",
+      },
       //   {
       //     id: 4,
       //     sub: "Edit Profile",

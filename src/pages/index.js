@@ -18,6 +18,7 @@ import NoResult from "./NoResult";
 import FAQ from "./FAQ";
 import Contact02 from "./Contact02";
 import Collectibles from "./Collectibles";
+import CreateCollection from "./CreateCollection";
 
 const routes = [
   { path: "/", component: <Home01 /> },
@@ -40,6 +41,7 @@ const routes = [
   { path: "/faq", component: <FAQ /> },
   { path: "/contact-02", component: <Contact02 /> },
   { path: "/collections", component: <Collectibles /> },
+  { path: "/create-collection", component: <CreateCollection /> },
 ];
 
 export default routes;
