@@ -1,0 +1,8 @@
+{
+  "name": "Start on Heroku: React.js Project",
+  "buildpacks": [
+    {
+      "url": "mars/create-react-app"
+    }
+  ]
+}
