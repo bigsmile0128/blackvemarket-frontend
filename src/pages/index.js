@@ -17,7 +17,6 @@ import EditProfile from "./EditProfile";
 import NoResult from "./NoResult";
 import FAQ from "./FAQ";
 import Contact02 from "./Contact02";
-import PopularCollection from "../components/layouts/PopularCollection";
 
 const routes = [
   { path: "/", component: <Home01 /> },
