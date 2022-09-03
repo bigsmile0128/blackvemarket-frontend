@@ -123,7 +123,7 @@ const EditProfile = () => {
                   <div className="image c-img-area-1">
                     <img src={coverImg ? coverImg : bg1} alt="Axies" />
                   </div>
-                  <div className="image style2 custom-img">
+                  <div className="image style2 c-img-area-1">
                     <img src={coverImg ? coverImg : bg2} alt="Axies" />
                   </div>
                 </div>

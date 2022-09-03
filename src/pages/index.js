@@ -1,5 +1,7 @@
 import Home01 from "./Home01";
 import Explore04 from "./Explore04";
+import Explore03 from "./Explore03";
+import Explore02 from "./Explore02";
 import LiveAuctions from "./LiveAuctions";
 import ItemDetails01 from "./ItemDetails01";
 import ItemDetails02 from "./ItemDetails02";
@@ -20,6 +22,8 @@ import PopularCollection from "../components/layouts/PopularCollection";
 const routes = [
   { path: "/", component: <Home01 /> },
   { path: "/explore-04", component: <Explore04 /> },
+  { path: "/explore-03", component: <Explore03 /> },
+  { path: "/explore-02", component: <Explore02 /> },
   { path: "/live-auctions", component: <LiveAuctions /> },
   { path: "/item-details-01", component: <ItemDetails01 /> },
   { path: "/item-details-02", component: <ItemDetails02 /> },
@@ -35,7 +39,6 @@ const routes = [
   { path: "/no-result", component: <NoResult /> },
   { path: "/faq", component: <FAQ /> },
   { path: "/contact-02", component: <Contact02 /> },
-  { path: "/colletion", component: <PopularCollection /> },
 ];
 
 export default routes;

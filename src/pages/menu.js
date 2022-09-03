@@ -21,11 +21,21 @@ const menus = [
     namesub: [
       {
         id: 1,
-        sub: "Explore",
-        links: "/explore-04",
+        sub: "All NFTs",
+        links: "/explore-02",
       },
       {
         id: 2,
+        sub: "Collection Explore",
+        links: "/explore-03",
+      },
+      {
+        id: 3,
+        sub: "Fixed Price",
+        links: "/explore-04",
+      },
+      {
+        id: 4,
         sub: "Live Auctions",
         links: "/live-auctions",
       },
