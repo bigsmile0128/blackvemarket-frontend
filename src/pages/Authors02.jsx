@@ -578,23 +578,12 @@ const Authors02 = () => {
                   </li>
                 </ul>
                 <div className="btn-profile">
-                  <DropdownButton
-                    id="dropdown-basic-button"
-                    title="Settings"
-                    size="lg"
-                  >
+                  <DropdownButton title={<div className="test"></div>}>
                     <Dropdown.Item href="/edit-profile">
                       Edit Profile
                     </Dropdown.Item>
                     <Dropdown.Item href="/follow">Follow</Dropdown.Item>
                   </DropdownButton>
-
-                  {/* <Link to="/edit-profile" className="sc-button style-1 follow">
-                    Edit
-                  </Link>
-                  <Link to="/login" className="sc-button style-1 follow">
-                    Follow
-                  </Link> */}
                 </div>
               </div>
             </div>

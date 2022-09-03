@@ -27,7 +27,7 @@ const menus = [
       {
         id: 2,
         sub: "Collection Explore",
-        links: "/explore-03",
+        links: "/collections",
       },
       {
         id: 3,

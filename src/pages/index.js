@@ -17,6 +17,7 @@ import EditProfile from "./EditProfile";
 import NoResult from "./NoResult";
 import FAQ from "./FAQ";
 import Contact02 from "./Contact02";
+import Collectibles from "./Collectibles";
 
 const routes = [
   { path: "/", component: <Home01 /> },
@@ -38,6 +39,7 @@ const routes = [
   { path: "/no-result", component: <NoResult /> },
   { path: "/faq", component: <FAQ /> },
   { path: "/contact-02", component: <Contact02 /> },
+  { path: "/collections", component: <Collectibles /> },
 ];
 
 export default routes;

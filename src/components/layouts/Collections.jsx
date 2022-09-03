@@ -4,54 +4,36 @@ import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Scrollbar, A11y } from "swiper";
 
-const PopularCollection = (props) => {
+const Collections = (props) => {
   const data = props.data;
   return (
     <section className="tf-section popular-collection">
       <div className="themesflat-container">
-        <div className="row">
-          <div className="col-md-12">
-            <div className="heading-live-auctions">
-              <h2 className="tf-title pb-22 text-left">Popular Collection</h2>
-              <Link to="/explore-03" className="exp style2">
-                EXPLORE MORE
-              </Link>
-            </div>
+        <div className="col-md-12">
+          <div className="heading-live-auctions">
+            <h2 className="tf-title pb-22 text-left">Collections</h2>
+            <Link to="/explore-03" className="exp style2">
+              Load More
+            </Link>
           </div>
-          <div className="col-md-12">
-            <div className="collection">
-              <Swiper
-                modules={[Navigation, Scrollbar, A11y]}
-                spaceBetween={30}
-                breakpoints={{
-                  0: {
-                    slidesPerView: 1,
-                  },
+        </div>
 
-                  767: {
-                    slidesPerView: 2,
-                  },
-
-                  991: {
-                    slidesPerView: 3,
-                  },
-                }}
-                scrollbar={{ draggable: true }}
-              >
-                {data.map((item, index) => (
-                  <SwiperSlide key={index}>
-                    <PopularCollectionItem item={item} />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            </div>
+        <div className="collection">
+          <div className="row">
+            {data.map((item, index) => (
+              <div className="col-xl-3 col-lg-3 col-md-6">
+                <SwiperSlide key={index}>
+                  <PopularCollectionItem item={item} />
+                </SwiperSlide>
+              </div>
+            ))}
           </div>
         </div>
       </div>
     </section>
   );
 };
-PopularCollection.propTypes = {
+Collections.propTypes = {
   data: PropTypes.array.isRequired,
 };
 
@@ -60,8 +42,8 @@ const PopularCollectionItem = (props) => (
     <div className="swiper-wrapper">
       <div className="swiper-slide">
         <div className="slider-item">
-          <div className="sc-card-collection style-2 home2">
-            <div className="card-bottom">
+          <div className="sc-card-collection style-2 home2 fill-height-or-more">
+            <div className="card-bottom flex-grow-1">
               <div className="author">
                 <div className="sc-author-box style-2">
                   <div className="author-avatar">
@@ -110,4 +92,4 @@ const PopularCollectionItem = (props) => (
   </div>
 );
 
-export default PopularCollection;
+export default Collections;

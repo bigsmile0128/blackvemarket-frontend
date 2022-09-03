@@ -3416,20 +3416,15 @@ header {
   color: #fff;
 }
 
-.fixed-area-1 {
-  flex: 1;
+.fill-height-or-more {
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  flex: 1 0 auto;
 }
 
-.fixed-area-2 {
-  flex: 2;
-}
-
-.fixed-area-3 {
-  flex: 3;
-}
-
-.fixed-area-4 {
-  flex: 4;
+.fill-height-or-more > div {
+  flex-grow: 1;
 }
 
 .c-img-area-1 {
@@ -3446,4 +3441,125 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.test:after {
+  content: "\2807";
+  font-size: 22px;
+  display: inline;
+}
+
+.dropdown-toggle::after {
+  display: none !important;
+}
+
+.btn-primary {
+  color: #000000;
+  background-color: #ffffff;
+  border-color: #ffffff;
+}
+
+input,
+.button1 {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+
+code {
+  text-decoration: underline;
+}
+
+.taginput {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  border: 2px solid #2d3436;
+  border-radius: 4px;
+}
+
+.tag {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  margin: 0.25em;
+  background: #2d3436;
+  line-height: 2;
+  border-radius: 10%;
+  padding-left: 15px;
+}
+.tag button {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.input {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  margin: 0.25em;
+}
+.input input {
+  flex: 1;
+  line-height: 2;
+}
+
+.dropdown1 {
+  width: 300px;
+  border-radius: 10px;
+  background-color: rgb(202, 198, 198);
+}
+
+.dropdown-header {
+  padding: 15px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 2rem;
+}
+
+.dropdown-body {
+  padding: 5px;
+  border-top: 1px solid #000000;
+  display: none;
+  font-size: 2rem;
+}
+
+.dropdown-body.open {
+  display: block;
+}
+
+.dropdown-item {
+  padding: 0px;
+}
+
+.dropdown-item:hover {
+  cursor: pointer;
+}
+
+.dropdown-item-dot {
+  opacity: 0;
+  color: #91a5be;
+  transition: all 0.2s ease-in-out;
+}
+
+.dropdown-item-dot.selected {
+  opacity: 1;
+}
+
+.icon {
+  font-size: 13px;
+  color: white;
+  transform: rotate(0deg);
+  transition: all 0.2s ease-in-out;
+}
+
+.icon.open {
+  transform: rotate(90deg);
 }
