@@ -55,7 +55,9 @@ const PopularCollectionItem = (props) => (
                 </div>
                 <div className="content">
                   <h4>
-                    <Link to="/authors-01">{props.item.title}</Link>
+                    <Link to="/authors-01">
+                      {props.item.title.substring(0, 15) + "..."}
+                    </Link>
                   </h4>
                   <div className="infor">
                     <span>Created by</span>
