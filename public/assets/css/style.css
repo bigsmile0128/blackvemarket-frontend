@@ -3459,6 +3459,15 @@ header {
   border-color: #ffffff;
 }
 
+.special-modal .modal-content {
+  background-color: var(--bg-section);
+  color: white;
+}
+
+.modal-backdrop {
+  background-color: white;
+}
+
 input,
 .button1 {
   -moz-appearance: none;
@@ -3562,4 +3571,15 @@ code {
 
 .icon.open {
   transform: rotate(90deg);
+}
+
+.tag {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  margin: 0.25em;
+  background: #2d3436;
+  line-height: 2;
+  border-radius: 10%;
+  padding-left: 15px;
 }
