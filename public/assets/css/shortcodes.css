@@ -3210,10 +3210,24 @@ section.today-picks {
   min-width: 145px;
 }
 
-.dropdown:hover ul {
+/* .dropdown:hover ul {
   opacity: 1;
   transform: translateY(0);
+} */
+
+/* custom start part */
+.ulediter {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  -webkit-transform: translateY(0) !important;
+  -moz-transform: translateY(0) !important;
+  -ms-transform: translateY(0) !important;
+  -o-transform: translateY(0) !important;
 }
+.displayEditer {
+  display: none;
+}
+/* end part */
 
 .seclect-box #sort-by.dropdown > a {
   min-width: 100px;
@@ -4598,6 +4612,11 @@ section.today-picks {
 .title-create-item {
   line-height: 26px;
   margin-bottom: 20px;
+}
+
+.m-title-create-item {
+  line-height: 26px;
+  margin-top: 20px;
 }
 
 .uploadFile {

@@ -3478,6 +3478,7 @@ input,
   background: transparent;
   color: inherit;
   font: inherit;
+  padding: 3px 9px;
 }
 
 code {

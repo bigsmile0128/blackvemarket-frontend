@@ -19,6 +19,7 @@ import FAQ from "./FAQ";
 import Contact02 from "./Contact02";
 import Collectibles from "./Collectibles";
 import CreateCollection from "./CreateCollection";
+import PlaceBids from "../components/layouts/auctions/PlaceBids";
 
 const routes = [
   { path: "/", component: <Home01 /> },
@@ -42,6 +43,7 @@ const routes = [
   { path: "/contact-02", component: <Contact02 /> },
   { path: "/collections", component: <Collectibles /> },
   { path: "/create-collection", component: <CreateCollection /> },
+  { path: "/place-bid", component: <PlaceBids /> },
 ];
 
 export default routes;
