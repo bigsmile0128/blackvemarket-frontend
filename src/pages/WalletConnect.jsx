@@ -79,11 +79,7 @@ const WalletConnect = () => {
             <div className="col-md-12">
               <div className="sc-box-icon-inner style-2">
                 {data.map((item, index) => (
-                  <div
-                    onClick={signCertID}
-                    skey={index}
-                    className="sc-box-icon"
-                  >
+                  <div onClick={signCertID} key={index} className="sc-box-icon">
                     <div className="img">
                       <img src={item.img} alt="Axies" />
                     </div>

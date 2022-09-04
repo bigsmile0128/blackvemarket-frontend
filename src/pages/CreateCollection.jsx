@@ -76,14 +76,14 @@ const CreateCollection = () => {
   };
 
   const Tag = ({ label, onClickDelete }) => (
-    <p className="tag">
+    <h5 className="tag">
       {label}
       <div className="p-4">
         <button className="button1" onClick={onClickDelete}>
           &times;
         </button>
       </div>
-    </p>
+    </h5>
   );
 
   const Input = ({ ...props }) => (
