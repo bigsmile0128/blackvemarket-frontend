@@ -3125,8 +3125,18 @@ section.today-picks {
   z-index: 10;
 }
 
+.dropdown.option > a {
+  display: inline;
+  font-size: 14px;
+  line-height: 44px;
+}
+
 .is_dark .dropdown > a {
   background: #343444;
+}
+
+.is_dark .dropdown.option > a {
+  background: var(--primary-color2);
 }
 
 .seclect-box.style-2 .dropdown > a:after {
@@ -3148,6 +3158,10 @@ section.today-picks {
   color: var(--primary-color2);
 }
 
+.dropdown.option > a:hover {
+  color: #6d9aff;
+}
+
 .dropdown > a:after {
   font-family: "Font Awesome 5 Pro";
   font-size: 12px;
@@ -3155,6 +3169,21 @@ section.today-picks {
   content: "\f078";
   position: absolute;
   color: var(--primary-color2);
+  right: 11px;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.dropdown.option > a:after {
+  font-family: "Font Awesome 5 Pro";
+  font-size: 12px;
+  font-weight: 600;
+  content: "\2807";
+  position: absolute;
+  color: black;
   right: 11px;
   top: 50%;
   -webkit-transform: translateY(-50%);

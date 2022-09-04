@@ -496,6 +496,14 @@ const Authors02 = () => {
     },
   ]);
 
+  const [dropdownOptionState, setDropdownOptionState] = useState(false);
+  const [optionItem, setOptionItem] = useState("");
+
+  const options = [
+    { id: 0, label: "Edit Profile", link: "/edit-profile" },
+    { id: 1, label: "Follow", link: "/follow" },
+  ];
+
   const [visible, setVisible] = useState(8);
   const showMoreItems = () => {
     setVisible((prevValue) => prevValue + 4);
@@ -577,13 +585,27 @@ const Authors02 = () => {
                     </Link>
                   </li>
                 </ul>
-                <div className="btn-profile">
-                  <DropdownButton title={<div className="test"></div>}>
-                    <Dropdown.Item href="/edit-profile">
-                      Edit Profile
-                    </Dropdown.Item>
-                    <Dropdown.Item href="/follow">Follow</Dropdown.Item>
-                  </DropdownButton>
+                <div className="dropdown option">
+                  <Link
+                    to="#"
+                    onClick={() => setDropdownOptionState(!dropdownOptionState)}
+                  ></Link>
+
+                  <ul
+                    className={
+                      dropdownOptionState === true
+                        ? "ulediter"
+                        : "displayEditer"
+                    }
+                  >
+                    {options.map((item, index) => (
+                      <li key={index}>
+                        <Link to={item.link}>
+                          <span>{item.label}</span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
             </div>
