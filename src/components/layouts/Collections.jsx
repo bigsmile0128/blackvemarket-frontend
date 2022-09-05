@@ -1,32 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Scrollbar, A11y } from "swiper";
+import { SwiperSlide } from "swiper/react";
 
 const Collections = (props) => {
   const data = props.data;
+  const [visible, setVisible] = useState(8);
+  const showMoreItems = () => {
+    setVisible((prevValue) => prevValue + 4);
+  };
+
   return (
-    <section className="tf-section popular-collection">
+    <section className="tf-section live-auctions">
       <div className="themesflat-container">
         <div className="col-md-12">
-          <div className="heading-live-auctions">
-            <h2 className="tf-title pb-22 text-left">Collections</h2>
-            <Link to="/explore-03" className="exp style2">
-              Load More
-            </Link>
-          </div>
+          <h2 className="tf-title style-1 ct">Collections</h2>
         </div>
 
         <div className="collection">
           <div className="row">
-            {data.map((item, index) => (
+            {data.slice(0, visible).map((item, index) => (
               <div className="col-xl-3 col-lg-3 col-md-6">
                 <SwiperSlide key={index}>
                   <PopularCollectionItem item={item} />
                 </SwiperSlide>
               </div>
             ))}
+
+            {visible < data.length && (
+              <div className="col-md-12 wrap-inner load-more text-center">
+                <Link
+                  to="#"
+                  id="load-more"
+                  className="sc-button loadmore fl-button pri-3"
+                  onClick={showMoreItems}
+                >
+                  <span>Load More</span>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </div>

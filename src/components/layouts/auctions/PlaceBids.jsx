@@ -2,12 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
 
-const PlaceBids = (props) => {
-  const [data, setData] = useState({
-    show: false,
-    address: "",
-  });
-
+const PlaceBids = ({ show, setShow }) => {
   const [dropdownCryptoState, setDropdownCryptoState] = useState(false);
   const [dropdownDateState, setDropdownDateState] = useState(false);
   const [cryptoUnit, setCryptoUnit] = useState("");
@@ -27,15 +22,6 @@ const PlaceBids = (props) => {
     { id: 1, label: "Custom date" },
   ];
 
-  useEffect(() => {
-    setData(props.data);
-  });
-
-  const handleClose = () => {
-    console.log("clicked");
-    setData({ show: !data.show });
-  };
-
   const changeCryptoState = (item) => {
     setDropdownCryptoState(false);
     setCryptoUnit(item.label);
@@ -49,8 +35,8 @@ const PlaceBids = (props) => {
   return (
     <div>
       <Modal
-        show={data.show}
-        onHide={handleClose}
+        show={show}
+        onHide={() => setShow(false)}
         keyboard={false}
         size="lg"
         aria-labelledby="contained-modal-title-vcenter"

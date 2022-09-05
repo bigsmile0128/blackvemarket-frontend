@@ -154,9 +154,10 @@ const CreateItem = () => {
               </div>
             </div>
             <div className="col-xl-9 col-lg-6 col-md-12 col-12">
-              <div className="form-create-item">
+              <div className="form-profile">
+                <h1>Create a Item</h1>
                 <form action="#">
-                  <h4 className="title-create-item">Upload file</h4>
+                  <h4 className="title-create-item mg-t-20">Upload file</h4>
                   <label className="uploadFile">
                     <span className="filename">
                       PNG, JPG, GIF, WEBP or MP4. Max 200mb.

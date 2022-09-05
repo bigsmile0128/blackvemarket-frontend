@@ -18,6 +18,8 @@ import img7 from "../assets/images/avatar/avt-2.jpg";
 import imgdetail1 from "../assets/images/box-item/images-item-details.jpg";
 
 const ItemDetails01 = () => {
+  const [show, setShow] = useState(false);
+
   const [dataHistory] = useState([
     {
       img: img1,
@@ -63,16 +65,8 @@ const ItemDetails01 = () => {
     },
   ]);
 
-  const [data, setData] = useState({
-    show: false,
-    address: "",
-  });
-
   const onHandlePlace = () => {
-    setData({
-      show: true,
-    });
-    console.log("onHandlePlace: ", data.show);
+    setShow(true);
   };
 
   return (
@@ -300,7 +294,7 @@ const ItemDetails01 = () => {
           </div>
         </div>
       </div>
-      <PlaceBids data={data} />
+      <PlaceBids show={show} setShow={setShow} />
       <LiveAuction data={liveAuctionData} />
       <Footer />
     </div>

@@ -585,13 +585,39 @@ const Authors02 = () => {
                     </Link>
                   </li>
                 </ul>
-                <div className="dropdown option">
+                <div className="dropdown option text-right">
                   <Link
                     to="#"
                     onClick={() => setDropdownOptionState(!dropdownOptionState)}
                   ></Link>
 
-                  <ul
+                  <div
+                    className={`py-2 px-3 ${
+                      dropdownOptionState === true
+                        ? "ulediter"
+                        : "displayEditer"
+                    } `}
+                    style={{ background: "white", borderRadius: "5px" }}
+                  >
+                    {options.map((item, index) => (
+                      <p key={index}>
+                        <Link to={item.link}>
+                          <span
+                            className="text-black"
+                            style={{
+                              color: "black",
+                              fontWeight: "500",
+                              fontSize: "15px",
+                            }}
+                          >
+                            {item.label}
+                          </span>
+                        </Link>
+                      </p>
+                    ))}
+                  </div>
+
+                  {/* <ul
                     className={
                       dropdownOptionState === true
                         ? "ulediter"
@@ -605,7 +631,7 @@ const Authors02 = () => {
                         </Link>
                       </li>
                     ))}
-                  </ul>
+                  </ul> */}
                 </div>
               </div>
             </div>
