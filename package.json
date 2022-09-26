@@ -22,7 +22,6 @@
     "react-transition-group": "^4.4.2",
     "sass": "^1.45.1",
     "swiper": "^7.4.1",
-    "truffle": "^5.5.29",
     "web-vitals": "^2.1.2"
   },
   "scripts": {
