@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import Connex from "@vechain/connex";
 import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
 import Countdown from "react-countdown";
@@ -7,9 +8,12 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import img1 from "../assets/images/box-item/image-box-6.jpg";
 import avt from "../assets/images/avatar/avt-9.jpg";
+const vendor = new Connex.Vendor("test");
 
 const CreateItem = () => {
   const [selectedFile, setSelectedFile] = useState(null);
+  const [dropdownState, setDropdownState] = useState(false);
+  const [abstraction, setAbstraction] = useState("");
   const [formData, setFormData] = useState({
     price: "",
     title: "",
@@ -28,6 +32,7 @@ const CreateItem = () => {
   const [url, setUrl] = useState(null);
 
   const [formData2, setFormData2] = useState({
+    price: "",
     minimum_bid: "",
     bid_starting_date: "",
     title: "",
@@ -35,10 +40,25 @@ const CreateItem = () => {
     bid_expiration_date: "",
   });
 
+  const data = [
+    { id: 0, label: "Art" },
+    { id: 1, label: "Music" },
+    { id: 2, label: "Domain Names" },
+    { id: 3, label: "Virtual World" },
+    { id: 4, label: "Trading Cards" },
+    { id: 5, label: "Sports" },
+    { id: 6, label: "Utility" },
+  ];
+
   const onFileUpload = (e) => {
-    setSelectedFile(e.target.files[0]);
-    console.log(e.target.files[0]);
+    // setSelectedFile(e.target.files[0]);
     setUrl(URL.createObjectURL(e.target.files[0]));
+  };
+
+  const changeDataState = (item) => {
+    setDropdownState(false);
+    setFormData({ ...formData, abstract: item.label });
+    setAbstraction(item.label);
   };
 
   const changeValue = (e) => {
@@ -230,35 +250,40 @@ const CreateItem = () => {
                             />
                           </div>
                           <div className="inner-row-form style-2">
-                            <div className="seclect-box">
-                              <div id="item-create" className="dropdown">
-                                <Link to="#" className="btn-selector nolink">
-                                  Abstraction
-                                </Link>
-                                <ul>
-                                  <li>
-                                    <span>Art</span>
+                            <h4 className="title-create-item">Category</h4>
+                            <div
+                              id="item-create"
+                              name="abstraction"
+                              className="dropdown"
+                              onClick={() => setDropdownState(!dropdownState)}
+                            >
+                              <Link
+                                to="#"
+                                className="btn-selector nolink"
+                                style={{
+                                  width: "200px",
+                                }}
+                              >
+                                {abstraction == ""
+                                  ? "Abstraction"
+                                  : abstraction}
+                              </Link>
+                              <ul
+                                className={
+                                  dropdownState === true
+                                    ? "ulediter"
+                                    : "displayEditer"
+                                }
+                              >
+                                {data.map((item, index) => (
+                                  <li
+                                    key={index}
+                                    onClick={() => changeDataState(item)}
+                                  >
+                                    <span>{item.label}</span>
                                   </li>
-                                  <li>
-                                    <span>Music</span>
-                                  </li>
-                                  <li>
-                                    <span>Domain Names</span>
-                                  </li>
-                                  <li>
-                                    <span>Virtual World</span>
-                                  </li>
-                                  <li>
-                                    <span>Trading Cards</span>
-                                  </li>
-                                  <li>
-                                    <span>Sports</span>
-                                  </li>
-                                  <li>
-                                    <span>Utility</span>
-                                  </li>
-                                </ul>
-                              </div>
+                                ))}
+                              </ul>
                             </div>
                           </div>
                         </div>
