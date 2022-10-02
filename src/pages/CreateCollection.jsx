@@ -2,24 +2,20 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
-import Countdown from "react-countdown";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import img1 from "../assets/images/box-item/image-box-6.jpg";
 import { useRef } from "react";
 // import avt from "../assets/images/avatar/avt-9.jpg";
 
 const CreateCollection = () => {
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [selectedFile1, setSelectedFile1] = useState(null);
-  const [selectedFile2, setSelectedFile2] = useState(null);
   const [formData, setFormData] = useState({
-    price: "",
-    title: "",
+    logoImage: "",
+    coverImage: "",
+    name: "",
+    url: "",
     description: "",
-    royalties: "",
-    size: "",
-    abstract: "",
+    category: "",
+    payment: "",
   });
   const [url, setUrl] = useState(null);
   const [url1, setUrl1] = useState(null);
@@ -28,17 +24,14 @@ const CreateCollection = () => {
   const [chainChannel, setChainChannel] = useState("");
 
   const onFileUpload = (e) => {
-    setSelectedFile(e.target.files[0]);
     console.log(e.target.files[0]);
     setUrl(URL.createObjectURL(e.target.files[0]));
   };
   const onFileUpload1 = (e) => {
-    setSelectedFile1(e.target.files[0]);
     console.log(e.target.files[0]);
     setUrl1(URL.createObjectURL(e.target.files[0]));
   };
   const onFileUpload2 = (e) => {
-    setSelectedFile2(e.target.files[0]);
     console.log(e.target.files[0]);
     setUrl2(URL.createObjectURL(e.target.files[0]));
   };
@@ -92,13 +85,13 @@ const CreateCollection = () => {
     </div>
   );
   const data = [
-    { id: 0, label: "All" },
-    { id: 1, label: "Art" },
-    { id: 2, label: "Collectibles" },
-    { id: 3, label: "Music" },
-    { id: 4, label: "Phtography" },
+    { id: 0, label: "Art" },
+    { id: 1, label: "Music" },
+    { id: 2, label: "Domain Names" },
+    { id: 3, label: "Virtual World" },
+    { id: 4, label: "Trading Cards" },
     { id: 5, label: "Sports" },
-    { id: 6, label: "Trading Cards" },
+    { id: 6, label: "Utility" },
   ];
 
   const changeValue = (e) => {
@@ -269,166 +262,156 @@ const CreateCollection = () => {
                   </label>
                 </form>
                 <div className="flat-tabs tab-create-item">
-                  {/* <h4 className="title-create-item">name/h4> */}
-                  <Tabs>
-                    <h4 className="title-create-item mg-20">Name</h4>
-                    <input
-                      type="text"
-                      name="price"
-                      placeholder="Enter price for one item (ETH)"
-                      onChange={changeValue}
-                    />
+                  <h4 className="title-create-item mg-20">Name</h4>
+                  <input
+                    type="text"
+                    name="price"
+                    placeholder="Enter price for one item (ETH)"
+                    onChange={changeValue}
+                  />
 
-                    <h4 className="title-create-item mg-t-20">URL</h4>
-                    <input
-                      type="text"
-                      placeholder="Item Name"
-                      name="title"
-                      onChange={changeValue}
-                    />
+                  <h4 className="title-create-item mg-t-20">URL</h4>
+                  <input
+                    type="text"
+                    placeholder="Item Name"
+                    name="title"
+                    onChange={changeValue}
+                  />
 
-                    <h4 className="title-create-item mg-t-20">Description</h4>
-                    <textarea
-                      placeholder="e.g. “This is very limited item”"
-                      name="description"
-                      onChange={changeValue}
-                    ></textarea>
+                  <h4 className="title-create-item mg-t-20">Description</h4>
+                  <textarea
+                    placeholder="e.g. “This is very limited item”"
+                    name="description"
+                    onChange={changeValue}
+                  ></textarea>
 
-                    <h4 className="title-create-item mg-t-20">Category</h4>
-                    <p>
-                      adding a category will help make your item discoverable on
-                      vechain
-                    </p>
+                  <h4 className="title-create-item mg-t-20">Category</h4>
+                  <p>
+                    adding a category will help make your item discoverable on
+                    vechain
+                  </p>
 
-                    <TabList>
-                      <div className="seclect-box mg-t-20">
-                        <div
-                          id="item-create"
-                          className="dropdown"
-                          onClick={() => setDropdownState(!dropdownState)}
-                        >
-                          <Link
-                            to="#"
-                            className="btn-selector nolink"
-                            style={{
-                              width: "200px",
-                            }}
-                          >
-                            {abstraction == "" ? "Abstraction" : abstraction}
-                          </Link>
-                          <ul
-                            className={
-                              dropdownState === true
-                                ? "ulediter"
-                                : "displayEditer"
-                            }
-                          >
-                            {data.map((item, index) => (
-                              <li
-                                key={index}
-                                onClick={() => changeDataState(item)}
-                              >
-                                <span>{item.label}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                    </TabList>
-                    <h3>Links</h3>
-                    <fieldset className="input-group-vertical mg-t-20">
-                      <div className="form-group">
-                        <label className="sr-only">url</label>
-                        <input
-                          type="text"
-                          placeholder="Facebook Link"
-                          // name="title"
-                          // onChange={changeValue}
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label className="sr-only">url</label>
-                        <input
-                          type="text"
-                          placeholder="Twitter Link"
-                          // name="title"
-                          // onChange={changeValue}
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label className="sr-only">url</label>
-                        <input
-                          type="text"
-                          placeholder="Youtube Link"
-                          // name="title"
-                          // onChange={changeValue}
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label className="sr-only">url</label>
-                        <input
-                          type="text"
-                          placeholder="Instagram Link"
-                          // name="title"
-                          // onChange={changeValue}
-                        />
-                      </div>
-                    </fieldset>
-                    <h3 className="mg-t-20">Blockchain</h3>
-                    <p className="mg-t-10">
-                      Select the blockchain where you'd like new items from this
-                      collection to be added by default.
-                    </p>
-                    <div className="inner-row-form style-2 mg-t-20">
-                      <div className="seclect-box mg-t-20">
-                        <div id="item-create" className="dropdown">
-                          <Link
-                            to="#"
-                            className="btn-selector nolink"
-                            onClick={() => setDropdownState1(!dropdownState1)}
-                            style={{
-                              width: "200px",
-                            }}
-                          >
-                            {chainChannel === ""
-                              ? "Select Blockchain"
-                              : chainChannel}
-                          </Link>
-                          <ul
-                            className={
-                              dropdownState1 === true
-                                ? "ulediter"
-                                : "displayEditer"
-                            }
-                          >
-                            {data1.map((item, index) => (
-                              <li
-                                key={index}
-                                onClick={() => changeDataState1(item)}
-                              >
-                                <span>{item.label}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                      <h3 className="mg-t-20">Payment tokens</h3>
-                      <p className="mg-t-20">
-                        Select the blockcain where you'd like new items from
-                        this collection to be added by default.
-                      </p>
+                  <div className="seclect-box mg-t-20">
+                    <div
+                      id="item-create"
+                      className="dropdown"
+                      onClick={() => setDropdownState(!dropdownState)}
+                    >
+                      <Link
+                        to="#"
+                        className="btn-selector nolink"
+                        style={{
+                          width: "200px",
+                        }}
+                      >
+                        {abstraction == "" ? "Abstraction" : abstraction}
+                      </Link>
+                      <ul
+                        className={
+                          dropdownState === true ? "ulediter" : "displayEditer"
+                        }
+                      >
+                        {data.map((item, index) => (
+                          <li key={index} onClick={() => changeDataState(item)}>
+                            <span>{item.label}</span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
-                    <div className="mg-t-20">
-                      <TagInput
-                        tags={tags}
-                        onAdd={addTagHandler}
-                        onDelete={deleteTagHandler}
+                  </div>
+                  <h3 className="mg-t-20">Links</h3>
+                  <fieldset className="input-group-vertical mg-t-20">
+                    <div className="form-group">
+                      <label className="sr-only">url</label>
+                      <input
+                        type="text"
+                        placeholder="Facebook Link"
+                        // name="title"
+                        // onChange={changeValue}
                       />
                     </div>
-                    <button className="tf-button-submit mg-t-37" type="button">
-                      Create
-                    </button>
-                  </Tabs>
+                    <div className="form-group">
+                      <label className="sr-only">url</label>
+                      <input
+                        type="text"
+                        placeholder="Twitter Link"
+                        // name="title"
+                        // onChange={changeValue}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label className="sr-only">url</label>
+                      <input
+                        type="text"
+                        placeholder="Youtube Link"
+                        // name="title"
+                        // onChange={changeValue}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label className="sr-only">url</label>
+                      <input
+                        type="text"
+                        placeholder="Instagram Link"
+                        // name="title"
+                        // onChange={changeValue}
+                      />
+                    </div>
+                  </fieldset>
+                  <h3 className="mg-t-20">Blockchain</h3>
+                  <p className="mg-t-10">
+                    Select the blockchain where you'd like new items from this
+                    collection to be added by default.
+                  </p>
+                  <div className="inner-row-form style-2 mg-t-20">
+                    <div className="seclect-box mg-t-20">
+                      <div id="item-create" className="dropdown">
+                        <Link
+                          to="#"
+                          className="btn-selector nolink"
+                          onClick={() => setDropdownState1(!dropdownState1)}
+                          style={{
+                            width: "200px",
+                          }}
+                        >
+                          {chainChannel === ""
+                            ? "Select Blockchain"
+                            : chainChannel}
+                        </Link>
+                        <ul
+                          className={
+                            dropdownState1 === true
+                              ? "ulediter"
+                              : "displayEditer"
+                          }
+                        >
+                          {data1.map((item, index) => (
+                            <li
+                              key={index}
+                              onClick={() => changeDataState1(item)}
+                            >
+                              <span>{item.label}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                    <h3 className="mg-t-20">Payment tokens</h3>
+                    <p className="mg-t-20">
+                      Select the blockcain where you'd like new items from this
+                      collection to be added by default.
+                    </p>
+                  </div>
+                  <div className="mg-t-20">
+                    <TagInput
+                      tags={tags}
+                      onAdd={addTagHandler}
+                      onDelete={deleteTagHandler}
+                    />
+                  </div>
+                  <button className="tf-button-submit mg-t-37" type="button">
+                    Create
+                  </button>
                 </div>
               </div>
             </div>

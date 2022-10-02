@@ -7,9 +7,8 @@ import bg1 from "../assets/images/backgroup-secsion/option1_bg_profile.jpg";
 import bg2 from "../assets/images/backgroup-secsion/option2_bg_profile.jpg";
 
 const EditProfile = () => {
-  const [coverImg, setCoverImg] = useState(null);
-  const [photo, setPhoto] = useState(null);
-
+  const [selectedAvatar, setSelectedAvatar] = useState(null);
+  const [selectedCoverImg, setSelectedCoverImg] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     customURL: "",
@@ -18,6 +17,8 @@ const EditProfile = () => {
     facebook: "",
     twitter: "",
     discord: "",
+    coverImg: "",
+    avatar: "",
   });
 
   const onInputChange = (e) => {
@@ -25,14 +26,17 @@ const EditProfile = () => {
   };
 
   const ontUploadCoverImg = (e) => {
+    setSelectedCoverImg(e.target.files[0]);
     const path = URL.createObjectURL(e.target.files[0]);
-    setCoverImg(path);
+    setFormData({ ...formData, coverImg: path });
     console.log(URL.createObjectURL(e.target.files[0]));
   };
 
-  const onUploadPhoto = (e) => {
+  const onUploadAvatar = (e) => {
+    setSelectedAvatar(e.target.files[0]);
     const path = URL.createObjectURL(e.target.files[0]);
-    setPhoto(path);
+    setFormData({ ...formData, avatar: path });
+    console.log(URL.createObjectURL(e.target.files[0]));
     // const file = e.target.files[0];
     // console.log(file);
     // const reader = new FileReader();
@@ -48,8 +52,8 @@ const EditProfile = () => {
     // }
   };
 
-  const onDeletePhoto = () => {
-    setPhoto(null);
+  const onDeleteAvatar = () => {
+    setFormData({ ...formData, avatar: null });
   };
 
   const uploadProfile = () => {
@@ -88,7 +92,10 @@ const EditProfile = () => {
             <div className="col-xl-3 col-lg-4 col-md-6 col-12">
               <div className="sc-card-profile text-center">
                 <div className="card-media c-img-area-2">
-                  <img src={photo ? photo : avt} alt="Axies" />
+                  <img
+                    src={formData.avatar ? formData.avatar : avt}
+                    alt="Axies"
+                  />
                 </div>
                 <div id="upload-profile">
                   <Link to="#" className="btn-upload">
@@ -98,10 +105,10 @@ const EditProfile = () => {
                     id="tf-upload-img"
                     type="file"
                     name="profile"
-                    onChange={onUploadPhoto}
+                    onChange={onUploadAvatar}
                   />
                 </div>
-                <button onClick={onDeletePhoto} className="btn-upload style2">
+                <button onClick={onDeleteAvatar} className="btn-upload style2">
                   Delete
                 </button>
               </div>
@@ -121,10 +128,16 @@ const EditProfile = () => {
                     </label>
                   </form>
                   <div className="image c-img-area-1">
-                    <img src={coverImg ? coverImg : bg1} alt="Axies" />
+                    <img
+                      src={formData.coverImg ? formData.coverImg : bg1}
+                      alt="Axies"
+                    />
                   </div>
                   <div className="image style2 c-img-area-1">
-                    <img src={coverImg ? coverImg : bg2} alt="Axies" />
+                    <img
+                      src={formData.coverImg ? formData.coverImg : bg2}
+                      alt="Axies"
+                    />
                   </div>
                 </div>
 
@@ -138,7 +151,7 @@ const EditProfile = () => {
                           type="text"
                           placeholder="Trista Francis"
                           name="name"
-                          value={formData.name || ""}
+                          // value={formData.name || ""}
                           onChange={onInputChange}
                           required
                         />
@@ -149,7 +162,7 @@ const EditProfile = () => {
                           type="text"
                           placeholder="Axies.Trista Francis.com/"
                           name="customURL"
-                          value={formData.customURL || ""}
+                          // value={formData.customURL || ""}
                           onChange={onInputChange}
                           required
                         />
@@ -160,7 +173,7 @@ const EditProfile = () => {
                           type="email"
                           placeholder="Enter your email"
                           name="email"
-                          value={formData.email || ""}
+                          // value={formData.email || ""}
                           onChange={onInputChange}
                           required
                         />
@@ -171,7 +184,7 @@ const EditProfile = () => {
                           tabIndex="4"
                           rows="5"
                           name="bio"
-                          value={formData.bio || ""}
+                          // value={formData.bio || ""}
                           onChange={onInputChange}
                           required
                         ></textarea>
@@ -185,7 +198,7 @@ const EditProfile = () => {
                           type="text"
                           placeholder="Facebook username"
                           name="facebook"
-                          value={formData.facebook || ""}
+                          // value={formData.facebook || ""}
                           onChange={onInputChange}
                           required
                         />
@@ -200,7 +213,7 @@ const EditProfile = () => {
                           type="text"
                           placeholder="Twitter username"
                           name="twitter"
-                          value={formData.twitter || ""}
+                          // value={formData.twitter || ""}
                           onChange={onInputChange}
                           required
                         />
@@ -214,7 +227,7 @@ const EditProfile = () => {
                           type="text"
                           placeholder="Discord username"
                           name="discord"
-                          value={formData.discord || ""}
+                          // value={formData.discord || ""}
                           onChange={onInputChange}
                           required
                         />
