@@ -5,6 +5,7 @@ import Footer from "../components/footer/Footer";
 import avt from "../assets/images/avatar/avata_profile.jpg";
 import bg1 from "../assets/images/backgroup-secsion/option1_bg_profile.jpg";
 import bg2 from "../assets/images/backgroup-secsion/option2_bg_profile.jpg";
+import { editProfile } from "../actions/profileActions";
 
 const EditProfile = () => {
   const [selectedAvatar, setSelectedAvatar] = useState(null);
@@ -57,7 +58,12 @@ const EditProfile = () => {
   };
 
   const uploadProfile = () => {
-    console.log("Profile Info: " + formData);
+    console.log("Profile Info: ", formData);
+    editProfile(formData)
+      .then((res) => {
+        console.log("success!!!");
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -108,7 +114,10 @@ const EditProfile = () => {
                     onChange={onUploadAvatar}
                   />
                 </div>
-                <button onClick={onDeleteAvatar} className="btn-upload style2">
+                <button
+                  onClick={() => onDeleteAvatar()}
+                  className="btn-upload style2"
+                >
                   Delete
                 </button>
               </div>
@@ -141,109 +150,106 @@ const EditProfile = () => {
                   </div>
                 </div>
 
-                <form action="#" className="form-profile">
-                  <div className="form-infor-profile">
-                    <div className="info-account">
-                      <h4 className="title-create-item">Account info</h4>
-                      <fieldset>
-                        <h4 className="title-infor-account">Display name</h4>
-                        <input
-                          type="text"
-                          placeholder="Trista Francis"
-                          name="name"
-                          // value={formData.name || ""}
-                          onChange={onInputChange}
-                          required
-                        />
-                      </fieldset>
-                      <fieldset>
-                        <h4 className="title-infor-account">Custom URL</h4>
-                        <input
-                          type="text"
-                          placeholder="Axies.Trista Francis.com/"
-                          name="customURL"
-                          // value={formData.customURL || ""}
-                          onChange={onInputChange}
-                          required
-                        />
-                      </fieldset>
-                      <fieldset>
-                        <h4 className="title-infor-account">Email</h4>
-                        <input
-                          type="email"
-                          placeholder="Enter your email"
-                          name="email"
-                          // value={formData.email || ""}
-                          onChange={onInputChange}
-                          required
-                        />
-                      </fieldset>
-                      <fieldset>
-                        <h4 className="title-infor-account">Bio</h4>
-                        <textarea
-                          tabIndex="4"
-                          rows="5"
-                          name="bio"
-                          // value={formData.bio || ""}
-                          onChange={onInputChange}
-                          required
-                        ></textarea>
-                      </fieldset>
-                    </div>
-                    <div className="info-social">
-                      <h4 className="title-create-item">Your Social media</h4>
-                      <fieldset>
-                        <h4 className="title-infor-account">Facebook</h4>
-                        <input
-                          type="text"
-                          placeholder="Facebook username"
-                          name="facebook"
-                          // value={formData.facebook || ""}
-                          onChange={onInputChange}
-                          required
-                        />
-                        <Link to="#" className="connect">
-                          <i className="fab fa-facebook"></i>Connect to face
-                          book
-                        </Link>
-                      </fieldset>
-                      <fieldset>
-                        <h4 className="title-infor-account">Twitter</h4>
-                        <input
-                          type="text"
-                          placeholder="Twitter username"
-                          name="twitter"
-                          // value={formData.twitter || ""}
-                          onChange={onInputChange}
-                          required
-                        />
-                        <Link to="#" className="connect">
-                          <i className="fab fa-twitter"></i>Connect to Twitter
-                        </Link>
-                      </fieldset>
-                      <fieldset>
-                        <h4 className="title-infor-account">Discord</h4>
-                        <input
-                          type="text"
-                          placeholder="Discord username"
-                          name="discord"
-                          // value={formData.discord || ""}
-                          onChange={onInputChange}
-                          required
-                        />
-                        <Link to="#" className="connect">
-                          <i className="icon-fl-vt"></i>Connect to Discord
-                        </Link>
-                      </fieldset>
-                    </div>
+                <div className="form-infor-profile">
+                  <div className="info-account">
+                    <h4 className="title-create-item">Account info</h4>
+                    <fieldset>
+                      <h4 className="title-infor-account">Display name</h4>
+                      <input
+                        type="text"
+                        placeholder="Trista Francis"
+                        name="name"
+                        // value={formData.name || ""}
+                        onChange={onInputChange}
+                        required
+                      />
+                    </fieldset>
+                    <fieldset>
+                      <h4 className="title-infor-account">Custom URL</h4>
+                      <input
+                        type="text"
+                        placeholder="Axies.Trista Francis.com/"
+                        name="customURL"
+                        // value={formData.customURL || ""}
+                        onChange={onInputChange}
+                        required
+                      />
+                    </fieldset>
+                    <fieldset>
+                      <h4 className="title-infor-account">Email</h4>
+                      <input
+                        type="email"
+                        placeholder="Enter your email"
+                        name="email"
+                        // value={formData.email || ""}
+                        onChange={onInputChange}
+                        required
+                      />
+                    </fieldset>
+                    <fieldset>
+                      <h4 className="title-infor-account">Bio</h4>
+                      <textarea
+                        tabIndex="4"
+                        rows="5"
+                        name="bio"
+                        // value={formData.bio || ""}
+                        onChange={onInputChange}
+                        required
+                      ></textarea>
+                    </fieldset>
                   </div>
-                  <button
-                    className="tf-button-submit mg-t-15"
-                    onClick={uploadProfile}
-                  >
-                    Update Profile
-                  </button>
-                </form>
+                  <div className="info-social">
+                    <h4 className="title-create-item">Your Social media</h4>
+                    <fieldset>
+                      <h4 className="title-infor-account">Facebook</h4>
+                      <input
+                        type="text"
+                        placeholder="Facebook username"
+                        name="facebook"
+                        // value={formData.facebook || ""}
+                        onChange={onInputChange}
+                        required
+                      />
+                      <Link to="#" className="connect">
+                        <i className="fab fa-facebook"></i>Connect to face book
+                      </Link>
+                    </fieldset>
+                    <fieldset>
+                      <h4 className="title-infor-account">Twitter</h4>
+                      <input
+                        type="text"
+                        placeholder="Twitter username"
+                        name="twitter"
+                        // value={formData.twitter || ""}
+                        onChange={onInputChange}
+                        required
+                      />
+                      <Link to="#" className="connect">
+                        <i className="fab fa-twitter"></i>Connect to Twitter
+                      </Link>
+                    </fieldset>
+                    <fieldset>
+                      <h4 className="title-infor-account">Discord</h4>
+                      <input
+                        type="text"
+                        placeholder="Discord username"
+                        name="discord"
+                        // value={formData.discord || ""}
+                        onChange={onInputChange}
+                        required
+                      />
+                      <Link to="#" className="connect">
+                        <i className="icon-fl-vt"></i>Connect to Discord
+                      </Link>
+                    </fieldset>
+                  </div>
+                </div>
+                <button
+                  className="tf-button-submit mg-t-15"
+                  onClick={() => uploadProfile()}
+                >
+                  Update Profile
+                </button>
               </div>
             </div>
           </div>
