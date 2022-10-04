@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
@@ -7,7 +8,7 @@ import bg1 from "../assets/images/backgroup-secsion/option1_bg_profile.jpg";
 import bg2 from "../assets/images/backgroup-secsion/option2_bg_profile.jpg";
 import { editProfile } from "../actions/profileActions";
 
-const EditProfile = () => {
+const EditProfile = (props) => {
   const [selectedAvatar, setSelectedAvatar] = useState(null);
   const [selectedCoverImg, setSelectedCoverImg] = useState(null);
   const [formData, setFormData] = useState({
@@ -22,22 +23,26 @@ const EditProfile = () => {
     avatar: "",
   });
 
+  // useEffect((profile) => {
+  //   setFormData(profile);
+  // });
+
   const onInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const ontUploadCoverImg = (e) => {
-    setSelectedCoverImg(e.target.files[0]);
     const path = URL.createObjectURL(e.target.files[0]);
-    setFormData({ ...formData, coverImg: path });
-    console.log(URL.createObjectURL(e.target.files[0]));
+    setSelectedCoverImg(path);
+    setFormData({ ...formData, coverImg: e.target.files[0] });
+    console.log(path);
   };
 
   const onUploadAvatar = (e) => {
-    setSelectedAvatar(e.target.files[0]);
     const path = URL.createObjectURL(e.target.files[0]);
-    setFormData({ ...formData, avatar: path });
-    console.log(URL.createObjectURL(e.target.files[0]));
+    setSelectedAvatar(path);
+    setFormData({ ...formData, avatar: e.target.files[0] });
+    console.log(path);
     // const file = e.target.files[0];
     // console.log(file);
     // const reader = new FileReader();
@@ -58,8 +63,9 @@ const EditProfile = () => {
   };
 
   const uploadProfile = () => {
-    console.log("Profile Info: ", formData);
-    editProfile(formData)
+    console.log("Profile Info: ", props);
+    props
+      .editProfile(formData)
       .then((res) => {
         console.log("success!!!");
       })
@@ -99,7 +105,7 @@ const EditProfile = () => {
               <div className="sc-card-profile text-center">
                 <div className="card-media c-img-area-2">
                   <img
-                    src={formData.avatar ? formData.avatar : avt}
+                    src={selectedAvatar ? selectedAvatar : avt}
                     alt="Axies"
                   />
                 </div>
@@ -138,13 +144,13 @@ const EditProfile = () => {
                   </form>
                   <div className="image c-img-area-1">
                     <img
-                      src={formData.coverImg ? formData.coverImg : bg1}
+                      src={selectedCoverImg ? selectedCoverImg : bg1}
                       alt="Axies"
                     />
                   </div>
                   <div className="image style2 c-img-area-1">
                     <img
-                      src={formData.coverImg ? formData.coverImg : bg2}
+                      src={selectedCoverImg ? selectedCoverImg : bg2}
                       alt="Axies"
                     />
                   </div>
@@ -159,7 +165,7 @@ const EditProfile = () => {
                         type="text"
                         placeholder="Trista Francis"
                         name="name"
-                        // value={formData.name || ""}
+                        value={formData.name || ""}
                         onChange={onInputChange}
                         required
                       />
@@ -170,7 +176,7 @@ const EditProfile = () => {
                         type="text"
                         placeholder="Axies.Trista Francis.com/"
                         name="customURL"
-                        // value={formData.customURL || ""}
+                        value={formData.customURL || ""}
                         onChange={onInputChange}
                         required
                       />
@@ -181,7 +187,7 @@ const EditProfile = () => {
                         type="email"
                         placeholder="Enter your email"
                         name="email"
-                        // value={formData.email || ""}
+                        value={formData.email || ""}
                         onChange={onInputChange}
                         required
                       />
@@ -192,7 +198,7 @@ const EditProfile = () => {
                         tabIndex="4"
                         rows="5"
                         name="bio"
-                        // value={formData.bio || ""}
+                        value={formData.bio || ""}
                         onChange={onInputChange}
                         required
                       ></textarea>
@@ -206,7 +212,7 @@ const EditProfile = () => {
                         type="text"
                         placeholder="Facebook username"
                         name="facebook"
-                        // value={formData.facebook || ""}
+                        value={formData.facebook || ""}
                         onChange={onInputChange}
                         required
                       />
@@ -220,7 +226,7 @@ const EditProfile = () => {
                         type="text"
                         placeholder="Twitter username"
                         name="twitter"
-                        // value={formData.twitter || ""}
+                        value={formData.twitter || ""}
                         onChange={onInputChange}
                         required
                       />
@@ -234,7 +240,7 @@ const EditProfile = () => {
                         type="text"
                         placeholder="Discord username"
                         name="discord"
-                        // value={formData.discord || ""}
+                        value={formData.discord || ""}
                         onChange={onInputChange}
                         required
                       />
@@ -260,4 +266,8 @@ const EditProfile = () => {
   );
 };
 
-export default EditProfile;
+const mapStateToProps = (store) => {
+  return { profile: store.profile };
+};
+
+export default connect(mapStateToProps, { editProfile })(EditProfile);
