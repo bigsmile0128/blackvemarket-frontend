@@ -19,8 +19,8 @@ const EditProfile = (props) => {
     facebook: "",
     twitter: "",
     discord: "",
-    coverImg: "",
-    avatar: "",
+    coverImg: undefined,
+    avatar: undefined,
   });
 
   // useEffect((profile) => {
@@ -63,9 +63,19 @@ const EditProfile = (props) => {
   };
 
   const uploadProfile = () => {
-    console.log("Profile Info: ", props);
+    console.log("Profile Info: ",props);
+    let fd = new FormData();
+    fd.append("name", formData.name);
+    fd.append("customURL", formData.customURL);
+    fd.append("email", formData.email);
+    fd.append("bio", formData.bio);
+    fd.append("facebook", formData.facebook);
+    fd.append("twitter", formData.twitter);
+    fd.append("discord", formData.discord);
+    fd.append("avatar", formData.avatar);
+    fd.append("coverImg", formData.coverImg);
     props
-      .editProfile(formData)
+      .editProfile(fd)
       .then((res) => {
         console.log("success!!!");
       })

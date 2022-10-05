@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BASE_URL } from "../../constants";
+import { BASE_URL } from "../assets/constants";
 import {
   ITEMS_HAVE_SUCCESS,
   ITEMS_HAVE_LOADING,
@@ -26,14 +26,21 @@ export function itemsFetchDataSuccess(profiles) {
 }
 
 export const editProfile = (profiles) => {
-  dispatch(itemsAreLoading());
+  return (dispatch) => {
+    console.log("111");
+    dispatch(itemsAreLoading());
+    console.log("222");
+    axios
+      .post(`${BASE_URL}/users/edit-profile`, profiles)
+      .then((res) => {
+        console.log("333");
 
-  axios
-    .post(`${BASE_URL}/users/edit-profile`, profiles)
-    .then((res) => {
-      if (res.data) {
-        dispatch(itemsFetchDataSuccess(res.data));
-      }
-    })
-    .catch(() => dispatch(itemsHaveError(true)));
+        if (res.data) {
+          console.log("555");
+          dispatch(itemsFetchDataSuccess(res.data));
+        }
+      })
+      // .catch(() => dispatch(itemsHaveError(true)));
+      .catch(() => console.log("4444"));
+  };
 };
