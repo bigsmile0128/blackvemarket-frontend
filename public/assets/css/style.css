@@ -1417,8 +1417,20 @@ header {
 .header_1.header_2.style2 {
   height: 104px;
   border: none;
+  font-size: 1.5rem;
+  font-weight: 500;
   display: flex;
   align-items: center;
+}
+
+.header-wallet-style {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.header-wallet-style:hover {
+  color: var(--primary-color3);
+  cursor: pointer;
 }
 
 .admin_active {
@@ -1524,7 +1536,7 @@ header {
 }
 
 .header_1 .header_avatar .avatar_popup .links a:hover {
-  color: #566ffe;
+  color: var(--primary-color);
 }
 
 .header_1 .header__notifications .js-notifications-icon {
@@ -1996,6 +2008,19 @@ header {
   width: 250px;
   opacity: 0;
   visibility: hidden;
+}
+
+.disconnect-wallet {
+  position: absolute;
+  top: 100%;
+  width: 250px;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.disconnect-wallet.active {
+  visibility: visible;
+  opacity: 1;
 }
 
 .search-submit {

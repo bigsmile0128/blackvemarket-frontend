@@ -1,28 +1,13 @@
-import React, { useState } from "react";
+import React, { useReducer, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
 import Connex from "@vechain/connex";
+import * as actions from "../actions/profileActions";
 import img1 from "../assets/images/icon/VeThor.jpg";
 import img2 from "../assets/images/icon/Sync2.jpg";
 const vendor = new Connex.Vendor("test");
-
-const signCertID = () => {
-  vendor
-    .sign("cert", {
-      purpose: "identification",
-      payload: {
-        type: "text",
-        content:
-          "Welcome to BlackVeMarket. The place to be if you like NFTs other markets can't afford.",
-      },
-    })
-    .request()
-    .then((r) => {
-      window.localStorage.setItem("vechain_signer", r.annex.signer);
-    })
-    .catch((e) => alert("error: " + e.message));
-};
 
 const WalletConnect = () => {
   const [data] = useState([
@@ -38,6 +23,27 @@ const WalletConnect = () => {
       description: " Official VeChain wallet for Desktop use.",
     },
   ]);
+
+  const dispatch = useDispatch();
+
+  const signCertID = () => {
+    vendor
+      .sign("cert", {
+        purpose: "identification",
+        payload: {
+          type: "text",
+          content:
+            "Welcome to BlackVeMarket. The place to be if you like NFTs other markets can't afford.",
+        },
+      })
+      .request()
+      .then((r) => {
+        window.localStorage.setItem("vechain_signer", r.annex.signer);
+        dispatch(actions.userRegister(r.annex.signer));
+      })
+      .catch((e) => alert("error: " + e.message));
+  };
+
   return (
     <div>
       <Header />
