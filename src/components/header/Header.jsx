@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect, useReducer } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import * as actions from "../../actions/profileActions";
+import * as actions from "../../store/actions/profileActions";
 import menus from "../../pages/menu";
 import DarkMode from "./DarkMode";
 import logoheader from "../../assets/images/logo/logo2.png";

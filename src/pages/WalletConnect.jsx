@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
 import Connex from "@vechain/connex";
-import * as actions from "../actions/profileActions";
+import * as actions from "../store/actions/profileActions";
 import img1 from "../assets/images/icon/VeThor.jpg";
 import img2 from "../assets/images/icon/Sync2.jpg";
 const vendor = new Connex.Vendor("test");
