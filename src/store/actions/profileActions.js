@@ -42,13 +42,13 @@ export function walletDisconnectSuccess(profiles) {
 }
 
 export const editProfile = (profiles) => {
-  console.log(profiles)
+  console.log("profiles: ", profiles);
   return (dispatch) => {
     console.log("111");
     dispatch(itemsAreLoading());
     console.log("222");
     axios
-      .post(`${BASE_URL}/users/edit-profile`, { profiles })
+      .post(`${BASE_URL}/users/edit-profile`, profiles)
       .then((res) => {
         console.log("333");
 

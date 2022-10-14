@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
 import avt from "../assets/images/avatar/avata_profile.jpg";
 import bg1 from "../assets/images/backgroup-secsion/option1_bg_profile.jpg";
 import bg2 from "../assets/images/backgroup-secsion/option2_bg_profile.jpg";
-import { editProfile } from "../actions/profileActions";
+import * as actions from "../store/actions/profileActions";
 
-const EditProfile = (props) => {
+const EditProfile = () => {
+  const profileInfo = useSelector((store) => store.profile.profileInfo);
+  const dispatch = useDispatch();
   const [selectedAvatar, setSelectedAvatar] = useState(null);
   const [selectedCoverImg, setSelectedCoverImg] = useState(null);
   const [formData, setFormData] = useState({
@@ -19,13 +21,9 @@ const EditProfile = (props) => {
     facebook: "",
     twitter: "",
     discord: "",
-    coverImg: undefined,
-    avatar: undefined,
+    coverImg: {},
+    avatar: {},
   });
-
-  // useEffect((profile) => {
-  //   setFormData(profile);
-  // });
 
   const onInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -34,14 +32,14 @@ const EditProfile = (props) => {
   const ontUploadCoverImg = (e) => {
     const path = URL.createObjectURL(e.target.files[0]);
     setSelectedCoverImg(path);
-    setFormData({ ...formData, coverImg: e.target.files[0] });
+    setFormData({ ...formData, [e.target.name]: e.target.files[0] });
     console.log(path);
   };
 
   const onUploadAvatar = (e) => {
     const path = URL.createObjectURL(e.target.files[0]);
     setSelectedAvatar(path);
-    setFormData({ ...formData, avatar: e.target.files[0] });
+    setFormData({ ...formData, [e.target.name]: e.target.files[0] });
     console.log(path);
     // const file = e.target.files[0];
     // console.log(file);
@@ -59,11 +57,11 @@ const EditProfile = (props) => {
   };
 
   const onDeleteAvatar = () => {
-    setFormData({ ...formData, avatar: null });
+    setFormData({ ...formData, avatar: {} });
   };
 
   const uploadProfile = () => {
-    console.log("Profile Info: ",props);
+    console.log("formData: ", formData);
     let fd = new FormData();
     fd.append("name", formData.name);
     fd.append("customURL", formData.customURL);
@@ -74,12 +72,9 @@ const EditProfile = (props) => {
     fd.append("discord", formData.discord);
     fd.append("avatar", formData.avatar);
     fd.append("coverImg", formData.coverImg);
-    props
-      .editProfile(fd)
-      .then((res) => {
-        console.log("success!!!");
-      })
-      .catch((err) => console.log(err));
+    fd.append("walletaddr", window.localStorage.getItem("vechain_signer"));
+
+    dispatch(actions.editProfile(fd));
   };
 
   return (
@@ -126,7 +121,7 @@ const EditProfile = (props) => {
                   <input
                     id="tf-upload-img"
                     type="file"
-                    name="profile"
+                    name="avatar"
                     onChange={onUploadAvatar}
                   />
                 </div>
@@ -147,7 +142,7 @@ const EditProfile = (props) => {
                       <input
                         type="file"
                         className="inputfile form-control"
-                        name="file"
+                        name="coverImg"
                         onChange={ontUploadCoverImg}
                       />
                     </label>
@@ -276,8 +271,4 @@ const EditProfile = (props) => {
   );
 };
 
-const mapStateToProps = (store) => {
-  return { profile: store.profile };
-};
-
-export default connect(mapStateToProps, { editProfile })(EditProfile);
+export default EditProfile;
