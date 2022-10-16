@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import * as actions from "../store/actions/createItActions";
 import Connex from "@vechain/connex";
 import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
@@ -11,7 +13,11 @@ import avt from "../assets/images/avatar/avt-9.jpg";
 const vendor = new Connex.Vendor("test");
 
 const CreateItem = () => {
-  const [selectedFile, setSelectedFile] = useState(null);
+  const dispatch = useDispatch();
+  const walletaddr = useSelector(
+    (store) => store.profile.profileInfo.user_wallet_address
+  );
+
   const [dropdownState, setDropdownState] = useState(false);
   const [abstraction, setAbstraction] = useState("");
   const [formData, setFormData] = useState({
@@ -21,6 +27,7 @@ const CreateItem = () => {
     royalties: "",
     size: "",
     abstract: "",
+    nft: "",
   });
   const [formData1, setFormData1] = useState({
     bid_starting_date: "",
@@ -28,6 +35,7 @@ const CreateItem = () => {
     description: "",
     bid_expiration_date: "",
     minimum_bid: "",
+    nft: "",
   });
   const [url, setUrl] = useState(null);
 
@@ -38,6 +46,7 @@ const CreateItem = () => {
     title: "",
     description: "",
     bid_expiration_date: "",
+    nft: "",
   });
 
   const data = [
@@ -51,8 +60,10 @@ const CreateItem = () => {
   ];
 
   const onFileUpload = (e) => {
-    // setSelectedFile(e.target.files[0]);
     setUrl(URL.createObjectURL(e.target.files[0]));
+    setFormData({ ...formData, nft: e.target.files[0] });
+    setFormData1({ ...formData, nft: e.target.files[0] });
+    setFormData2({ ...formData, nft: e.target.files[0] });
   };
 
   const changeDataState = (item) => {
@@ -75,6 +86,12 @@ const CreateItem = () => {
 
   const createbutton1 = () => {
     console.log("formData:", formData);
+    if (walletaddr) {
+      dispatch(actions.createFixedItem(formData));
+    } else {
+      alert("Please Connect Wallet!");
+      return false;
+    }
   };
 
   const createbutton2 = () => {

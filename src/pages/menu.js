@@ -92,8 +92,8 @@ const menus = [
       },
       {
         id: 5,
-        sub: "Approve",
-        links: "/approve-items",
+        sub: "List Item",
+        links: "/list-items",
       },
       //   {
       //     id: 4,

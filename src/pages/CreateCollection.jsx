@@ -149,7 +149,7 @@ const CreateCollection = () => {
           <div className="row">
             <div className="col-md-12">
               <div className="page-title-heading mg-bt-12">
-                <h1 className="heading text-center">Create a Collection</h1>
+                <h1 className="heading text-center">Create Collection</h1>
               </div>
               <div className="breadcrumbs style2">
                 <ul>
@@ -159,7 +159,7 @@ const CreateCollection = () => {
                   <li>
                     <Link to="#">Pages</Link>
                   </li>
-                  <li>Create a Collection</li>
+                  <li>Create Collection</li>
                 </ul>
               </div>
             </div>
@@ -218,7 +218,7 @@ const CreateCollection = () => {
             </div>
             <div className="col-xl-9 col-lg-6 col-md-12 col-12">
               <div className="form-profile">
-                <h1>Create a Collecton</h1>
+                <h1>Create a Collection</h1>
                 <form action="#">
                   <h4 className="title-create-item mg-t-20">Logo Image</h4>
                   <label className="uploadFile">

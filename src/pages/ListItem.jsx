@@ -12,7 +12,7 @@ import img1 from "../assets/images/box-item/image-box-6.jpg";
 import avt from "../assets/images/avatar/avt-9.jpg";
 const vendor = new Connex.Vendor("test");
 
-const Approve = () => {
+const ListItem = () => {
   const dispatch = useDispatch();
   const walletaddr = useSelector(
     (store) => store.profile.profileInfo.user_wallet_address
@@ -68,7 +68,7 @@ const Approve = () => {
           <div className="row">
             <div className="col-md-12">
               <div className="page-title-heading mg-bt-12">
-                <h1 className="heading text-center">Approve Item</h1>
+                <h1 className="heading text-center">List Item</h1>
               </div>
               <div className="breadcrumbs style2">
                 <ul>
@@ -78,7 +78,7 @@ const Approve = () => {
                   <li>
                     <Link to="#">Pages</Link>
                   </li>
-                  <li>Approve Item</li>
+                  <li>List Item</li>
                 </ul>
               </div>
             </div>
@@ -146,7 +146,7 @@ const Approve = () => {
             </div>
             <div className="col-xl-9 col-lg-6 col-md-12 col-12">
               <div className="form-profile">
-                <h1>Approve</h1>
+                <h1>List a Item</h1>
                 <div className="flat-tabs tab-create-item mg-t-20">
                   <Tabs>
                     <TabPanel>
@@ -202,7 +202,7 @@ const Approve = () => {
                           type="button"
                           onClick={() => createbutton1()}
                         >
-                          Approve
+                          List
                         </button>
                       </form>
                     </TabPanel>
@@ -218,4 +218,4 @@ const Approve = () => {
   );
 };
 
-export default Approve;
+export default ListItem;
