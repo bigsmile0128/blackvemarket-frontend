@@ -20,6 +20,7 @@ import Contact02 from "./Contact02";
 import Collectibles from "./Collectibles";
 import CreateCollection from "./CreateCollection";
 import PlaceBids from "../components/layouts/auctions/PlaceBids";
+import Approve from "./Approve";
 
 const routes = [
   { path: "/", component: <Home01 /> },
@@ -44,6 +45,7 @@ const routes = [
   { path: "/collections", component: <Collectibles /> },
   { path: "/create-collection", component: <CreateCollection /> },
   { path: "/place-bid", component: <PlaceBids /> },
+  { path: "/approve-items", component: <Approve /> },
 ];
 
 export default routes;
