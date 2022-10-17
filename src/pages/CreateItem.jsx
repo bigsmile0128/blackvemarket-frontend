@@ -14,9 +14,7 @@ const vendor = new Connex.Vendor("test");
 
 const CreateItem = () => {
   const dispatch = useDispatch();
-  const walletaddr = useSelector(
-    (store) => store.profile.profileInfo.user_wallet_address
-  );
+  const userID = useSelector((store) => store.profile.profileInfo._id);
 
   const [dropdownState, setDropdownState] = useState(false);
   const [abstraction, setAbstraction] = useState("");
@@ -62,8 +60,8 @@ const CreateItem = () => {
   const onFileUpload = (e) => {
     setUrl(URL.createObjectURL(e.target.files[0]));
     setFormData({ ...formData, nft: e.target.files[0] });
-    setFormData1({ ...formData, nft: e.target.files[0] });
-    setFormData2({ ...formData, nft: e.target.files[0] });
+    setFormData1({ ...formData1, nft: e.target.files[0] });
+    setFormData2({ ...formData2, nft: e.target.files[0] });
   };
 
   const changeDataState = (item) => {
@@ -86,8 +84,18 @@ const CreateItem = () => {
 
   const createbutton1 = () => {
     console.log("formData:", formData);
-    if (walletaddr) {
-      dispatch(actions.createFixedItem(formData));
+    let fd = new FormData();
+    fd.append("price", formData.price);
+    fd.append("title", formData.title);
+    fd.append("description", formData.description);
+    fd.append("royalties", formData.royalties);
+    fd.append("size", formData.size);
+    fd.append("abstract", formData.abstract);
+    fd.append("assets", formData.nft);
+    fd.append("user_id", userID);
+    console.log(fd);
+    if (userID) {
+      dispatch(actions.createFixedItem(fd));
     } else {
       alert("Please Connect Wallet!");
       return false;
