@@ -1,21 +1,24 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
 import "react-tabs/style/react-tabs.css";
 import img1 from "../assets/images/box-item/image-box-6.jpg";
 import { useRef } from "react";
+import * as actions from "../store/actions/createCltActions";
 // import avt from "../assets/images/avatar/avt-9.jpg";
 
 const CreateCollection = () => {
+  const userID = useSelector((store) => store.profile.profileInfo._id);
+  const dispatch = useDispatch();
+
   const [formData, setFormData] = useState({
     logoImage: "",
     coverImage: "",
     name: "",
-    url: "",
+    cltLink: "",
     description: "",
-    category: "",
-    payment: "",
   });
   const [url, setUrl] = useState(null);
   const [url1, setUrl1] = useState(null);
@@ -26,14 +29,17 @@ const CreateCollection = () => {
   const onFileUpload = (e) => {
     console.log(e.target.files[0]);
     setUrl(URL.createObjectURL(e.target.files[0]));
+    setFormData({ ...formData, [e.target.name]: e.target.files[0] });
   };
   const onFileUpload1 = (e) => {
     console.log(e.target.files[0]);
     setUrl1(URL.createObjectURL(e.target.files[0]));
+    setFormData({ ...formData, [e.target.name]: e.target.files[0] });
   };
   const onFileUpload2 = (e) => {
     console.log(e.target.files[0]);
     setUrl2(URL.createObjectURL(e.target.files[0]));
+    setFormData({ ...formData, [e.target.name]: e.target.files[0] });
   };
   const [tags, setTags] = useState(["ether"]);
   const addTagHandler = (tag) => {
@@ -140,6 +146,24 @@ const CreateCollection = () => {
     setChainChannel(item.label);
   };
 
+  const onCreateCollec = () => {
+    console.log(formData);
+    let fd = new FormData();
+    fd.append("name", formData.name);
+    fd.append("logoImage", formData.logoImage);
+    fd.append("bannerImage", formData.bannerImage);
+    fd.append("url", formData.cltLink);
+    fd.append("description", formData.description);
+    fd.append("user_id", userID);
+
+    if (userID) {
+      dispatch(actions.createClt(fd));
+    } else {
+      alert("Please Connect Wallet!");
+      return false;
+    }
+  };
+
   return (
     <div className="create-item">
       <Header />
@@ -179,14 +203,6 @@ const CreateCollection = () => {
                       alt="Axies"
                       className="c-img-area-2"
                       onClick={onImageClick}
-                    />
-                    <input
-                      ref={imageRef}
-                      type="file"
-                      className="inputfile form-control"
-                      onChange={onFileUpload}
-                      name="file"
-                      style={{ display: "none" }}
                     />
                   </div>
                 </div>
@@ -229,7 +245,7 @@ const CreateCollection = () => {
                       type="file"
                       className="inputfile form-control"
                       onChange={onFileUpload}
-                      name="file"
+                      name="logoImage"
                     />
                   </label>
                 </form>
@@ -243,7 +259,7 @@ const CreateCollection = () => {
                       type="file"
                       className="inputfile form-control"
                       onChange={onFileUpload1}
-                      name="file"
+                      name="bannerImage"
                     />
                   </label>
                 </form>
@@ -265,8 +281,8 @@ const CreateCollection = () => {
                   <h4 className="title-create-item mg-20">Name</h4>
                   <input
                     type="text"
-                    name="price"
-                    placeholder="Enter price for one item (ETH)"
+                    name="name"
+                    placeholder="Enter A Collection Name"
                     onChange={changeValue}
                   />
 
@@ -274,7 +290,7 @@ const CreateCollection = () => {
                   <input
                     type="text"
                     placeholder="Item Name"
-                    name="title"
+                    name="cltLink"
                     onChange={changeValue}
                   />
 
@@ -409,7 +425,11 @@ const CreateCollection = () => {
                       onDelete={deleteTagHandler}
                     />
                   </div>
-                  <button className="tf-button-submit mg-t-37" type="button">
+                  <button
+                    className="tf-button-submit mg-t-37"
+                    type="button"
+                    onClick={() => onCreateCollec()}
+                  >
                     Create
                   </button>
                 </div>

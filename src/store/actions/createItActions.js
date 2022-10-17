@@ -1,7 +1,7 @@
 import axios from "axios";
 import { BASE_URL } from "../../assets/constants";
 import {
-  ITEMS_HAVE_SUCCESS,
+  CREATE_FIXED_ITEM_SUCCESS,
   ITEMS_HAVE_LOADING,
   ITEMS_HAVE_ERROR,
 } from "./types";
@@ -18,10 +18,10 @@ export function itemsAreLoading() {
   };
 }
 
-export function itemsFetchDataSuccess(profiles) {
+export function createFixedItemSuccess(products) {
   return {
-    type: ITEMS_HAVE_SUCCESS,
-    payload: profiles,
+    type: CREATE_FIXED_ITEM_SUCCESS,
+    payload: products,
   };
 }
 
@@ -37,7 +37,7 @@ export const createFixedItem = (items) => async (dispatch) => {
 
       if (res.data) {
         console.log("555");
-        dispatch(itemsFetchDataSuccess(res.data));
+        dispatch(createFixedItemSuccess(res.data));
       }
     })
     // .catch(() => dispatch(itemsHaveError(true)));
