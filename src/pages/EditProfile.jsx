@@ -6,23 +6,28 @@ import Footer from "../components/footer/Footer";
 import avt from "../assets/images/avatar/avata_profile.jpg";
 import bg1 from "../assets/images/backgroup-secsion/option1_bg_profile.jpg";
 import bg2 from "../assets/images/backgroup-secsion/option2_bg_profile.jpg";
+import { BACKEND_URL } from "../assets/constants";
 import * as actions from "../store/actions/profileActions";
 
 const EditProfile = () => {
   const profileInfo = useSelector((store) => store.profile.profileInfo);
   const dispatch = useDispatch();
-  const [selectedAvatar, setSelectedAvatar] = useState(null);
-  const [selectedCoverImg, setSelectedCoverImg] = useState(null);
+  const [selectedAvatar, setSelectedAvatar] = useState(
+    BACKEND_URL + profileInfo.user_avatar || { avt }
+  );
+  const [selectedCoverImg, setSelectedCoverImg] = useState(
+    BACKEND_URL + profileInfo.user_coverImg || { bg1 }
+  );
   const [formData, setFormData] = useState({
-    name: "",
-    customURL: "",
-    email: "",
-    bio: "",
-    facebook: "",
-    twitter: "",
-    discord: "",
-    coverImg: {},
-    avatar: {},
+    name: profileInfo.user_name || "",
+    customURL: profileInfo.user_customURL || "",
+    email: profileInfo.user_email || "",
+    bio: profileInfo.user_bio || "",
+    facebook: profileInfo.user_facebook || "",
+    twitter: profileInfo.user_twitter || "",
+    discord: profileInfo.user_discord || "",
+    coverImg: profileInfo.user_coverImg || {},
+    avatar: profileInfo.user_avatar || {},
   });
 
   const onInputChange = (e) => {
@@ -73,7 +78,7 @@ const EditProfile = () => {
     fd.append("avatar", formData.avatar);
     fd.append("coverImg", formData.coverImg);
     fd.append("walletaddr", window.localStorage.getItem("vechain_signer"));
-
+    console.log(fd);
     dispatch(actions.editProfile(fd));
   };
 
@@ -109,10 +114,7 @@ const EditProfile = () => {
             <div className="col-xl-3 col-lg-4 col-md-6 col-12">
               <div className="sc-card-profile text-center">
                 <div className="card-media c-img-area-2">
-                  <img
-                    src={selectedAvatar ? selectedAvatar : avt}
-                    alt="Axies"
-                  />
+                  <img src={selectedAvatar} alt="Axies" />
                 </div>
                 <div id="upload-profile">
                   <Link to="#" className="btn-upload">
@@ -148,16 +150,10 @@ const EditProfile = () => {
                     </label>
                   </form>
                   <div className="image c-img-area-1">
-                    <img
-                      src={selectedCoverImg ? selectedCoverImg : bg1}
-                      alt="Axies"
-                    />
+                    <img src={selectedCoverImg} alt="Axies" />
                   </div>
                   <div className="image style2 c-img-area-1">
-                    <img
-                      src={selectedCoverImg ? selectedCoverImg : bg2}
-                      alt="Axies"
-                    />
+                    <img src={selectedCoverImg} alt="Axies" />
                   </div>
                 </div>
 
