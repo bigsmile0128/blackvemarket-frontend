@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../store/actions/createItActions";
+import * as clt_actions from "../store/actions/createCltActions";
 import Connex from "@vechain/connex";
 import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
@@ -16,6 +17,7 @@ const CreateItem = () => {
   const dispatch = useDispatch();
   const userID = useSelector((store) => store.profile.profileInfo._id);
 
+  const collections = useSelector((store) => store.product.collections);
   const [dropdownState, setDropdownState] = useState(false);
   const [abstraction, setAbstraction] = useState("");
   const [formData, setFormData] = useState({
@@ -46,16 +48,17 @@ const CreateItem = () => {
     bid_expiration_date: "",
     nft: "",
   });
+  // const data = [
+  //   { id: 0, label: "Art" },
+  //   { id: 1, label: "Music" },
+  //   { id: 2, label: "Domain Names" },
+  //   { id: 3, label: "Virtual World" },
+  //   { id: 4, label: "Trading Cards" },
+  //   { id: 5, label: "Sports" },
+  //   { id: 6, label: "Utility" },
+  // ];
 
-  const data = [
-    { id: 0, label: "Art" },
-    { id: 1, label: "Music" },
-    { id: 2, label: "Domain Names" },
-    { id: 3, label: "Virtual World" },
-    { id: 4, label: "Trading Cards" },
-    { id: 5, label: "Sports" },
-    { id: 6, label: "Utility" },
-  ];
+  useEffect(() => dispatch(clt_actions.getClts()), []);
 
   const onFileUpload = (e) => {
     setUrl(URL.createObjectURL(e.target.files[0]));
@@ -66,8 +69,9 @@ const CreateItem = () => {
 
   const changeDataState = (item) => {
     setDropdownState(false);
-    setFormData({ ...formData, abstract: item.label });
-    setAbstraction(item.label);
+    setFormData({ ...formData, abstract: item.collection_name });
+    console.log(item.collection_name);
+    setAbstraction(item.collection_name);
   };
 
   const changeValue = (e) => {
@@ -300,12 +304,12 @@ const CreateItem = () => {
                                     : "displayEditer"
                                 }
                               >
-                                {data.map((item, index) => (
+                                {collections.map((item, index) => (
                                   <li
                                     key={index}
                                     onClick={() => changeDataState(item)}
                                   >
-                                    <span>{item.label}</span>
+                                    <span>{item.collection_name}</span>
                                   </li>
                                 ))}
                               </ul>
