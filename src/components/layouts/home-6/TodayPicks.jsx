@@ -116,7 +116,7 @@ const TodayPicks = props => {
                                 </Dropdown.Toggle>
 
                                 <Dropdown.Menu>
-                                <Dropdown.Item href="#"> Ethereum</Dropdown.Item>
+                                <Dropdown.Item href="#"> VET</Dropdown.Item>
                                 <Dropdown.Item href="#">Flow</Dropdown.Item>
                                 <Dropdown.Item href="#">Tezos</Dropdown.Item>
                                 </Dropdown.Menu>

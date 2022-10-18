@@ -128,7 +128,7 @@ const ListItem = () => {
                   </div>
                   <div className="price">
                     <span>Current Bid</span>
-                    <h5> {formData.price || 0} ETH</h5>
+                    <h5> {formData.price || 0} VET</h5>
                   </div>
                 </div>
                 <div className="card-bottom">

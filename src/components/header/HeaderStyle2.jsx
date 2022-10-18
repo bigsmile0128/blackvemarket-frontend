@@ -201,7 +201,7 @@ const HeaderStyle2 = () => {
                               Balance
                             </p>
                             <p className="w-full text-sm font-bold text-green-500">
-                              16.58 ETH
+                              16.58 VET
                             </p>
                           </div>
                         </div>

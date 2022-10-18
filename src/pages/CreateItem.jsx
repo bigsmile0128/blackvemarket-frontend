@@ -48,15 +48,6 @@ const CreateItem = () => {
     bid_expiration_date: "",
     nft: "",
   });
-  // const data = [
-  //   { id: 0, label: "Art" },
-  //   { id: 1, label: "Music" },
-  //   { id: 2, label: "Domain Names" },
-  //   { id: 3, label: "Virtual World" },
-  //   { id: 4, label: "Trading Cards" },
-  //   { id: 5, label: "Sports" },
-  //   { id: 6, label: "Utility" },
-  // ];
 
   useEffect(() => dispatch(clt_actions.getClts()), []);
 
@@ -186,7 +177,7 @@ const CreateItem = () => {
                   </div>
                   <div className="price">
                     <span>Current Bid</span>
-                    <h5> {formData.price || formData2.price || 0} ETH</h5>
+                    <h5> {formData.price || formData2.price || 0} VET</h5>
                   </div>
                 </div>
                 <div className="card-bottom">

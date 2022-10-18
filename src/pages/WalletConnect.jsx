@@ -78,8 +78,9 @@ const WalletConnect = () => {
                 Connect Your Wallet
               </h2>
               <h5 className="sub-title ct style-1 pad-400">
-                We do not own any of your personal information. If someone ever
-                asks about it in name of BlackV please report.
+                Signing into BlackV Market does not give us access to your
+                wallet, keys or crypto. BlackV Market staff will never ask you
+                for your wallet keys.
               </h5>
             </div>
             <div className="col-md-12">

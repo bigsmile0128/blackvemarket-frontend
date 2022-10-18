@@ -25,42 +25,42 @@ const ItemDetails01 = () => {
       img: img1,
       name: "Mason Woodward",
       time: "8 hours ago",
-      price: "4.89 ETH",
+      price: "4.89 VET",
       priceChange: "$12.246",
     },
     {
       img: img2,
       name: "Mason Woodward",
       time: "at 06/10/2021, 3:20 AM",
-      price: "4.89 ETH",
+      price: "4.89 VET",
       priceChange: "$12.246",
     },
     {
       img: img3,
       name: "Mason Woodward",
       time: "8 hours ago",
-      price: "4.89 ETH",
+      price: "4.89 VET",
       priceChange: "$12.246",
     },
     {
       img: img4,
       name: "Mason Woodward",
       time: "8 hours ago",
-      price: "4.89 ETH",
+      price: "4.89 VET",
       priceChange: "$12.246",
     },
     {
       img: img5,
       name: "Mason Woodward",
       time: "8 hours ago",
-      price: "4.89 ETH",
+      price: "4.89 VET",
       priceChange: "$12.246",
     },
     {
       img: img6,
       name: "Mason Woodward",
       time: "8 hours ago",
-      price: "4.89 ETH",
+      price: "4.89 VET",
       priceChange: "$12.246",
     },
   ]);
@@ -168,7 +168,7 @@ const ItemDetails01 = () => {
                       <span className="heading">Current Bid</span>
                       <div className="price">
                         <div className="price-box">
-                          <h5> 4.89 ETH</h5>
+                          <h5> 4.89 VET</h5>
                           <span>= $12.246</span>
                         </div>
                       </div>
