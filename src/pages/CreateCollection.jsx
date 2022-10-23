@@ -7,11 +7,19 @@ import "react-tabs/style/react-tabs.css";
 import img1 from "../assets/images/box-item/image-box-6.jpg";
 import { useRef } from "react";
 import * as actions from "../store/actions/createCltActions";
-// import avt from "../assets/images/avatar/avt-9.jpg";
+import { getConnex } from "../utils/getConnex";
+import * as abis from "../assets/constants/abis";
+import contracts from "../assets/contracts/status.json";
+import { NODE, NETWORK } from "../assets/constants";
+import Connex from "@vechain/connex";
 
 const CreateCollection = () => {
   const userID = useSelector((store) => store.profile.profileInfo._id);
   const dispatch = useDispatch();
+  const connex = new Connex({
+    node: NODE,
+    network: NETWORK,
+  });
 
   const [formData, setFormData] = useState({
     logoImage: "",
@@ -146,8 +154,19 @@ const CreateCollection = () => {
     setChainChannel(item.label);
   };
 
-  const onCreateCollec = () => {
-    console.log(formData);
+  const onCreateCollec = async () => {
+    const abiCreateToken = abis.ERC721Factory_ABI.find(
+      ({ name }) => name === "createToken"
+    );
+    console.log("abiCreateToken: ", abiCreateToken);
+    console.log("nftFactoryAddress: ", contracts.nftFactoryAddress);
+    const result = await connex.thor
+      .account(contracts.nftFactoryAddress)
+      .method(abiCreateToken)
+      .call(formData.name, formData.name);
+
+    console.log(result);
+
     let fd = new FormData();
     fd.append("name", formData.name);
     fd.append("logoImage", formData.logoImage);
