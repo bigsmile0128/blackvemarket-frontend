@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
@@ -7,11 +7,24 @@ import "react-tabs/style/react-tabs.css";
 import img1 from "../assets/images/box-item/image-box-6.jpg";
 import { useRef } from "react";
 import * as actions from "../store/actions/createCltActions";
-import { getConnex } from "../utils/getConnex";
 import * as abis from "../assets/constants/abis";
 import contracts from "../assets/contracts/status.json";
 import { NODE, NETWORK } from "../assets/constants";
 import Connex from "@vechain/connex";
+// import { create } from "ipfs-http-client";
+
+// const projectId = "1z7OICVZBuSn666a44zHwNeThpc";
+// const projectSecret = "4c6a9a7434b418334fbe6424f841623f";
+// const auth = `Basic ${projectId}:${projectSecret}`;
+
+// const client = create({
+//   host: "ipfs.infura.io",
+//   port: 5001,
+//   protocol: "https",
+//   headers: {
+//     authorization: auth,
+//   },
+// });
 
 const CreateCollection = () => {
   const userID = useSelector((store) => store.profile.profileInfo._id);
@@ -22,10 +35,12 @@ const CreateCollection = () => {
   });
 
   const [formData, setFormData] = useState({
-    logoImage: "",
-    coverImage: "",
+    logoImg: "",
+    featureImg: "",
+    bannerImg: "",
     name: "",
-    cltLink: "",
+    symbol: "",
+    address: "",
     description: "",
   });
   const [url, setUrl] = useState(null);
@@ -39,16 +54,15 @@ const CreateCollection = () => {
     setUrl(URL.createObjectURL(e.target.files[0]));
     setFormData({ ...formData, [e.target.name]: e.target.files[0] });
   };
-  const onFileUpload1 = (e) => {
-    console.log(e.target.files[0]);
+  const onFileUpload1 = async (e) => {
     setUrl1(URL.createObjectURL(e.target.files[0]));
     setFormData({ ...formData, [e.target.name]: e.target.files[0] });
   };
-  const onFileUpload2 = (e) => {
-    console.log(e.target.files[0]);
+  const onFileUpload2 = async (e) => {
     setUrl2(URL.createObjectURL(e.target.files[0]));
     setFormData({ ...formData, [e.target.name]: e.target.files[0] });
   };
+
   const [tags, setTags] = useState(["ether"]);
   const addTagHandler = (tag) => {
     setTags([...tags, tag]);
@@ -128,6 +142,8 @@ const CreateCollection = () => {
     { id: 3, label: "Polygon" },
   ];
 
+  const navigate = useNavigate();
+
   const [isOpen1, setOpen1] = useState(false);
   const [items1, setItem1] = useState(data1);
   const [selectedItem1, setSelectedItem1] = useState(null);
@@ -155,28 +171,30 @@ const CreateCollection = () => {
   };
 
   const onCreateCollec = async () => {
-    const abiCreateToken = abis.ERC721Factory_ABI.find(
-      ({ name }) => name === "createToken"
-    );
-    console.log("abiCreateToken: ", abiCreateToken);
-    console.log("nftFactoryAddress: ", contracts.nftFactoryAddress);
-    const result = await connex.thor
-      .account(contracts.nftFactoryAddress)
-      .method(abiCreateToken)
-      .call(formData.name, formData.name);
-
-    console.log(result);
-
     let fd = new FormData();
     fd.append("name", formData.name);
-    fd.append("logoImage", formData.logoImage);
-    fd.append("bannerImage", formData.bannerImage);
-    fd.append("url", formData.cltLink);
+    fd.append("symbol", formData.symbol);
+    fd.append("address", formData.address);
+    fd.append("logoImg", formData.logoImg);
+    fd.append("featureImg", formData.featureImg);
+    fd.append("bannerImg", formData.bannerImg);
     fd.append("description", formData.description);
     fd.append("user_id", userID);
 
     if (userID) {
-      dispatch(actions.createClt(fd));
+      await dispatch(actions.createClt(fd));
+      navigate("/collections");
+      /*const abiCreateToken = abis.ERC721Factory_ABI.find(
+        ({ name }) => name === "createToken"
+      );
+      console.log("abiCreateToken: ", abiCreateToken);
+      console.log("nftFactoryAddress: ", contracts.nftFactoryAddress);
+      const result = await connex.thor
+        .account(contracts.nftFactoryAddress)
+        .method(abiCreateToken)
+        .call(formData.name, formData.name);
+
+      console.log(result);*/
     } else {
       alert("Please Connect Wallet!");
       return false;
@@ -192,7 +210,7 @@ const CreateCollection = () => {
           <div className="row">
             <div className="col-md-12">
               <div className="page-title-heading mg-bt-12">
-                <h1 className="heading text-center">Create Collection</h1>
+                <h1 className="heading text-center">Add Collection</h1>
               </div>
               <div className="breadcrumbs style2">
                 <ul>
@@ -202,7 +220,7 @@ const CreateCollection = () => {
                   <li>
                     <Link to="#">Pages</Link>
                   </li>
-                  <li>Create Collection</li>
+                  <li>Add Collection</li>
                 </ul>
               </div>
             </div>
@@ -221,7 +239,6 @@ const CreateCollection = () => {
                       src={url ? url : img1}
                       alt="Axies"
                       className="c-img-area-2"
-                      onClick={onImageClick}
                     />
                   </div>
                 </div>
@@ -231,7 +248,7 @@ const CreateCollection = () => {
                 <div className="sc-card-product">
                   <div className="card-media">
                     <img
-                      src={url1 ? url1 : img1}
+                      src={url2 ? url2 : img1}
                       className="c-img-area-2"
                       alt="Axies"
                     />
@@ -243,7 +260,7 @@ const CreateCollection = () => {
                 <div className="sc-card-product">
                   <div className="card-media">
                     <img
-                      src={url2 ? url2 : img1}
+                      src={url1 ? url1 : img1}
                       className="c-img-area-2"
                       alt="Axies"
                     />
@@ -253,7 +270,7 @@ const CreateCollection = () => {
             </div>
             <div className="col-xl-9 col-lg-6 col-md-12 col-12">
               <div className="form-profile">
-                <h1>Create a Collection</h1>
+                <h1>Add a Collection</h1>
                 <form action="#">
                   <h4 className="title-create-item mg-t-20">Logo Image</h4>
                   <label className="uploadFile">
@@ -264,7 +281,7 @@ const CreateCollection = () => {
                       type="file"
                       className="inputfile form-control"
                       onChange={onFileUpload}
-                      name="logoImage"
+                      name="logoImg"
                     />
                   </label>
                 </form>
@@ -277,8 +294,8 @@ const CreateCollection = () => {
                     <input
                       type="file"
                       className="inputfile form-control"
-                      onChange={onFileUpload1}
-                      name="bannerImage"
+                      onChange={onFileUpload2}
+                      name="featureImg"
                     />
                   </label>
                 </form>
@@ -291,25 +308,34 @@ const CreateCollection = () => {
                     <input
                       type="file"
                       className="inputfile form-control"
-                      onChange={onFileUpload2}
-                      name="file"
+                      onChange={onFileUpload1}
+                      name="bannerImg"
                     />
                   </label>
                 </form>
+
                 <div className="flat-tabs tab-create-item">
                   <h4 className="title-create-item mg-20">Name</h4>
                   <input
                     type="text"
                     name="name"
-                    placeholder="Enter A Collection Name"
+                    placeholder="Enter a Collection Name"
                     onChange={changeValue}
                   />
 
-                  <h4 className="title-create-item mg-t-20">URL</h4>
+                  <h4 className="title-create-item mg-t-20">Symbol</h4>
                   <input
                     type="text"
-                    placeholder="Item Name"
-                    name="cltLink"
+                    name="symbol"
+                    placeholder="Enter a Collection Symbol"
+                    onChange={changeValue}
+                  />
+
+                  <h4 className="title-create-item mg-t-20">Address</h4>
+                  <input
+                    type="text"
+                    name="address"
+                    placeholder="Enter a Collection Address"
                     onChange={changeValue}
                   />
 
@@ -320,7 +346,7 @@ const CreateCollection = () => {
                     onChange={changeValue}
                   ></textarea>
 
-                  <h4 className="title-create-item mg-t-20">Category</h4>
+                  {/* <h4 className="title-create-item mg-t-20">Category</h4>
                   <p>
                     adding a category will help make your item discoverable on
                     vechain
@@ -353,8 +379,8 @@ const CreateCollection = () => {
                         ))}
                       </ul>
                     </div>
-                  </div>
-                  <h3 className="mg-t-20">Links</h3>
+                  </div> */}
+                  {/* <h3 className="mg-t-20">Links</h3>
                   <fieldset className="input-group-vertical mg-t-20">
                     <div className="form-group">
                       <label className="sr-only">url</label>
@@ -443,7 +469,7 @@ const CreateCollection = () => {
                       onAdd={addTagHandler}
                       onDelete={deleteTagHandler}
                     />
-                  </div>
+                  </div> */}
                   <button
                     className="tf-button-submit mg-t-37"
                     type="button"

@@ -4,6 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../store/actions/createItActions";
 import * as clt_actions from "../store/actions/createCltActions";
 import Connex from "@vechain/connex";
+import { NETWORK, NODE } from "../assets/constants";
+import contracts from "../assets/contracts/status.json";
+import * as abis from "../assets/constants/abis";
 import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
 import Countdown from "react-countdown";
@@ -11,11 +14,15 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import img1 from "../assets/images/box-item/image-box-6.jpg";
 import avt from "../assets/images/avatar/avt-9.jpg";
-const vendor = new Connex.Vendor("test");
 
 const CreateItem = () => {
   const dispatch = useDispatch();
   const userID = useSelector((store) => store.profile.profileInfo._id);
+
+  const connex = new Connex({
+    node: NODE,
+    network: NETWORK,
+  });
 
   const collections = useSelector((store) => store.product.collections);
   const [dropdownState, setDropdownState] = useState(false);
@@ -49,7 +56,7 @@ const CreateItem = () => {
     nft: "",
   });
 
-  useEffect(() => dispatch(clt_actions.getClts()), []);
+  // useEffect(() => dispatch(clt_actions.getClts()), []);
 
   const onFileUpload = (e) => {
     setUrl(URL.createObjectURL(e.target.files[0]));
@@ -78,7 +85,6 @@ const CreateItem = () => {
   };
 
   const createbutton1 = () => {
-    console.log("formData:", formData);
     let fd = new FormData();
     fd.append("price", formData.price);
     fd.append("title", formData.title);
@@ -88,9 +94,22 @@ const CreateItem = () => {
     fd.append("abstract", formData.abstract);
     fd.append("assets", formData.nft);
     fd.append("user_id", userID);
-    console.log(fd);
+
     if (userID) {
       dispatch(actions.createFixedItem(fd));
+
+      const abiCreateNFtToken = abis.ERC721Nft_ABI.find(
+        ({ name }) => name === "createNFtToken"
+      );
+
+      console.log(abiCreateNFtToken);
+
+      const result = connex.thor
+        .account(contracts.nftAddress)
+        .method(abiCreateNFtToken)
+        .call("Monkey");
+
+      console.log("formData:", result);
     } else {
       alert("Please Connect Wallet!");
       return false;

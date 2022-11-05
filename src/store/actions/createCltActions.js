@@ -39,7 +39,7 @@ export const getClts = () => {
     dispatch(itemsAreLoading());
     console.log("222");
     axios
-      .get(`${BASE_URL}/products/get-collections`)
+      .get(`${BASE_URL}/collections/get-collections`)
       .then((res) => {
         console.log("333");
         console.log("Response: ", res.data);
@@ -48,13 +48,14 @@ export const getClts = () => {
       .catch(() => dispatch(itemsHaveError(true)));
   };
 };
+
 export const createClt = (cltInfo) => {
   return (dispatch) => {
     console.log("111");
     dispatch(itemsAreLoading());
     console.log("222");
     axios
-      .post(`${BASE_URL}/products/create-collection`, cltInfo)
+      .post(`${BASE_URL}/collections/create-collection`, cltInfo)
       .then((res) => {
         console.log("333");
 

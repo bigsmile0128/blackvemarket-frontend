@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useReducer } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../../store/actions/profileActions";

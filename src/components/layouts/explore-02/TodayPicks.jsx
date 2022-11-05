@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
+import Connex from "@vechain/connex";
+import * as abis from "../../../assets/constants/abis";
+import { NODE, NETWORK } from "../../../assets/constants";
 
 import img1 from "../../../assets/images/box-item/card-item-3.jpg";
 import imga1 from "../../../assets/images/avatar/avt-1.jpg";
@@ -29,6 +32,11 @@ import imga8 from "../../../assets/images/avatar/avt-3.jpg";
 import imgCollection8 from "../../../assets/images/avatar/avt-18.jpg";
 
 const TodayPicks = () => {
+  const connex = new Connex({
+    node: NODE,
+    network: NETWORK,
+  });
+
   const [dataTab] = useState([
     {
       id: 1,
@@ -508,6 +516,17 @@ const TodayPicks = () => {
       ],
     },
   ]);
+
+  useEffect(() => {
+    const abiTokenURI = abis.VeBudz_ABI.find(({name}) => name === "tokenURI");
+
+    const result = connex.thor
+      .account(abis.VeBudz_Address)
+      .method(abiTokenURI)
+      .call(1);
+
+    console.log(result);
+  }, []);
 
   const [visible, setVisible] = useState(8);
   const showMoreItems = () => {

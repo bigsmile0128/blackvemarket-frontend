@@ -816,6 +816,8 @@
   box-shadow: unset;
   margin-bottom: 0;
   background: transparent;
+  width: 100px;
+  min-width: 100px;
 }
 
 .sc-author-box.style-2 .author-avatar {
@@ -1470,7 +1472,7 @@
 
 .sc-card-collection.style-2 .media-images-collection,
 .sc-card-collection.style-2 .media-images-collection .top-img {
-  margin-top: 17px;
+  margin-bottom: 17px;
   width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1483,6 +1485,7 @@
 .sc-card-collection.style-2 .media-images-collection img {
   border-radius: 10px;
   object-fit: cover;
+  height: 250px;
 }
 
 .sc-card-collection.style-2 .media-images-collection .box-left {
