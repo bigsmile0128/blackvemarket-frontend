@@ -70,6 +70,11 @@ const Header = () => {
 
   let walletButton;
   let signer = window.localStorage.getItem("vechain_signer");
+
+  useEffect(() => {
+    dispatch(actions.fetchProfile(signer));
+  }, [signer])
+
   if (signer) {
     const firststr = signer.slice(0, 6);
     const laststr = signer.slice(-4);

@@ -9,12 +9,10 @@ import { BACKEND_URL } from "../../assets/constants";
 const Collections = () => {
   const collections = useSelector((store) => store.product.collections);
   const dispatch = useDispatch();
-  console.log("Here is render");
   const data = collections;
   const [visible, setVisible] = useState(8);
 
   useEffect(() => {
-    console.log("Here is useEffect");
     dispatch(clt_actions.getClts());
   }, []);
 
@@ -71,7 +69,7 @@ const PopularCollectionItem = (props) => (
       <div className="swiper-slide">
         <div className="slider-item">
           <div className="sc-card-collection style-2 home2 fill-height-or-more">
-            <Link to="/authors-02">
+            <Link to={`/collection/${props.item.symbol}`}>
               <div className="media-images-collection">
                 <img src={BACKEND_URL + props.item.featureImg} />
               </div>
@@ -83,14 +81,14 @@ const PopularCollectionItem = (props) => (
                     <img
                       src={BACKEND_URL + props.item.logoImg}
                       alt=""
-                      className="avatar"
+                      className="avatar collection-avatar"
                     />
-                    <div className="badge">
+                    <div className="badge collection-badge">
                       <i className="ripple"></i>
                     </div>
                   </div>
                 </div>
-                <div className="content">
+                <div className="content collection-title">
                   <h4>
                     <Link to="/authors-01">
                       {props.item.name.length > 25

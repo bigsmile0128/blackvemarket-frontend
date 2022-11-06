@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import Header from "../components/header/Header";
@@ -31,8 +32,12 @@ import imgCollection7 from "../assets/images/avatar/avt-18.jpg";
 import img8 from "../assets/images/box-item/image-box-11.jpg";
 import imga8 from "../assets/images/avatar/avt-3.jpg";
 import imgCollection8 from "../assets/images/avatar/avt-18.jpg";
+import { BACKEND_URL } from "../assets/constants";
 
 const Authors02 = () => {
+  const dispatch = useDispatch();
+  const userInfo = useSelector((store) => store.profile.profileInfo);
+
   const [menuTab] = useState([
     {
       class: "active",
@@ -498,13 +503,13 @@ const Authors02 = () => {
 
   const [dropdownOptionState, setDropdownOptionState] = useState(false);
   const [optionItem, setOptionItem] = useState("");
+  const [visible, setVisible] = useState(8);
 
   const options = [
     { id: 0, label: "Edit Profile", link: "/edit-profile" },
     { id: 1, label: "Follow", link: "/follow" },
   ];
 
-  const [visible, setVisible] = useState(8);
   const showMoreItems = () => {
     setVisible((prevValue) => prevValue + 4);
   };
@@ -540,21 +545,21 @@ const Authors02 = () => {
           <div className="flat-tabs tab-authors">
             <div className="author-profile flex">
               <div className="feature-profile">
-                <img src={avt} alt="Axies" className="avatar" />
+                <img
+                  src={userInfo.avatar ? BACKEND_URL + userInfo.avatar : avt}
+                  alt="Axies"
+                  className="avatar"
+                />
               </div>
               <div className="infor-profile">
                 <span>Author Profile</span>
-                <h2 className="title">Trista Francis</h2>
-                <p className="content">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Laborum obcaecati dignissimos quae quo ad iste ipsum officiis
-                  deleniti asperiores sit.
-                </p>
+                <h2 className="title">{userInfo.name || ""}</h2>
+                <p className="content">{userInfo.bio || ""}</p>
                 <form>
                   <input
                     type="text"
                     className="inputcopy"
-                    defaultValue="DdzFFzCqrhshMSxABCdfrge"
+                    value={userInfo.address}
                     readOnly
                   />
                   <button type="button" className="btn-copycode">

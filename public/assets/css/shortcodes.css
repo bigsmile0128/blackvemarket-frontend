@@ -2988,7 +2988,8 @@ section.today-picks {
 -------------------------------------------------------------- */
 
 .tf-section.sc-explore-1 {
-  padding: 80px 0 80px;
+  padding: 0;
+  padding-bottom: 80px;
 }
 
 .mainslider.home2 .wrap-heading {
@@ -3242,10 +3243,10 @@ section.today-picks {
   min-width: 145px;
 }
 
-/* .dropdown:hover ul {
+.dropdown:hover ul {
   opacity: 1;
   transform: translateY(0);
-} */
+}
 
 /* custom start part */
 .ulediter {

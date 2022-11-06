@@ -1,89 +1,50 @@
-const widgetSidebarData = [{
+const widgetSidebarData = [
+    {
         id: 1,
         title: "Status",
-        content: [{
-                field: 'Buy Now',
-                checked: 'checked'
+        content: [
+            {
+                field: "Buy Now",
+                checked: "checked",
             },
             {
-                field: 'On Auction'
+                field: "On Auction",
             },
             {
-                field: 'Not for sale'
+                field: "Not for sale",
             },
-        ]
+        ],
     },
     {
         id: 2,
-        title: "Categories",
-        content: [{
-                field: 'Art'
-            },
-            {
-                field: 'Music'
-            },
-            {
-                field: 'Collectibles',
-            },
-            {
-                field: 'Cartoon'
-            },
-        ]
-    },
-    {
-        id: 3,
-        title: "Currency",
-        content: [{
-                field: 'VeChain'
-            },
-            {
-                field: 'SafeHaven'
-            },
-            {
-                field: 'Black V Coin'
-            },
-            {
-                field: 'UNION'
-            },
-            {
-                field: 'VeStacks'
-            },
-        ]
-    },
-    {
-        id: 4,
         title: "Collections",
-        content: [{
-                field: 'VeThugs'
+        content: [
+            {
+                field: "VeThugs",
             },
             {
-                field: 'VeShawties'
+                field: "VeShawties",
             },
             {
-                field: 'Vlippos'
+                field: "Vlippos",
             },
             {
-                field: 'VeBudz'
+                field: "VeBudz",
             },
             {
-                field: 'A.N.T.I. Nerd Tablets'
+                field: "A.N.T.I. Nerd Tablets",
             },
             {
-                field: 'Vemons'
+                field: "Vemons",
             },
             {
-                field: 'Vumanoids'
+                field: "Vumanoids",
             },
             {
-                field: 'Union Membership'
+                field: "Union Membership",
             },
-        ]
+        ],
     },
-    {
-        id: 5,
-        title: "Traits",
-        content: []
-    },
-]
+];
 
 export default widgetSidebarData;

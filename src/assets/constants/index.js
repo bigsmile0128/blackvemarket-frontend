@@ -1,7 +1,10 @@
 //==========test heroku==========//
 
-const NODE = "https://testnet.vecha.in/";
-const NETWORK = "test";
+// const NODE = "https://testnet.vecha.in/";
+// const NETWORK = "test";
+
+const NODE = "https://mainnet.vecha.in/";
+const NETWORK = "main";
 
 const BASE_URL = "http://localhost:9999/api/v1";
 const BACKEND_URL = "http://localhost:9999/upload/";

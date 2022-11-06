@@ -10,7 +10,7 @@ export function profileReducer(state = initialState, action) {
     case "ITEMS_HAVE_ERROR":
       return { ...state, failure: true };
     case "ITEMS_HAVE_SUCCESS":
-      return { ...state, success: true, profileInfo: action.payload };
+      return { ...state, success: true, profileInfo: action.payload.user };
     case "ITEMS_HAVE_LOADING":
       return { ...state, loading: true };
     case "WALLET_CONNECT_SUCCESS":

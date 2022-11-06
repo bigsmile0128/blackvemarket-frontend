@@ -3609,3 +3609,79 @@ code {
   border-radius: 10%;
   padding-left: 15px;
 }
+
+.media-images-collection img {
+  width: 100%;
+}
+
+.collection-avatar {
+  position: fixed;
+  bottom: 60px;
+  left: 40px;
+  outline: 4px solid var(--primary-color);
+}
+
+.author .sc-author-box .author-avatar .collection-badge {
+  position: fixed;
+  bottom: 55px;
+  left: 95px;
+}
+
+.sc-card-collection .card-bottom .author .collection-title h4 {
+  margin: 0px;
+  font-size: 14px;
+}
+.page-title-description {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  color: #8a8aa0;
+  font-size: 18px;
+  line-height: 28px;
+}
+.page-title-description span {
+  max-width: 600px;
+  text-align: center;
+}
+
+.collection-overlay {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.collection-overlay img{
+  height: 250px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.collection-title-page.inner {
+  background: var(--bg-section) !important;
+  padding-top: 80px;
+}
+
+.collection-overlay img.collection-logo {
+  position: absolute;
+  bottom: -60px;
+  left: 60px;
+  width: 120px;
+  height: 120px;
+  border-radius: 10px;
+  outline: 3px solid #fff;
+}
+
+.collection-header {
+  font-size: 18px;
+  display: flex;
+}
+
+.collection-header span {
+  margin: auto;
+}
+
+.sc-card-product .card-media img {
+  height: 320px;
+  object-fit: cover;
+  min-height: 320px;
+}

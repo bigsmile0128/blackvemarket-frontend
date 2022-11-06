@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
 import avt from "../assets/images/avatar/avata_profile.jpg";
@@ -11,23 +11,26 @@ import * as actions from "../store/actions/profileActions";
 
 const EditProfile = () => {
   const profileInfo = useSelector((store) => store.profile.profileInfo);
+  const authentication = useSelector((store) => store.profile.isAuthenticated);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [selectedAvatar, setSelectedAvatar] = useState(
-    BACKEND_URL + profileInfo.user_avatar || { avt }
+    BACKEND_URL + profileInfo.avatar || { avt }
   );
   const [selectedCoverImg, setSelectedCoverImg] = useState(
-    BACKEND_URL + profileInfo.user_coverImg || { bg1 }
+    BACKEND_URL + profileInfo.coverImg || { bg1 }
   );
   const [formData, setFormData] = useState({
-    name: profileInfo.user_name || "",
-    customURL: profileInfo.user_customURL || "",
-    email: profileInfo.user_email || "",
-    bio: profileInfo.user_bio || "",
-    facebook: profileInfo.user_facebook || "",
-    twitter: profileInfo.user_twitter || "",
-    discord: profileInfo.user_discord || "",
-    coverImg: profileInfo.user_coverImg || {},
-    avatar: profileInfo.user_avatar || {},
+    name: profileInfo.name || "",
+    url: profileInfo.url || "",
+    email: profileInfo.email || "",
+    bio: profileInfo.bio || "",
+    facebook: profileInfo.facebook || "",
+    twitter: profileInfo.twitter || "",
+    discord: profileInfo.discord || "",
+    coverImg: profileInfo.coverImg || {},
+    avatar: profileInfo.avatar || {},
   });
 
   const onInputChange = (e) => {
@@ -66,10 +69,9 @@ const EditProfile = () => {
   };
 
   const uploadProfile = () => {
-    console.log("formData: ", formData);
     let fd = new FormData();
     fd.append("name", formData.name);
-    fd.append("customURL", formData.customURL);
+    fd.append("url", formData.url);
     fd.append("email", formData.email);
     fd.append("bio", formData.bio);
     fd.append("facebook", formData.facebook);
@@ -78,8 +80,14 @@ const EditProfile = () => {
     fd.append("avatar", formData.avatar);
     fd.append("coverImg", formData.coverImg);
     fd.append("walletaddr", window.localStorage.getItem("vechain_signer"));
-    console.log(fd);
-    dispatch(actions.editProfile(fd));
+
+    if (authentication) {
+      dispatch(actions.editProfile(fd));
+      navigate("/authors-02");
+    } else {
+      alert("Please Connect Wallet!");
+      return false;
+    }
   };
 
   return (
@@ -176,8 +184,8 @@ const EditProfile = () => {
                       <input
                         type="text"
                         placeholder="Axies.Trista Francis.com/"
-                        name="customURL"
-                        value={formData.customURL || ""}
+                        name="url"
+                        value={formData.url || ""}
                         onChange={onInputChange}
                         required
                       />

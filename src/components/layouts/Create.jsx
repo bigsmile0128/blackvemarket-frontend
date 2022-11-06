@@ -16,11 +16,11 @@ const Create = () => {
       colorbg: "icon-color1",
     },
     {
-      title: "Create Your Collection",
+      title: "Add Your Collection",
       description:
         "Setting up your NFT collection and creating NFTs on NFTs is easy! This guide shows you how to set up your first collection",
       icon: icon2,
-      link: "create-collection",
+      link: "add-collection",
       colorbg: "icon-color2",
     },
     {

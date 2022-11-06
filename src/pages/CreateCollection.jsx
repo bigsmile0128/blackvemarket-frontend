@@ -11,6 +11,7 @@ import * as abis from "../assets/constants/abis";
 import contracts from "../assets/contracts/status.json";
 import { NODE, NETWORK } from "../assets/constants";
 import Connex from "@vechain/connex";
+import { uriToHttp } from "../utils/utils";
 // import { create } from "ipfs-http-client";
 
 // const projectId = "1z7OICVZBuSn666a44zHwNeThpc";
@@ -33,6 +34,10 @@ const CreateCollection = () => {
     node: NODE,
     network: NETWORK,
   });
+
+  const [processed, setProcessed] = useState(0);
+  const [totalSupply, setTotalSupply] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     logoImg: "",
@@ -170,6 +175,47 @@ const CreateCollection = () => {
     setChainChannel(item.label);
   };
 
+  const getCollectionTotalSupply = async (address) => {
+    const abiTotalSupply = abis.ERC721Nft_ABI.find(({name}) => name === "totalSupply");
+
+    const result = await connex.thor
+        .account(address)
+        .method(abiTotalSupply)
+        .call();
+
+    return result.decoded[0];
+  }
+
+  const getNFTMetaData = async (address, tokenId) => {
+    const abiTokenURI = abis.Warbands_ABI.find(({name}) => name === "tokenURI");
+
+    const result = await connex.thor
+        .account(address)
+        .method(abiTokenURI)
+        .call(tokenId);
+
+    return result.decoded[0];
+  }
+
+  const fetchNFTItem = async (meta_uri) => {
+    const urls = uriToHttp(meta_uri);
+    for (var i = 0; i < urls.length; i++) {
+      let response;
+      try {
+          response = await fetch(urls[i]);
+          const json = await response.text();
+          return json;
+      } catch (err) {
+          console.error("Failed to fetch metadata", meta_uri, err);
+      }
+    }
+    return {};
+  }
+
+  const sleep = async (milliseconds) => {
+    await new Promise(resolve => setTimeout(resolve, milliseconds));
+  }
+
   const onCreateCollec = async () => {
     let fd = new FormData();
     fd.append("name", formData.name);
@@ -183,18 +229,19 @@ const CreateCollection = () => {
 
     if (userID) {
       await dispatch(actions.createClt(fd));
-      navigate("/collections");
-      /*const abiCreateToken = abis.ERC721Factory_ABI.find(
-        ({ name }) => name === "createToken"
-      );
-      console.log("abiCreateToken: ", abiCreateToken);
-      console.log("nftFactoryAddress: ", contracts.nftFactoryAddress);
-      const result = await connex.thor
-        .account(contracts.nftFactoryAddress)
-        .method(abiCreateToken)
-        .call(formData.name, formData.name);
-
-      console.log(result);*/
+      const col_name = formData.name.replaceAll(" ", "_").toLowerCase();
+      const totalSupply = await getCollectionTotalSupply(formData.address);
+      setTotalSupply(totalSupply);
+      setLoading(true);
+      for ( var i = 1; i <= totalSupply; i ++ ) {
+        //await sleep(1000);
+        const meta_uri = await getNFTMetaData(formData.address, i);
+        // const meta_json = await fetchNFTItem(meta_uri);
+        // console.log(meta_json)
+        await dispatch(actions.addNFT(col_name, meta_uri, i));
+        setProcessed(i);
+      }
+      setLoading(false);
     } else {
       alert("Please Connect Wallet!");
       return false;
@@ -470,13 +517,20 @@ const CreateCollection = () => {
                       onDelete={deleteTagHandler}
                     />
                   </div> */}
-                  <button
-                    className="tf-button-submit mg-t-37"
-                    type="button"
-                    onClick={() => onCreateCollec()}
-                  >
-                    Create
-                  </button>
+                  {!loading && 
+                    <button
+                      className="tf-button-submit mg-t-37"
+                      type="button"
+                      onClick={() => onCreateCollec()}
+                    >
+                      Create
+                    </button>
+                  }
+                  {loading && 
+                    <span style={{marginLeft: '20px', fontSize: '18px'}}>
+                      Processing {processed} / {totalSupply}
+                    </span>
+                  }
                 </div>
               </div>
             </div>
