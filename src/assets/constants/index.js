@@ -6,8 +6,8 @@
 const NODE = "https://mainnet.vecha.in/";
 const NETWORK = "main";
 
-const BASE_URL = "http://localhost:9999/api/v1";
-const BACKEND_URL = "http://localhost:9999/upload/";
+const BASE_URL = "https://blackvemarket-backend.herokuapp.com/api/v1";
+const BACKEND_URL = "https://blackvemarket-backend.herokuapp.com/upload/";
 
 //==========main heroku==========//
 
