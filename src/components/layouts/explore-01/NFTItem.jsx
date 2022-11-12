@@ -5,7 +5,7 @@ const NFTItem = (props) => (
   <div className="fl-item col-xl-3 col-lg-4 col-md-6 col-sm-6">
     <div className="sc-card-product">
       <div className="card-media">
-        <Link to={`/item-details/${props.col_name}/${props.item.token_id}`}>
+        <Link to={`/collection/${props.col_name}/${props.item.token_id}`}>
           <img src={uriToHttp(props.item.image)} alt="axies" />
         </Link>
         <Link to="/login" className="wishlist-button heart">
@@ -14,7 +14,7 @@ const NFTItem = (props) => (
       </div>
       <div className="card-title">
         <h5 className="style2">
-          <Link to={`item-details/${props.col_name}/${props.item.token_id}`}>
+          <Link to={`/collection/${props.col_name}/${props.item.token_id}`}>
             {props.item.name}
           </Link>
         </h5>

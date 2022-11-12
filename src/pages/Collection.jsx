@@ -4,14 +4,14 @@ import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
 import TodayPicks from "../components/layouts/explore-01/TodayPicks";
 import todayPickData from "../assets/fake-data/data-today-pick";
-import * as actions from "../store/actions/productActions";
+import * as actions from "../store/actions/collectionActions";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BACKEND_URL } from "../assets/constants";
 
 const Collection = () => {
   const { symbol } = useParams();
-  const collection = useSelector((store) => store.product.collection);
+  const collection = useSelector((store) => store.collections.collection);
   const dispatch = useDispatch();
 
   useEffect(() => {

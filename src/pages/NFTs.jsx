@@ -4,14 +4,14 @@ import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
 import Explore from "../components/layouts/explore-04/Explore";
 import widgetSidebarData from "../assets/fake-data/data-widget-sidebar";
-import * as actions from "../store/actions/productActions";
+import * as actions from "../store/actions/collectionActions";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const NFTs = () => {
   const [sidebarData, setSidebarData] = useState([]);
-  const collections = useSelector((store) => store.product.collections);
+  const collections = useSelector((store) => store.collections.collections);
   const dispatch = useDispatch();
   const [colNames, setColNames] = useState([])
 

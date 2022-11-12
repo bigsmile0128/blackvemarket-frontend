@@ -25,7 +25,7 @@ const routes = [
   { path: "/", component: <Home01 /> },
   { path: "/nfts", component: <NFTs /> },
   { path: "/live-auctions", component: <LiveAuctions /> },
-  { path: "/item-details/:col_name/:token_id", component: <ItemDetails01 /> },
+  { path: "/collection/:col_name/:token_id", component: <ItemDetails01 /> },
   { path: "/item-details-02", component: <ItemDetails02 /> },
   { path: "/activity-01", component: <Activity01 /> },
   { path: "/blog", component: <Blog /> },

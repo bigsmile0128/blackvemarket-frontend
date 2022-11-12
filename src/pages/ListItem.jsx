@@ -10,7 +10,7 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import img1 from "../assets/images/box-item/image-box-6.jpg";
 import avt from "../assets/images/avatar/avt-9.jpg";
-const vendor = new Connex.Vendor("test");
+const vendor = new Connex.Vendor("main");
 
 const ListItem = () => {
   const dispatch = useDispatch();

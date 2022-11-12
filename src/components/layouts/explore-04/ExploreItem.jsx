@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import * as actions from "../../../store/actions/productActions";
+import * as actions from "../../../store/actions/collectionActions";
 
 const ExploreItem = (props) => {
   const col_names = props.colName;

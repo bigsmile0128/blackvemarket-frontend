@@ -10,6 +10,7 @@ import logodark from "../../assets/images/logo/logo.png";
 import logodark2x from "../../assets/images/logo/logo.png";
 import imgsun from "../../assets/images/icon/sun.png";
 import avt from "../../assets/images/avatar/avt-2.jpg";
+import { sliceAddress } from "../../utils/utils";
 
 const Header = () => {
   const userInfo = useSelector((store) => store.profile.profileInfo);
@@ -76,13 +77,10 @@ const Header = () => {
   }, [signer])
 
   if (signer) {
-    const firststr = signer.slice(0, 6);
-    const laststr = signer.slice(-4);
-    const walletaddr = firststr.concat("...", laststr);
     walletButton = (
       <>
         <span className="header-wallet-style" onClick={showLogoutToggle}>
-          {walletaddr}
+          {sliceAddress(signer)}
         </span>
         <div className="disconnect-wallet" ref={logoutToggle}>
           <button

@@ -3,6 +3,7 @@ import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
 import LiveAuction from "../components/layouts/LiveAuction";
 import PlaceBids from "../components/layouts/auctions/PlaceBids";
+import CreateListing from "../components/layouts/auctions/CreateListing";
 import { Link, useParams } from "react-router-dom";
 import Countdown from "react-countdown";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,14 +18,22 @@ import img5 from "../assets/images/avatar/avt-7.jpg";
 import img6 from "../assets/images/avatar/avt-8.jpg";
 import img7 from "../assets/images/avatar/avt-2.jpg";
 import imgdetail1 from "../assets/images/box-item/images-item-details.jpg";
-import * as actions from "../store/actions/productActions";
-import { uriToHttp, uriToImage } from "../utils/utils";
+import * as actions from "../store/actions/collectionActions";
+import { uriToHttp, uriToImage, sliceAddress } from "../utils/utils";
+import { NODE, NETWORK } from "../assets/constants";
+import Connex from "@vechain/connex";
+import * as abis from "../assets/constants/abis";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const ItemDetails01 = () => {
   const { col_name, token_id } = useParams();
-  const dispatch = useDispatch();
   const [show, setShow] = useState(false);
+  const [isListing, setIsListing] = useState(false);
   const [itemDetails, setItemDetails] = useState(null);
+  const [owner, setOwner] = useState();
+  const [collection, setCollection] = useState(null);
+  const signer = window.localStorage.getItem("vechain_signer");
 
   const [dataHistory] = useState([
     {
@@ -71,149 +80,178 @@ const ItemDetails01 = () => {
     },
   ]);
 
-  useEffect(async () => {
-    setItemDetails(await actions.getItemDetails(col_name, token_id));
-  }, []);
+  const connex = new Connex({
+    node: NODE,
+    network: NETWORK,
+  });
+
+  useEffect(() => {
+    const fetchItemDetails = async() => {
+      const resp = await actions.getItemDetails(col_name, token_id);
+      setItemDetails(resp.details);
+      setCollection(resp.collection);
+      setOwner(await getTokenOwner(resp.collection.address, token_id));
+    }
+    if ( col_name && token_id ) {
+      fetchItemDetails();
+    }
+  }, [col_name, token_id]);
 
   const onHandlePlace = () => {
     setShow(true);
   };
 
+  const onHandleListing = () => {
+    setIsListing(true);
+  }
+  
+  const getTokenOwner = async (address, tokenId) => {
+    const abiTokenURI = abis.ERC721Nft_ABI.find(({name}) => name === "ownerOf");
+
+    const result = await connex.thor
+        .account(address)
+        .method(abiTokenURI)
+        .call(tokenId);
+
+    return result.decoded[0];
+  }
+
   return (
-    <div className="item-details">
-      <Header />
-      <section className="flat-title-page inner">
-        <div className="overlay"></div>
-        <div className="themesflat-container">
-          <div className="row">
-            <div className="col-md-12">
-              <div className="page-title-heading mg-bt-12">
-                <h1 className="heading text-center">Item Details 1</h1>
-              </div>
-              <div className="breadcrumbs style2">
-                <ul>
-                  <li>
-                    <Link to="/">Home</Link>
-                  </li>
-                  <li>
-                    <Link to="#">Explore</Link>
-                  </li>
-                  <li>Item Details 1</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <div className="tf-section tf-item-details">
-        <div className="themesflat-container">
-          <div className="row">
-            <div className="col-xl-6 col-md-12">
-              <div className="content-left">
-                <div className="media">
-                  {itemDetails && (
-                    <img
-                      src={uriToImage(itemDetails.image)}
-                      style={{ width: "100%" }}
-                      alt="Axies"
-                    />
-                  )}
+    itemDetails && collection && (
+      <div className="item-details">
+        <ToastContainer />
+        <Header />
+        <div className="tf-section tf-item-details">
+          <div className="themesflat-container" style={{marginTop: '3rem'}}>
+            <div className="row">
+              <div className="col-xl-6 col-md-12">
+                <div className="content-left">
+                  <div className="media">
+                    {itemDetails && (
+                      <img
+                        src={uriToImage(itemDetails.image)}
+                        style={{ width: "100%" }}
+                        alt="Axies"
+                      />
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="col-xl-6 col-md-12">
-              <div className="content-right">
-                <div className="sc-item-details">
-                  <h2 className="style2"> {itemDetails?.name} </h2>
-                  <div className="meta-item">
-                    <div className="left">
-                      <span className="viewed eye">225</span>
-                      <span
-                        to="/login"
-                        className="liked heart wishlist-button mg-l-8"
-                      >
-                        <span className="number-like">100</span>
-                      </span>
-                    </div>
-                    <div className="right">
-                      <Link to="#" className="share"></Link>
-                      <Link to="#" className="option"></Link>
-                    </div>
-                  </div>
-                  <div className="client-infor sc-card-product">
-                    <div className="meta-info">
-                      <div className="author">
-                        <div className="avatar">
-                          <img src={img6} alt="Axies" />
-                        </div>
-                        <div className="info">
-                          <span>Owned By</span>
-                          <h6>
-                            {" "}
-                            <Link to="/author-02">Ralph Garraway</Link>{" "}
-                          </h6>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="meta-info">
-                      <div className="author">
-                        <div className="avatar">
-                          <img src={img7} alt="Axies" />
-                        </div>
-                        <div className="info">
-                          <span>Create By</span>
-                          <h6>
-                            {" "}
-                            <Link to="/author-02">Freddie Carpenter</Link>{" "}
-                          </h6>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <p>{itemDetails?.description}</p>
-                  <div className="meta-item-details style2">
-                    <div className="item meta-price">
-                      <span className="heading">Current Bid</span>
-                      <div className="price">
-                        <div className="price-box">
-                          <h5> 4.89 VET</h5>
-                          <span>= $12.246</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="item count-down">
-                      <span className="heading style-2">Countdown</span>
-                      <Countdown date={Date.now() + 500000000}>
-                        <span>You are good to go!</span>
-                      </Countdown>
-                    </div>
-                  </div>
-                  <Link
-                    to="#"
-                    onClick={onHandlePlace}
-                    className="sc-button loadmore style bag fl-button pri-3"
-                  >
-                    <span>Place a bid</span>
-                  </Link>
-                  <div className="flat-tabs themesflat-tabs">
-                    <Tabs>
-                      <TabList>
-                        <Tab>Bid History</Tab>
-                        <Tab>Info</Tab>
-                        <Tab>Provenance</Tab>
-                      </TabList>
+              <div className="col-xl-6 col-md-12">
+                <div className="content-right">
+                  <div className="sc-item-details">
+                    <h2 className="style2"> {itemDetails?.name} </h2>
+                    <p className="content-description">{itemDetails?.description}</p>
 
-                      <TabPanel>
-                        <ul className="bid-history-list">
-                          {dataHistory.map((item, index) => (
-                            <li key={index} item={item}>
+                    <div className="sc-card-detail">
+                      <div className="content-row-item"><span>Name</span></div>
+                      <div className="content-row-detail">{itemDetails.name}</div>
+                    </div>
+                    <div className="sc-card-detail">
+                      <div className="content-row-item"><span>Token ID</span></div>
+                      <div className="content-row-detail">{itemDetails.token_id}</div>
+                    </div>
+                    <div className="sc-card-detail">
+                      <div className="content-row-item"><span>Token Owner</span></div>
+                      <div className="content-row-detail">{owner && sliceAddress(owner)}</div>
+                    </div>
+                    <div className="sc-card-detail">
+                      <div className="content-row-item"><span>Collection Address</span></div>
+                      <div className="content-row-detail">{collection.address && sliceAddress(collection.address)}</div>
+                    </div>
+
+                    <div className="meta-item-details style2">
+                      <div className="item meta-price">
+                        <span className="heading">Current Bid</span>
+                        <div className="price">
+                          <div className="price-box">
+                            <h5> 4.89 VET</h5>
+                            <span>= $12.246</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="item count-down">
+                        <span className="heading style-2">Countdown</span>
+                        <Countdown date={Date.now() + 500000000}>
+                          <span>You are good to go!</span>
+                        </Countdown>
+                      </div>
+                    </div>
+                    {owner === signer ?
+                    
+                      <Link
+                        to="#"
+                        onClick={onHandleListing}
+                        className="sc-button loadmore style bag fl-button pri-3"
+                      >
+                        <span>Create Listing</span>
+                      </Link>
+                    :
+                      <Link
+                        to="#"
+                        onClick={onHandlePlace}
+                        className="sc-button loadmore style bag fl-button pri-3"
+                      >
+                        <span>Place a bid</span>
+                      </Link>
+                    }
+                    <div className="flat-tabs themesflat-tabs">
+                      <Tabs>
+                        <TabList>
+                          <Tab>Bid History</Tab>
+                          <Tab>Info</Tab>
+                          <Tab>Provenance</Tab>
+                        </TabList>
+
+                        <TabPanel>
+                          <ul className="bid-history-list">
+                            {dataHistory.map((item, index) => (
+                              <li key={index} item={item}>
+                                <div className="content">
+                                  <div className="client">
+                                    <div className="sc-author-box style-2">
+                                      <div className="author-avatar">
+                                        <Link to="#">
+                                          <img
+                                            src={item.img}
+                                            alt="Axies"
+                                            className="avatar"
+                                          />
+                                        </Link>
+                                        <div className="badge"></div>
+                                      </div>
+                                      <div className="author-infor">
+                                        <div className="name">
+                                          <h6>
+                                            <Link to="/author-02">
+                                              {item.name}{" "}
+                                            </Link>
+                                          </h6>{" "}
+                                          <span> place a bid</span>
+                                        </div>
+                                        <span className="time">{item.time}</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="price">
+                                    <h5>{item.price}</h5>
+                                    <span>= {item.priceChange}</span>
+                                  </div>
+                                </div>
+                              </li>
+                            ))}
+                          </ul>
+                        </TabPanel>
+                        <TabPanel>
+                          <ul className="bid-history-list">
+                            <li>
                               <div className="content">
                                 <div className="client">
                                   <div className="sc-author-box style-2">
                                     <div className="author-avatar">
                                       <Link to="#">
                                         <img
-                                          src={item.img}
+                                          src={img1}
                                           alt="Axies"
                                           className="avatar"
                                         />
@@ -223,89 +261,53 @@ const ItemDetails01 = () => {
                                     <div className="author-infor">
                                       <div className="name">
                                         <h6>
+                                          {" "}
                                           <Link to="/author-02">
-                                            {item.name}{" "}
+                                            Mason Woodward{" "}
                                           </Link>
                                         </h6>{" "}
                                         <span> place a bid</span>
                                       </div>
-                                      <span className="time">{item.time}</span>
+                                      <span className="time">8 hours ago</span>
                                     </div>
                                   </div>
-                                </div>
-                                <div className="price">
-                                  <h5>{item.price}</h5>
-                                  <span>= {item.priceChange}</span>
                                 </div>
                               </div>
                             </li>
-                          ))}
-                        </ul>
-                      </TabPanel>
-                      <TabPanel>
-                        <ul className="bid-history-list">
-                          <li>
-                            <div className="content">
-                              <div className="client">
-                                <div className="sc-author-box style-2">
-                                  <div className="author-avatar">
-                                    <Link to="#">
-                                      <img
-                                        src={img1}
-                                        alt="Axies"
-                                        className="avatar"
-                                      />
-                                    </Link>
-                                    <div className="badge"></div>
-                                  </div>
-                                  <div className="author-infor">
-                                    <div className="name">
-                                      <h6>
-                                        {" "}
-                                        <Link to="/author-02">
-                                          Mason Woodward{" "}
-                                        </Link>
-                                      </h6>{" "}
-                                      <span> place a bid</span>
-                                    </div>
-                                    <span className="time">8 hours ago</span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </li>
-                        </ul>
-                      </TabPanel>
-                      <TabPanel>
-                        <div className="provenance">
-                          <p>
-                            Lorem Ipsum is simply dummy text of the printing and
-                            typesetting industry. Lorem Ipsum has been the
-                            industry's standard dummy text ever since the 1500s,
-                            when an unknown printer took a galley of type and
-                            scrambled it to make a type specimen book. It has
-                            survived not only five centuries, but also the leap
-                            into electronic typesetting, remaining essentially
-                            unchanged. It was popularised in the 1960s with the
-                            release of Letraset sheets containing Lorem Ipsum
-                            passages, and more recently with desktop publishing
-                            software like Aldus PageMaker including versions of
-                            Lorem Ipsum.
-                          </p>
-                        </div>
-                      </TabPanel>
-                    </Tabs>
+                          </ul>
+                        </TabPanel>
+                        <TabPanel>
+                          <div className="provenance">
+                            <p>
+                              Lorem Ipsum is simply dummy text of the printing and
+                              typesetting industry. Lorem Ipsum has been the
+                              industry's standard dummy text ever since the 1500s,
+                              when an unknown printer took a galley of type and
+                              scrambled it to make a type specimen book. It has
+                              survived not only five centuries, but also the leap
+                              into electronic typesetting, remaining essentially
+                              unchanged. It was popularised in the 1960s with the
+                              release of Letraset sheets containing Lorem Ipsum
+                              passages, and more recently with desktop publishing
+                              software like Aldus PageMaker including versions of
+                              Lorem Ipsum.
+                            </p>
+                          </div>
+                        </TabPanel>
+                      </Tabs>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        <PlaceBids show={show} setShow={setShow} />
+        <CreateListing show={isListing} setShow={setIsListing} />
+        <LiveAuction data={liveAuctionData} />
+        <Footer />
       </div>
-      <PlaceBids show={show} setShow={setShow} />
-      <LiveAuction data={liveAuctionData} />
-      <Footer />
-    </div>
+    )
   );
 };
 

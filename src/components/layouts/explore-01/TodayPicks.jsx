@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import Connex from "@vechain/connex";
 import * as abis from "../../../assets/constants/abis";
-import * as actions from "../../../store/actions/productActions";
+import * as actions from "../../../store/actions/collectionActions";
 import { NODE, NETWORK } from "../../../assets/constants";
 import { useEffect } from "react";
 import { uriToHttp, uriToImage, numberWithCommas } from "../../../utils/utils";

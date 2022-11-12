@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BACKEND_URL, BASE_URL } from "../../assets/constants";
+import { BASE_URL } from "../../assets/constants";
 import {
   GET_COLLECTIONS_SUCCESS,
   CREATE_COLLECTION_SUCCESS,
@@ -7,7 +7,6 @@ import {
   ITEMS_HAVE_ERROR,
   GET_COLLECTION,
   GET_NFTS,
-  CLEAR_NFTS,
 } from "./types";
 
 export function itemsHaveError() {
@@ -76,16 +75,12 @@ export const getClts = () => {
 
 export const createClt = (cltInfo) => {
   return (dispatch) => {
-    console.log("111");
     dispatch(itemsAreLoading());
-    console.log("222");
     axios
       .post(`${BASE_URL}/collections/create-collection`, cltInfo)
       .then((res) => {
-        console.log("333");
 
         if (res.data) {
-          console.log("555");
           dispatch(createCollectionSuccess(res.data));
         }
       })
@@ -118,16 +113,6 @@ export const getNFTs = async (col_name, start, limit) => {
     }
   }
   return [];
-  //   return async (dispatch) => {
-  //     const res = await axios.post(`${BASE_URL}/collections/get-nfts`, {
-  //       col_name,
-  //       start,
-  //       limit,
-  //     });
-  //     if (res.data && res.data.status == "success") {
-  //       dispatch(getNFTsSuccess(res.data.nfts));
-  //     }
-  //   };
 };
 
 export const storeNftsToReducer = (nfts) => {
@@ -142,8 +127,8 @@ export const getItemDetails = async (col_name, token_id) => {
     token_id,
   });
   if (res.data && res.data.status == "success") {
-    console.log("actions details: ", res.data.details);
-    return res.data.details;
+    console.log("actions details: ", res.data);
+    return res.data;
   }
   return [];
 };

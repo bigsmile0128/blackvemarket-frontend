@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
 import { profileReducer } from "./profileReducer";
-import { productReducer } from "./productReducer";
+import { collectionReducer } from "./collectionReducer";
 
 export default combineReducers({
   profile: profileReducer,
-  product: productReducer,
+  collections: collectionReducer,
 });

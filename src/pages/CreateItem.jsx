@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../store/actions/createItActions";
-import * as clt_actions from "../store/actions/productActions";
+import * as clt_actions from "../store/actions/collectionActions";
 import Connex from "@vechain/connex";
 import { NETWORK, NODE } from "../assets/constants";
 import contracts from "../assets/contracts/status.json";
@@ -24,7 +24,7 @@ const CreateItem = () => {
     network: NETWORK,
   });
 
-  const collections = useSelector((store) => store.product.collections);
+  const collections = useSelector((store) => store.collections.collections);
   const [dropdownState, setDropdownState] = useState(false);
   const [abstraction, setAbstraction] = useState("");
   const [formData, setFormData] = useState({
@@ -96,7 +96,7 @@ const CreateItem = () => {
     fd.append("user_id", userID);
 
     if (userID) {
-      dispatch(actions.createFixedItem(fd));
+      // dispatch(actions.createFixedItem(fd));
 
       const abiCreateNFtToken = abis.ERC721Nft_ABI.find(
         ({ name }) => name === "createNFtToken"

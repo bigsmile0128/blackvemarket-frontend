@@ -43,3 +43,7 @@ export function uriToImage(uri) {
             return "";
     }
 }
+
+export function sliceAddress(address) {
+    return address.slice(0, 5).concat("...", address.slice(-8));
+}

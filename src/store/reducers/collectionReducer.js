@@ -9,7 +9,7 @@ const initialState = {
   nfts: [],
 };
 
-export function productReducer(state = initialState, action) {
+export function collectionReducer(state = initialState, action) {
   switch (action.type) {
     case "ITEMS_HAVE_ERROR":
       return { ...state, failure: true };

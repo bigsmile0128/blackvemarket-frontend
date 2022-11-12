@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { SwiperSlide } from "swiper/react";
 import { useSelector, useDispatch } from "react-redux";
-import * as clt_actions from "../../store/actions/productActions";
+import * as clt_actions from "../../store/actions/collectionActions";
 import { BACKEND_URL } from "../../assets/constants";
 
 const Collections = () => {
-  const collections = useSelector((store) => store.product.collections);
+  const collections = useSelector((store) => store.collections.collections);
   const dispatch = useDispatch();
   const data = collections;
   const [visible, setVisible] = useState(8);

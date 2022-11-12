@@ -6,7 +6,7 @@ import Footer from "../components/footer/Footer";
 import "react-tabs/style/react-tabs.css";
 import img1 from "../assets/images/box-item/image-box-6.jpg";
 import { useRef } from "react";
-import * as actions from "../store/actions/productActions";
+import * as actions from "../store/actions/collectionActions";
 import * as abis from "../assets/constants/abis";
 import contracts from "../assets/contracts/status.json";
 import { NODE, NETWORK } from "../assets/constants";
@@ -176,49 +176,56 @@ const CreateCollection = () => {
   };
 
   const getCollectionTotalSupply = async (address) => {
-    const abiTotalSupply = abis.ERC721Nft_ABI.find(
-      ({ name }) => name === "totalSupply"
-    );
+    const abiTotalSupply = abis.ERC721Nft_ABI.find(({name}) => name === "totalSupply");
 
     const result = await connex.thor
-      .account(address)
-      .method(abiTotalSupply)
-      .call();
+        .account(address)
+        .method(abiTotalSupply)
+        .call();
 
     return result.decoded[0];
-  };
+  }
 
   const getNFTMetaData = async (address, tokenId) => {
-    const abiTokenURI = abis.Warbands_ABI.find(
-      ({ name }) => name === "tokenURI"
-    );
+    const abiTokenURI = abis.Warbands_ABI.find(({name}) => name === "tokenURI");
 
     const result = await connex.thor
-      .account(address)
-      .method(abiTokenURI)
-      .call(tokenId);
+        .account(address)
+        .method(abiTokenURI)
+        .call(tokenId);
 
     return result.decoded[0];
-  };
+  }
+
+  const getNFTMetaDataByIndex = async (address, tokenId) => {
+    const abiTokenURI = abis.Warbands_ABI.find(({name}) => name === "tokenByIndex");
+
+    const result = await connex.thor
+        .account(address)
+        .method(abiTokenURI)
+        .call(tokenId);
+
+    return result.decoded[0];
+  }
 
   const fetchNFTItem = async (meta_uri) => {
     const urls = uriToHttp(meta_uri);
     for (var i = 0; i < urls.length; i++) {
       let response;
       try {
-        response = await fetch(urls[i]);
-        const json = await response.text();
-        return json;
+          response = await fetch(urls[i]);
+          const json = await response.text();
+          return json;
       } catch (err) {
-        console.error("Failed to fetch metadata", meta_uri, err);
+          console.error("Failed to fetch metadata", meta_uri, err);
       }
     }
     return {};
-  };
+  }
 
   const sleep = async (milliseconds) => {
-    await new Promise((resolve) => setTimeout(resolve, milliseconds));
-  };
+    await new Promise(resolve => setTimeout(resolve, milliseconds));
+  }
 
   const onCreateCollec = async () => {
     let fd = new FormData();
@@ -237,14 +244,20 @@ const CreateCollection = () => {
       const totalSupply = await getCollectionTotalSupply(formData.address);
       setTotalSupply(totalSupply);
       setLoading(true);
-      for (var i = 1; i <= totalSupply; i++) {
+      let startIndex = 1;
+      let tokenId = 1;
+      do {
         //await sleep(1000);
-        const meta_uri = await getNFTMetaData(formData.address, i);
-        // const meta_json = await fetchNFTItem(meta_uri);
-        // console.log(meta_json)
-        await dispatch(actions.addNFT(col_name, meta_uri, i));
-        setProcessed(i);
-      }
+        const meta_uri = await getNFTMetaData(formData.address, tokenId);
+        if ( meta_uri ) {
+          // const meta_json = await fetchNFTItem(meta_uri);
+          // console.log(meta_json);
+          await dispatch(actions.addNFT(col_name, meta_uri, tokenId));
+          startIndex++;
+        }
+        tokenId++;
+        setProcessed(startIndex);
+      } while ( startIndex <= totalSupply );
       setLoading(false);
     } else {
       alert("Please Connect Wallet!");
@@ -521,7 +534,7 @@ const CreateCollection = () => {
                       onDelete={deleteTagHandler}
                     />
                   </div> */}
-                  {!loading && (
+                  {!loading && 
                     <button
                       className="tf-button-submit mg-t-37"
                       type="button"
@@ -529,12 +542,12 @@ const CreateCollection = () => {
                     >
                       Create
                     </button>
-                  )}
-                  {loading && (
-                    <span style={{ marginLeft: "20px", fontSize: "18px" }}>
+                  }
+                  {loading && 
+                    <span style={{marginLeft: '20px', fontSize: '18px'}}>
                       Processing {processed} / {totalSupply}
                     </span>
-                  )}
+                  }
                 </div>
               </div>
             </div>

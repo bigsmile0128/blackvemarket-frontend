@@ -3691,3 +3691,48 @@ code {
   object-fit: cover;
   min-height: 320px;
 }
+
+.sc-card-detail {
+  width: 100%;
+  display: table-row;
+}
+
+.sc-card-detail > div {
+  display: table-cell;
+  flex: 0 0 auto;
+  width: auto;
+  padding: 5px 50px 5px 0;
+  position: relative;
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 500;
+}
+
+.content-row-item:after {
+  content: ":";
+  right: 10px;
+  top: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+}
+
+.sc-card-detail .content-row-detail {
+  color: #f0bc88;
+}
+
+.content-description {
+  color: #f0bc88;
+  font-weight: 500;
+  font-style: italic;
+  font-size: 16px;
+  line-height: 22px;
+}
+
+.Toastify {
+  position: fixed;
+  z-index: 9999999999;
+  font-size: 12px;
+}
