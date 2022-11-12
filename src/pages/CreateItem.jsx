@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../store/actions/createItActions";
-import * as clt_actions from "../store/actions/createCltActions";
+import * as clt_actions from "../store/actions/productActions";
 import Connex from "@vechain/connex";
 import { NETWORK, NODE } from "../assets/constants";
 import contracts from "../assets/contracts/status.json";

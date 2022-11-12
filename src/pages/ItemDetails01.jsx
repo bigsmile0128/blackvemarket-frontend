@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
 import LiveAuction from "../components/layouts/LiveAuction";
 import PlaceBids from "../components/layouts/auctions/PlaceBids";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Countdown from "react-countdown";
+import { useDispatch, useSelector } from "react-redux";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import liveAuctionData from "../assets/fake-data/data-live-auction";
@@ -16,9 +17,14 @@ import img5 from "../assets/images/avatar/avt-7.jpg";
 import img6 from "../assets/images/avatar/avt-8.jpg";
 import img7 from "../assets/images/avatar/avt-2.jpg";
 import imgdetail1 from "../assets/images/box-item/images-item-details.jpg";
+import * as actions from "../store/actions/productActions";
+import { uriToHttp, uriToImage } from "../utils/utils";
 
 const ItemDetails01 = () => {
+  const { col_name, token_id } = useParams();
+  const dispatch = useDispatch();
   const [show, setShow] = useState(false);
+  const [itemDetails, setItemDetails] = useState(null);
 
   const [dataHistory] = useState([
     {
@@ -65,6 +71,10 @@ const ItemDetails01 = () => {
     },
   ]);
 
+  useEffect(async () => {
+    setItemDetails(await actions.getItemDetails(col_name, token_id));
+  }, []);
+
   const onHandlePlace = () => {
     setShow(true);
   };
@@ -101,16 +111,20 @@ const ItemDetails01 = () => {
             <div className="col-xl-6 col-md-12">
               <div className="content-left">
                 <div className="media">
-                  <img src={imgdetail1} alt="Axies" />
+                  {itemDetails && (
+                    <img
+                      src={uriToImage(itemDetails.image)}
+                      style={{ width: "100%" }}
+                      alt="Axies"
+                    />
+                  )}
                 </div>
               </div>
             </div>
             <div className="col-xl-6 col-md-12">
               <div className="content-right">
                 <div className="sc-item-details">
-                  <h2 className="style2">
-                    “The Fantasy Flower illustration ”{" "}
-                  </h2>
+                  <h2 className="style2"> {itemDetails?.name} </h2>
                   <div className="meta-item">
                     <div className="left">
                       <span className="viewed eye">225</span>
@@ -156,13 +170,7 @@ const ItemDetails01 = () => {
                       </div>
                     </div>
                   </div>
-                  <p>
-                    Habitant sollicitudin faucibus cursus lectus pulvinar dolor
-                    non ultrices eget. Facilisi lobortisal morbi fringilla urna
-                    amet sed ipsum vitae ipsum malesuada. Habitant sollicitudin
-                    faucibus cursus lectus pulvinar dolor non ultrices eget.
-                    Facilisi lobortisal morbi fringilla urna amet sed ipsum
-                  </p>
+                  <p>{itemDetails?.description}</p>
                   <div className="meta-item-details style2">
                     <div className="item meta-price">
                       <span className="heading">Current Bid</span>

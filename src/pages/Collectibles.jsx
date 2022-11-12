@@ -3,7 +3,6 @@ import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
 import { Link } from "react-router-dom";
 import Collections from "../components/layouts/Collections";
-import popularCollectionData from "../assets/fake-data/data-popular-collection";
 
 const Collectibles = () => {
   return (
@@ -32,7 +31,7 @@ const Collectibles = () => {
           </div>
         </div>
       </section>
-      <Collections data={popularCollectionData} />
+      <Collections />
       <Footer />
     </div>
   );

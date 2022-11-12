@@ -2016,11 +2016,17 @@ header {
   width: 250px;
   opacity: 0;
   visibility: hidden;
+  right: 0px;
+  display: flex;
 }
 
 .disconnect-wallet.active {
   visibility: visible;
   opacity: 1;
+}
+
+.disconnect-wallet > button {
+  margin-left: auto;
 }
 
 .search-submit {
@@ -3650,7 +3656,7 @@ code {
   position: relative;
 }
 
-.collection-overlay img{
+.collection-overlay img {
   height: 250px;
   width: 100%;
   object-fit: cover;

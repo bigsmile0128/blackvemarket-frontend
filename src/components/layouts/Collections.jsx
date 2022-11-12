@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { SwiperSlide } from "swiper/react";
 import { useSelector, useDispatch } from "react-redux";
-import * as clt_actions from "../../store/actions/createCltActions";
+import * as clt_actions from "../../store/actions/productActions";
 import { BACKEND_URL } from "../../assets/constants";
 
 const Collections = () => {
@@ -59,9 +58,6 @@ const Collections = () => {
     </section>
   );
 };
-Collections.propTypes = {
-  data: PropTypes.array.isRequired,
-};
 
 const PopularCollectionItem = (props) => (
   <div className="swiper-container show-shadow carousel4 button-arow-style">
@@ -96,19 +92,8 @@ const PopularCollectionItem = (props) => (
                         : props.item.name}
                     </Link>
                   </h4>
-                  {/* <div className="infor">
-                    <span>Created by</span>
-                    <span className="name">
-                      <Link to="/authors-02">
-                        {props.item.name.substring(0, 25) + "..."}
-                      </Link>
-                    </span>
-                  </div> */}
                 </div>
               </div>
-              {/* <Link to="/login" className="wishlist-button public heart">
-                <span className="number-like"> 100</span>
-              </Link> */}
             </div>
           </div>
         </div>

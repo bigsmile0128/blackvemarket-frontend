@@ -4,54 +4,60 @@ import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
 import Explore from "../components/layouts/explore-04/Explore";
 import widgetSidebarData from "../assets/fake-data/data-widget-sidebar";
-import * as clt_actions from "../store/actions/createCltActions";
+import * as actions from "../store/actions/productActions";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const NFTs = () => {
-    const [sidebarData, setSidebarData] = useState([]);
-    const collections = useSelector((store) => store.product.collections);
-    const dispatch = useDispatch();
+  const [sidebarData, setSidebarData] = useState([]);
+  const collections = useSelector((store) => store.product.collections);
+  const dispatch = useDispatch();
+  const [colNames, setColNames] = useState([])
 
-    useEffect(() => {
-        dispatch(clt_actions.getClts());
-    }, []);
+  useEffect(() => {
+    dispatch(actions.getClts());
+  }, []);
 
-    useEffect(() => {
-        if ( collections && collections.length > 0 ) {
-            const collectionList = [];
-            for ( const collection of collections ) {
-                collectionList.push({
-                    field: collection.name,
-                    _id: collection._id
-                });
-            }
-            setSidebarData([
-                {
-                    id: 1,
-                    title: "Status",
-                    content: [
-                        {
-                            field: "Buy Now",
-                            checked: "checked",
-                        },
-                        {
-                            field: "On Auction",
-                        },
-                        {
-                            field: "Not for sale",
-                        },
-                    ],
-                },
-                {
-                    id: 2,
-                    title: "Collections",
-                    content: collectionList
-                }
-            ]);
-        }
-    }, [collections]);
+  useEffect(() => {
+    if (collections && collections.length > 0) {
+      const collectionList = [], col_names = [];
+      for (const collection of collections) {
+        collectionList.push({
+          field: collection.name,
+          _id: collection._id,
+        });
+        col_names.push({
+          field: collection.name,
+          _id: collection._id,
+        });
+      }
+      setColNames(col_names)
+      setSidebarData([
+        {
+          id: 1,
+          title: "Status",
+          content: [
+            {
+              field: "Buy Now",
+              checked: "checked",
+            },
+            {
+              field: "On Auction",
+            },
+            {
+              field: "Not for sale",
+            },
+          ],
+        },
+        {
+          id: 2,
+          title: "Collections",
+          content: collectionList,
+        },
+      ]);
+    }
+  }, [collections]);
 
   return (
     <div>
@@ -76,7 +82,7 @@ const NFTs = () => {
           </div>
         </div>
       </section>
-      <Explore data={sidebarData} />
+      <Explore data={sidebarData} col_names={colNames} />
       <Footer />
     </div>
   );
