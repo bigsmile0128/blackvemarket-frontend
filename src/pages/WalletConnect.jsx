@@ -7,7 +7,7 @@ import Connex from "@vechain/connex";
 import * as actions from "../store/actions/profileActions";
 import img1 from "../assets/images/icon/VeThor.jpg";
 import img2 from "../assets/images/icon/Sync2.jpg";
-const vendor = new Connex.Vendor("test");
+const vendor = new Connex.Vendor("main");
 
 const WalletConnect = () => {
   const [data] = useState([

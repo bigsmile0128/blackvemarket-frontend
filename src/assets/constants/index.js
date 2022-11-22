@@ -1,10 +1,10 @@
 //==========test heroku==========//
 
-const NODE = "https://testnet.vecha.in/";
-const NETWORK = "test";
+// const NODE = "https://testnet.vecha.in/";
+// const NETWORK = "test";
 
-// const NODE = "https://mainnet.vecha.in/";
-// const NETWORK = "main";
+const NODE = "https://mainnet.vecha.in/";
+const NETWORK = "main";
 
 const BASE_URL = process.env.NODE_ENV=="development"?"http://localhost:9999/api/v1":"https://blackvemarket-backend.herokuapp.com/api/v1";
 const BACKEND_URL = process.env.NODE_ENV=="development"?"http://localhost:9999/upload/":"https://blackvemarket-backend.herokuapp.com/upload/";
