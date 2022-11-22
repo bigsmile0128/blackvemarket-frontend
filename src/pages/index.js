@@ -17,6 +17,7 @@ import NoResult from "./NoResult";
 import FAQ from "./FAQ";
 import Contact02 from "./Contact02";
 import Collectibles from "./Collectibles";
+import BVMCollectibles from "./BVMCollectibles";
 import CreateCollection from "./CreateCollection";
 import PlaceBids from "../components/layouts/auctions/PlaceBids";
 import ListItem from "./ListItem";
@@ -24,7 +25,7 @@ import ListItem from "./ListItem";
 const routes = [
   { path: "/", component: <Home01 /> },
   { path: "/nfts", component: <NFTs /> },
-  { path: "/live-auctions", component: <LiveAuctions /> },
+  { path: "/marketplace", component: <LiveAuctions /> },
   { path: "/collection/:col_name/:token_id", component: <ItemDetails01 /> },
   { path: "/item-details-02", component: <ItemDetails02 /> },
   { path: "/activity-01", component: <Activity01 /> },
@@ -32,7 +33,7 @@ const routes = [
   { path: "/blog-details", component: <BlogDetails /> },
   { path: "/help-center", component: <HelpCenter /> },
   { path: "/authors-01", component: <Authors01 /> },
-  { path: "/authors-02", component: <Authors02 /> },
+  { path: "/profile/:address", component: <Authors02 /> },
   { path: "/collection/:symbol", component: <Collection /> },
   { path: "/wallet-connect", component: <WalletConnect /> },
   { path: "/create-item", component: <CreateItem /> },
@@ -40,6 +41,7 @@ const routes = [
   { path: "/no-result", component: <NoResult /> },
   { path: "/faq", component: <FAQ /> },
   { path: "/contact-02", component: <Contact02 /> },
+  { path: "/bvm_studios", component: <BVMCollectibles /> },
   { path: "/collections", component: <Collectibles /> },
   { path: "/add-collection", component: <CreateCollection /> },
   { path: "/place-bid", component: <PlaceBids /> },

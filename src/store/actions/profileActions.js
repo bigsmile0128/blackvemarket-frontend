@@ -41,6 +41,24 @@ export function walletDisconnectSuccess(profiles) {
     };
 }
 
+export const getProfile = async (walletaddr) => {
+  const res = await axios.post(`${BASE_URL}/users/get-profile`, {walletaddr});
+  if (res.data && res.data.status == "success") {
+    console.log("actions details: ", res.data);
+    return res.data.user;
+  }
+  return null;
+}
+
+export const getCollected = async (walletaddr) => {
+  const res = await axios.get(`${BASE_URL}/users/get-collected/${walletaddr}`, {});
+  if ( res.data && res.data.status == "success" ) {
+    console.log("collected result", res.data);
+    return res.data.nft_list;
+  }
+  return [];
+}
+
 export const fetchProfile = (walletaddr) => {
     return async (dispatch) => {
         const res = await axios.post(`${BASE_URL}/users/get-profile`, {

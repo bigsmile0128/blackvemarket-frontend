@@ -1,16 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
 import Countdown from "react-countdown";
+import * as actions from "../../store/actions/collectionActions";
 
 import 'swiper/scss';
 import 'swiper/scss/navigation';
 import 'swiper/scss/pagination';
+import { sliceAddress, toPriceFormat } from '../../utils/utils';
 
 const LiveAuction = props => {
-    const data = props.data;
+    const [auctions, setAuctions] = useState([]);
+    const signer = window.localStorage.getItem("vechain_signer");
+
+    useEffect(() => {
+        fetchLiveAuctions();
+    }, []);
+
+    const fetchLiveAuctions = async () => {
+        const liveAuctions = await actions.getLiveAuctions();
+        setAuctions(liveAuctions);
+    }
 
     return (
         
@@ -48,7 +60,7 @@ const LiveAuction = props => {
                             scrollbar={{ draggable: true }}
                         >
                                 {
-                                    data.slice(0,7).map((item,index) => (
+                                    auctions.sort(() => Math.random() - Math.random()).slice(0,7).map((item,index) => (
                                         <SwiperSlide key={index}>
                                                 <div className="swiper-container show-shadow carousel auctions">
                                                     <div className="swiper-wrapper">
@@ -56,36 +68,34 @@ const LiveAuction = props => {
                                                             <div className="slider-item">										
                                                                 <div className="sc-card-product">
                                                                     <div className="card-media">
-                                                                        <Link to="/item-details-01"><img src={item.img} alt="axies" /></Link>
-                                                                        <Link to="/login" className="wishlist-button heart"><span className="number-like">{item.wishlist}</span></Link>
-                                                                        <div className="featured-countdown">
-                                                                            <span className="slogan"></span>
-                                                                            <Countdown date={Date.now() + 500000000}>
-                                                                                <span>You are good to go!</span>
-                                                                            </Countdown>
-                                                                        </div>
-                                                                        <div className="button-place-bid">
-                                                                            <Link to="/wallet-connect" className="sc-button style-place-bid style bag fl-button pri-3"><span>Place Bid</span></Link>
-                                                                        </div>
+                                                                        <Link to={`/collection/${item.collection.col_name}/${item.details.token_id}`}><img src={item.details.image} alt="axies" /></Link>
+                                                                        {item.auctionSale && item.auctionSale.seller !== signer && item.auctionSale.duration > 0 && item.auctionSale.minPrice > 0 && item.auctionSale.finalPrice == 0 &&
+                                                                            <div className="featured-countdown">
+                                                                                <span className="slogan"></span>
+                                                                                <Countdown date={item.auctionSale.startedAt * 1000 + item.auctionSale.duration * 1000}>
+                                                                                    <span>Auction is closed.</span>
+                                                                                </Countdown>
+                                                                            </div>
+                                                                        }
+                                                                        {/* <div className="button-place-bid">
+                                                                            <Link to="#" data-toggle="modal" data-target="#popup_bid" className="sc-button style-place-bid style bag fl-button pri-3"><span>Place Bid</span></Link>
+                                                                        </div> */}
                                                                     </div>
                                                                     <div className="card-title">
-                                                                        <h5><Link to="/item-details-01">"{item.title}"</Link></h5>
-                                                                        <div className="tags">{item.tags}</div>
+                                                                        <h5><Link to={`/collection/${item.collection.col_name}/${item.details.token_id}`}>"{item.details.name}"</Link></h5>
+                                                                        {/* <div className="tags">{item.details.description}</div> */}
                                                                     </div>
                                                                     <div className="meta-info">
                                                                         <div className="author">
-                                                                            <div className="avatar">
-                                                                                <img src={item.imgAuthor} alt="axies" />
-                                                                            </div>
                                                                             <div className="info">
-                                                                                <span>Creator</span>
-                                                                                <h6> <Link to="/authors-02">{item.nameAuthor}
+                                                                                <span>Owner</span>
+                                                                                <h6> <Link to="#">{sliceAddress(item.auctionSale.seller)}
                                                                                 </Link> </h6>
                                                                             </div>
                                                                         </div>
                                                                         <div className="price">
-                                                                            <span>Current Bid</span>
-                                                                            <h5> {item.price}</h5>
+                                                                            <span>{item.auctionSale.minPrice>0?'Current Bid':'Price'}</span>
+                                                                            <h5> {toPriceFormat(item.auctionSale.minPrice>0?(item.offer&&item.offer.offer>0?item.offer.offer:item.auctionSale.minPrice):item.auctionSale.fixedPrice)}</h5>
                                                                         </div>
                                                                     </div>
                                                                 </div>    	
@@ -102,10 +112,6 @@ const LiveAuction = props => {
             </div>
         </section>
     );
-}
-
-LiveAuction.propTypes = {
-    data: PropTypes.array.isRequired,
 }
 
 

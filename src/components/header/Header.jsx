@@ -140,28 +140,30 @@ const Header = () => {
                 <nav id="main-nav" className="main-nav" ref={menuLeft}>
                   <ul id="menu-primary-menu" className="menu">
                     {menus.map((data, index) => (
-                      <li
+                      (!data.connected || (data.connected && signer)) && <li
                         key={index}
                         onClick={() => handleOnClick(index)}
-                        className={`menu-item menu-item-has-children ${
-                          activeIndex === index ? "active" : ""
-                        } `}
+                        className={`menu-item ${data.namesub?'menu-item-has-children':''} ${activeIndex===index ? "active" : ""}`}
                       >
-                        <Link to="#">{data.name}</Link>
-                        <ul className="sub-menu">
-                          {data.namesub.map((submenu) => (
-                            <li
-                              key={submenu.id}
-                              className={
-                                pathname === submenu.links
-                                  ? "menu-item current-item"
-                                  : "menu-item"
-                              }
-                            >
-                              <Link to={submenu.links}>{submenu.sub}</Link>
-                            </li>
-                          ))}
-                        </ul>
+                        {data.namesub ? <>
+                          <Link to="#">{data.name}</Link>
+                          <ul className="sub-menu">
+                            {data.namesub.map((submenu) => (
+                              <li
+                                key={submenu.id}
+                                className={
+                                  pathname === submenu.links.replaceAll(':address', signer)
+                                    ? "menu-item current-item"
+                                    : "menu-item"
+                                }
+                              >
+                                <Link to={submenu.links.replaceAll(':address', signer)}>{submenu.sub}</Link>
+                              </li>
+                            ))}
+                          </ul>
+                        </> : <>
+                          <Link to={data.links}>{data.name}</Link>
+                        </>}
                       </li>
                     ))}
                   </ul>

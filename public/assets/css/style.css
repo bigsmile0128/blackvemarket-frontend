@@ -3736,3 +3736,47 @@ code {
   z-index: 9999999999;
   font-size: 12px;
 }
+
+.w-auto {
+  width: auto !important;
+}
+
+.popup-font {
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.btn-none {
+  background-color: transparent;
+  border-radius: 0;
+  color: #ccc;
+}
+.btn-none:hover, .btn-none:active {
+  border: 0;
+  color: #fff;
+  font-weight: 600;
+}
+
+.select-box select {
+  width: 100%;
+  font-size: 14px;
+  border: 1px solid rgba(138, 138, 160, 0.3);
+  border-radius: 8px;
+  padding: 16px 20px;
+  color: #8A8AA0;
+  background: transparent;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+}
+
+.sc-highest-bidder {
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #f0bc88;
+}
+
+.pr-8 {
+  padding-right: 4rem !important;
+}

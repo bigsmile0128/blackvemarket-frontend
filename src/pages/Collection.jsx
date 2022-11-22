@@ -23,10 +23,11 @@ const Collection = () => {
       <Header />
       <section className="flat-title-page inner collection-title-page">
         <div className="collection-overlay">
-          <img src={BACKEND_URL + collection.bannerImg} />
+          <img src={BACKEND_URL + collection.bannerImg} alt="cover"/>
           <img
             src={BACKEND_URL + collection.logoImg}
             className="collection-logo"
+            alt="logo"
           />
         </div>
         <div className="themesflat-container" style={{ paddingTop: "20px" }}>

@@ -100,6 +100,17 @@ export const addNFT = (col_name, meta_json, token_id) => {
   };
 };
 
+export const updateNFT = (col_name, token_id) => {
+  return (dispatch) => {
+    axios
+      .post(`${BASE_URL}/collections/update-nft`, {
+        col_name,
+        token_id,
+      })
+      .then((res) => {});
+  };
+};
+
 export const getNFTs = async (col_name, start, limit) => {
   console.log("actions: ", start, limit);
   const res = await axios.post(`${BASE_URL}/collections/get-nfts`, {
@@ -132,6 +143,27 @@ export const getItemDetails = async (col_name, token_id) => {
   }
   return [];
 };
+
+export const getNFTDetail = async (address, token_id) => {
+  const res = await axios.post(`${BASE_URL}/collections/nft`, {
+    address,
+    token_id,
+  });
+  if (res.data && res.data.status == "success") {
+    console.log("actions details: ", res.data);
+    return res.data;
+  }
+  return [];
+};
+
+export const getLiveAuctions = async () => {
+  const res = await axios.get(`${BASE_URL}/collections/liveAuctions`, {});
+  if (res.data && res.data.status == "success") {
+    console.log("actions details: ", res.data);
+    return res.data.liveAuctions;
+  }
+  return [];
+}
 
 export const getAllNfts = async (col_names, start, limit) => {
   console.log("actions: ", start, limit);

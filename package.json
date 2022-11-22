@@ -9,7 +9,7 @@
     "@testing-library/user-event": "^13.5.0",
     "@vechain.energy/use-vechain": "^0.10.0",
     "@vechain/connex": "^2.0.9",
-    "@vechain/ethers": "^4.0.27-5",
+    "@vechain/ethers": "4.0.27-5",
     "axios": "^0.24.0",
     "bootstrap": "^5.1.3",
     "ipfs-http-client": "^59.0.0",

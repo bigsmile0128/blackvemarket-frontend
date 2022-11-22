@@ -6,7 +6,7 @@ import * as abis from "../../../assets/constants/abis";
 import * as actions from "../../../store/actions/collectionActions";
 import { NODE, NETWORK } from "../../../assets/constants";
 import { useEffect } from "react";
-import { uriToHttp, uriToImage, numberWithCommas } from "../../../utils/utils";
+import { numberWithCommas } from "../../../utils/utils";
 import NFTItem from "./NFTItem";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -43,33 +43,6 @@ const TodayPicks = (props) => {
     const updated_nfts = init ? new_nfts : nfts.concat(new_nfts);
     await setNFTs(updated_nfts);
     await setLoaded(updated_nfts.length);
-    // await dispatch(actions.storeNftsToReducer(updated_nfts));
-
-    /*const address = collection.address;
-        const nft_list = [];
-        let tokenId = loaded + 1;
-        let totalLoaded = 0;
-        do {
-            if ( tokenId > collection.total_supply )
-                break;
-            const tokenURI = await getNFTMetaData(address, tokenId);
-            const url = uriToHttp(tokenURI);
-            for ( var i = 0; i < 2; i ++ ) {
-                let response;
-                try {
-                    response = await fetch(url)
-                    const json = await response.json();
-                    nft_list.push(json);
-                    totalLoaded++;
-                    break;
-                } catch (err) {
-                    console.error('Failed to fetch metadata', tokenURI, err);
-                }
-            }
-            tokenId++;
-        } while ( totalLoaded < 16 )
-        setLoaded(tokenId - 1);
-        setNFTs(nfts.concat(nft_list));*/
   };
 
   useEffect(() => {
@@ -126,7 +99,7 @@ const TodayPicks = (props) => {
               </div>
             </div>
             {nfts.map((item, index) => (
-              <NFTItem key={index} item={item} col_name={collection.col_name} />
+              <NFTItem key={index} item={item} collection={collection} />
             ))}
             {loaded < collection.total_supply && (
               <div className="col-md-12 wrap-inner load-more text-center">

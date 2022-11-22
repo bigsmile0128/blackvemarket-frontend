@@ -239,21 +239,31 @@ const CreateCollection = () => {
     fd.append("user_id", userID);
 
     if (userID) {
-      await dispatch(actions.createClt(fd));
       const col_name = formData.name.replaceAll(" ", "_").toLowerCase();
       const totalSupply = await getCollectionTotalSupply(formData.address);
       setTotalSupply(totalSupply);
+      fd.append("total_supply", totalSupply);
+      // await dispatch(actions.createClt(fd));
       setLoading(true);
       let startIndex = 1;
       let tokenId = 1;
       do {
         //await sleep(1000);
-        const meta_uri = await getNFTMetaData(formData.address, tokenId);
-        if ( meta_uri ) {
-          // const meta_json = await fetchNFTItem(meta_uri);
-          // console.log(meta_json);
-          await dispatch(actions.addNFT(col_name, meta_uri, tokenId));
-          startIndex++;
+        try {
+          let meta_uri = await getNFTMetaData(formData.address, tokenId);
+          if ( meta_uri ) {
+            // if ( meta_uri.substr(-5).toLowerCase() != ".json" )
+            //   meta_uri = meta_uri + ".json";
+            // console.log(meta_uri);
+            // meta_uri = meta_uri.slice(0, -5);
+            // console.log(meta_uri);
+            // const meta_json = await fetchNFTItem(meta_uri);
+            // console.log(meta_json);
+            await dispatch(actions.updateNFT(col_name, tokenId));
+            startIndex++;
+          }
+        } catch(err) {
+          console.error("Invalid Request: ", err);
         }
         tokenId++;
         setProcessed(startIndex);

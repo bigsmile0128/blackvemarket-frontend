@@ -1,5 +1,12 @@
+import BigNumber from 'bignumber.js'
+
 export function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+export function numberRound(x,r) {
+    const p = Math.pow(10,r);
+    return Math.round((x * 1 + Number.EPSILON) * p) / p;
 }
 
 export function uriToHttp(uri) {
@@ -46,4 +53,18 @@ export function uriToImage(uri) {
 
 export function sliceAddress(address) {
     return address.slice(0, 5).concat("...", address.slice(-8));
+}
+
+
+export function toWei (val, decimals = 18) {
+    return '0x' + new BigNumber(val).multipliedBy(`1e${decimals}`).toString(16)
+}
+
+
+export function fromWei (val, decimals = 18) {
+    return new BigNumber(val).div(`1e${decimals}`).toFixed(18, 1).replace(/0/g, ' ').trimEnd().replace(/ /g, '0')
+}
+
+export function toPriceFormat (val) {
+    return numberWithCommas(numberRound(fromWei(val), 2)) + " VET";
 }

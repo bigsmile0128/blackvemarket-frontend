@@ -3726,8 +3726,8 @@ section.today-picks {
 /* author-tab -----------------------------------------*/
 
 .tab-authors .author-profile {
-  background: url("../images/item-background/bg-authors.jpg") no-repeat center;
-  background-size: cover;
+  /* background: url("../images/item-background/bg-authors.jpg") no-repeat center;
+  background-size: cover; */
   -webkit-border-radius: 12px 12px 0 0;
   -ms-border-radius: 12px 12px 0 0;
   -o-border-radius: 12px 12px 0 0;
@@ -3738,8 +3738,8 @@ section.today-picks {
 }
 
 .is_dark .tab-authors .author-profile {
-  background: url("../images/item-background/bg-authors2.jpg") no-repeat center;
-  background-size: cover;
+  /* background: url("../images/item-background/bg-authors2.jpg") no-repeat center; */
+  /* background-size: cover; */
   -webkit-border-radius: 12px 12px 0 0;
   -ms-border-radius: 12px 12px 0 0;
   -o-border-radius: 12px 12px 0 0;
@@ -4306,7 +4306,7 @@ section.today-picks {
 }
 
 .tf-item-details .content-right .themesflat-tabs .react-tabs__tab-panel {
-  height: 210px;
+  height: 310px;
   overflow: hidden;
   overflow-y: auto;
   padding-top: 1px;
@@ -5216,7 +5216,7 @@ button.accordion-button {
 
 .form-infor-profile .info-account,
 .form-infor-profile .info-social {
-  width: calc(50% - 40px);
+  width: calc(100% - 40px);
   margin-left: 40px;
 }
 

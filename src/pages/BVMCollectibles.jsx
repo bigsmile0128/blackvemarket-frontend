@@ -2,9 +2,9 @@ import React from "react";
 import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
 import { Link } from "react-router-dom";
-import Collections from "../components/layouts/Collections";
+import BVMCollections from "../components/layouts/BVMCollections";
 
-const Collectibles = () => {
+const BVMCollectibles = () => {
   return (
     <div className="auctions">
       <Header />
@@ -14,7 +14,7 @@ const Collectibles = () => {
           <div className="row">
             <div className="col-md-12">
               <div className="page-title-heading mg-bt-12">
-                <h1 className="heading text-center">Collections</h1>
+                <h1 className="heading text-center">BVM Studio</h1>
               </div>
               <div className="breadcrumbs style2">
                 <ul>
@@ -24,17 +24,17 @@ const Collectibles = () => {
                   <li>
                     <Link to="#">Collections</Link>
                   </li>
-                  <li>All Collections</li>
+                  <li>BVM Studios</li>
                 </ul>
               </div>
             </div>
           </div>
         </div>
       </section>
-      <Collections />
+      <BVMCollections />
       <Footer />
     </div>
   );
 };
 
-export default Collectibles;
+export default BVMCollectibles;

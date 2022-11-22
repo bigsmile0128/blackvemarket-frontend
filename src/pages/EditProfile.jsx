@@ -3,33 +3,28 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
-import avt from "../assets/images/avatar/avata_profile.jpg";
-import bg1 from "../assets/images/backgroup-secsion/option1_bg_profile.jpg";
-import bg2 from "../assets/images/backgroup-secsion/option2_bg_profile.jpg";
 import { BACKEND_URL } from "../assets/constants";
 import * as actions from "../store/actions/profileActions";
+import avt from "../assets/images/avatar/avt-author-tab.png";
 
 const EditProfile = () => {
   const profileInfo = useSelector((store) => store.profile.profileInfo);
   const authentication = useSelector((store) => store.profile.isAuthenticated);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const signer = window.localStorage.getItem("vechain_signer");
 
   const [selectedAvatar, setSelectedAvatar] = useState(
-    BACKEND_URL + profileInfo.avatar || { avt }
+    profileInfo.avatar ? BACKEND_URL + profileInfo.avatar : avt
   );
-  const [selectedCoverImg, setSelectedCoverImg] = useState(
-    BACKEND_URL + profileInfo.coverImg || { bg1 }
-  );
+  
   const [formData, setFormData] = useState({
     name: profileInfo.name || "",
     url: profileInfo.url || "",
     email: profileInfo.email || "",
-    bio: profileInfo.bio || "",
-    facebook: profileInfo.facebook || "",
     twitter: profileInfo.twitter || "",
-    discord: profileInfo.discord || "",
-    coverImg: profileInfo.coverImg || {},
+    instagram: profileInfo.instagram || "",
+    bio: profileInfo.bio || "",
     avatar: profileInfo.avatar || {},
   });
 
@@ -37,53 +32,26 @@ const EditProfile = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const ontUploadCoverImg = (e) => {
-    const path = URL.createObjectURL(e.target.files[0]);
-    setSelectedCoverImg(path);
-    setFormData({ ...formData, [e.target.name]: e.target.files[0] });
-    console.log(path);
-  };
-
   const onUploadAvatar = (e) => {
     const path = URL.createObjectURL(e.target.files[0]);
     setSelectedAvatar(path);
     setFormData({ ...formData, [e.target.name]: e.target.files[0] });
     console.log(path);
-    // const file = e.target.files[0];
-    // console.log(file);
-    // const reader = new FileReader();
-    // reader.addEventListener(
-    //   "load",
-    //   () => {
-    //     setPhoto(reader.result);
-    //   },
-    //   false
-    // );
-    // if (file) {
-    //   reader.readAsDataURL(file);
-    // }
   };
-
-  const onDeleteAvatar = () => {
-    setFormData({ ...formData, avatar: {} });
-  };
-
   const uploadProfile = () => {
     let fd = new FormData();
     fd.append("name", formData.name);
     fd.append("url", formData.url);
     fd.append("email", formData.email);
-    fd.append("bio", formData.bio);
-    fd.append("facebook", formData.facebook);
     fd.append("twitter", formData.twitter);
-    fd.append("discord", formData.discord);
+    fd.append("instagram", formData.instagram);
+    fd.append("bio", formData.bio);
     fd.append("avatar", formData.avatar);
-    fd.append("coverImg", formData.coverImg);
-    fd.append("walletaddr", window.localStorage.getItem("vechain_signer"));
+    fd.append("walletaddr", signer);
 
     if (authentication) {
       dispatch(actions.editProfile(fd));
-      navigate("/authors-02");
+      navigate(`/profile/${signer}`);
     } else {
       alert("Please Connect Wallet!");
       return false;
@@ -122,11 +90,11 @@ const EditProfile = () => {
             <div className="col-xl-3 col-lg-4 col-md-6 col-12">
               <div className="sc-card-profile text-center">
                 <div className="card-media c-img-area-2">
-                  <img src={selectedAvatar} alt="Axies" />
+                  <img src={selectedAvatar??avt} alt="Axies" />
                 </div>
                 <div id="upload-profile">
                   <Link to="#" className="btn-upload">
-                    Upload New Photo{" "}
+                    Upload
                   </Link>
                   <input
                     id="tf-upload-img"
@@ -135,36 +103,16 @@ const EditProfile = () => {
                     onChange={onUploadAvatar}
                   />
                 </div>
-                <button
+                {/* <button
                   onClick={() => onDeleteAvatar()}
                   className="btn-upload style2"
                 >
                   Delete
-                </button>
+                </button> */}
               </div>
             </div>
             <div className="col-xl-9 col-lg-8 col-md-12 col-12">
               <div className="form-upload-profile">
-                <h4 className="title-create-item">Choice your Cover image</h4>
-                <div className="option-profile clearfix">
-                  <form action="#">
-                    <label className="uploadFile">
-                      <input
-                        type="file"
-                        className="inputfile form-control"
-                        name="coverImg"
-                        onChange={ontUploadCoverImg}
-                      />
-                    </label>
-                  </form>
-                  <div className="image c-img-area-1">
-                    <img src={selectedCoverImg} alt="Axies" />
-                  </div>
-                  <div className="image style2 c-img-area-1">
-                    <img src={selectedCoverImg} alt="Axies" />
-                  </div>
-                </div>
-
                 <div className="form-infor-profile">
                   <div className="info-account">
                     <h4 className="title-create-item">Account info</h4>
@@ -202,6 +150,28 @@ const EditProfile = () => {
                       />
                     </fieldset>
                     <fieldset>
+                      <h4 className="title-infor-account">Twitter</h4>
+                      <input
+                        type="text"
+                        placeholder="Enter your twitter"
+                        name="twitter"
+                        value={formData.twitter || ""}
+                        onChange={onInputChange}
+                        required
+                      />
+                    </fieldset>
+                    <fieldset>
+                      <h4 className="title-infor-account">Instagram</h4>
+                      <input
+                        type="text"
+                        placeholder="Enter your instagram"
+                        name="instagram"
+                        value={formData.instagram || ""}
+                        onChange={onInputChange}
+                        required
+                      />
+                    </fieldset>
+                    <fieldset>
                       <h4 className="title-infor-account">Bio</h4>
                       <textarea
                         tabIndex="4"
@@ -213,7 +183,7 @@ const EditProfile = () => {
                       ></textarea>
                     </fieldset>
                   </div>
-                  <div className="info-social">
+                  {/* <div className="info-social">
                     <h4 className="title-create-item">Your Social media</h4>
                     <fieldset>
                       <h4 className="title-infor-account">Facebook</h4>
@@ -257,7 +227,7 @@ const EditProfile = () => {
                         <i className="icon-fl-vt"></i>Connect to Discord
                       </Link>
                     </fieldset>
-                  </div>
+                  </div> */}
                 </div>
                 <button
                   className="tf-button-submit mg-t-15"
