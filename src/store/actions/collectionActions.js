@@ -111,10 +111,11 @@ export const updateNFT = (col_name, token_id) => {
   };
 };
 
-export const getNFTs = async (col_name, start, limit) => {
+export const getNFTs = async (col_name, sort, start, limit) => {
   console.log("actions: ", start, limit);
   const res = await axios.post(`${BASE_URL}/collections/get-nfts`, {
     col_name,
+    sort,
     start,
     limit,
   });

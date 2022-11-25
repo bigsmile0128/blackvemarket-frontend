@@ -16,6 +16,9 @@ const TodayPicks = (props) => {
   const dispatch = useDispatch();
   const [loaded, setLoaded] = useState(0);
 
+  const [sort, setSort] = useState(0);
+  const sortList = ["TokenID (Low to High)", "TokenID (High to Low)", "Rarity (Low to High)", "Rarity (High to Low)"];
+  
   const connex = new Connex({
     node: NODE,
     network: NETWORK,
@@ -34,9 +37,10 @@ const TodayPicks = (props) => {
     return result.decoded[0];
   };
 
-  const loadNFTs = async (init) => {
+  const loadNFTs = async (init, sort) => {
     const new_nfts = await actions.getNFTs(
       collection.col_name,
+      sort,
       init ? 0 : loaded,
       16
     );
@@ -47,9 +51,9 @@ const TodayPicks = (props) => {
 
   useEffect(() => {
     if (collection && collection.address && collection.total_supply > 0) {
-      loadNFTs(1);
+      loadNFTs(1, sort);
     }
-  }, [collection]);
+  }, [collection, sort]);
 
   return (
     <section className="tf-section sc-explore-1">
@@ -58,43 +62,24 @@ const TodayPicks = (props) => {
           <div className="row">
             <div className="col-md-12">
               <div className="wrap-box explore-1 flex mg-bt-40">
-                <div className="seclect-box style-1">
-                  <div id="buy" className="dropdown">
-                    <Link to="#" className="btn-selector nolink">
-                      Buy Now
-                    </Link>
-                    <ul>
-                      <li>
-                        <span>On Auction</span>
-                      </li>
-                      <li>
-                        <span>Has Offers</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
+                <div></div>
                 <div className="collection-header">
                   <span>
                     {numberWithCommas(collection.total_supply)} tokens
                   </span>
                 </div>
                 <div className="seclect-box style-2 box-right">
-                  <div id="sort-by" className="dropdown">
-                    <Link to="#" className="btn-selector nolink">
-                      Sort by
-                    </Link>
-                    <ul>
-                      <li>
-                        <span>Top rate</span>
-                      </li>
-                      <li>
-                        <span>Mid rate</span>
-                      </li>
-                      <li>
-                        <span>Low rate</span>
-                      </li>
-                    </ul>
+                  <div className="mx-5 flex">
+                    <p className="m-auto">Sort by</p>
                   </div>
+                  <div id="sort-by" className="dropdown style-2">
+                      <Link to="#" className="btn-selector nolink pr-8">{sortList[sort]}</Link>
+                      <ul>
+                        {sortList.map((item, idx) => (
+                          <li className={`${sort==idx?'active':''}`} key={idx} onClick={()=>setSort(idx)}><span>{item}</span></li>
+                        ))}
+                      </ul>
+                  </div>    
                 </div>
               </div>
             </div>
@@ -107,7 +92,7 @@ const TodayPicks = (props) => {
                   to="#"
                   id="load-more"
                   className="sc-button loadmore fl-button pri-3"
-                  onClick={() => loadNFTs(0)}
+                  onClick={() => loadNFTs(0, sort)}
                 >
                   <span>Load More</span>
                 </Link>

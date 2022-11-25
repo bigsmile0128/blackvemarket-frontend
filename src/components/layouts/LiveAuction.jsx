@@ -25,7 +25,7 @@ const LiveAuction = props => {
     }
 
     return (
-        
+        auctions && auctions.length > 0 && (
         <section className="tf-section live-auctions">
             <div className="themesflat-container">
                 <div className="row">
@@ -33,7 +33,7 @@ const LiveAuction = props => {
                         <div className="heading-live-auctions">
                             <h2 className="tf-title pb-20">
                                 Live Auctions</h2>
-                            <Link to="/explore-03" className="exp style2">EXPLORE MORE</Link>
+                            <Link to="/marketplace" className="exp style2">EXPLORE MORE</Link>
                         </div>
                     </div>
                     <div className="col-md-12">
@@ -110,7 +110,7 @@ const LiveAuction = props => {
                     </div>
                 </div>
             </div>
-        </section>
+        </section>)
     );
 }
 

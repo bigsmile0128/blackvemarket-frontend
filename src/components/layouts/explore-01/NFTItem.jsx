@@ -28,7 +28,7 @@ const NFTItem = (props) => (
                 <img src={props.collection.logoImg?BACKEND_URL + props.collection.logoImg:avt} alt="axies" />
             </div>
             <div className="info">
-                <h6> <Link to={`/collection/${props.collection.col_name}`}>{props.collection.name}</Link> </h6>
+                <h6> <Link to={`/collection/${props.collection.symbol}`}>{props.collection.name}</Link> </h6>
             </div>
         </div>
         <div className="price">

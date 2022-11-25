@@ -230,7 +230,7 @@ const Authors02 = () => {
                                           <img src={data.collection.logoImg?BACKEND_URL + data.collection.logoImg:avt} alt="axies" />
                                       </div>
                                       <div className="info">
-                                          <h6> <Link to={`/collection/${data.collection.col_name}`}>{data.collection.name}</Link> </h6>
+                                          <h6> <Link to={`/collection/${data.collection.symbol}`}>{data.collection.name}</Link> </h6>
                                       </div>
                                   </div>
                                   <div className="price">

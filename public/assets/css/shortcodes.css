@@ -2886,6 +2886,10 @@ section.today-picks {
   padding: 58px 0 43px;
 }
 
+.tf-section.collections {
+  padding: 20px 0 15px;
+}
+
 .home-2 .tf-section.today-pick {
   padding: 49px 0 79px;
 }

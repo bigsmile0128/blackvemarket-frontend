@@ -8,53 +8,50 @@ import { BACKEND_URL } from "../../assets/constants";
 const Collections = () => {
   const collections = useSelector((store) => store.collections.collections);
   const dispatch = useDispatch();
-  const data = collections;
-  const [visible, setVisible] = useState(8);
+  const [data, setData] = useState([]);
+  const collection_list = ['gangster_gorillazs', 'venonymous', 'dragons_of_singapura_baby_dragons', 'nonerds_bullys'];
 
   useEffect(() => {
     dispatch(clt_actions.getClts());
   }, []);
 
-  const showMoreItems = () => {
-    setVisible((prevValue) => prevValue + 4);
-  };
+  useEffect(() => {
+    if ( collections && collections.length > 0 ) {
+        const _data = [];
+        for ( const collection of collections ) {
+            if ( collection_list.indexOf(collection.col_name) >= 0 ) {
+                _data.push(collection);
+            }
+        }
+        setData(_data);
+    }
+  }, [collections]);
 
   return (
-    <section className="tf-section live-auctions">
-      <div className="themesflat-container">
-        <div className="col-md-12">
-          <h2 className="tf-title style-1 ct">All Collections</h2>
-        </div>
-
-        <div className="collection">
-          <div className="row">
-            {data.length == 0 ? (
-              <h1></h1>
-            ) : (
-              data.slice(0, visible).map((item, index) => (
-                <div className="col-xl-3 col-lg-3 col-md-6" key={index}>
-                  <SwiperSlide>
-                    <PopularCollectionItem item={item} />
-                  </SwiperSlide>
+    <section className="tf-section collections">
+        <div className="themesflat-container">
+            <div className="row">
+                <div className="col-md-12">
+                    <div className="heading-live-auctions mg-bt-21">
+                        <h2 className="tf-title pad-l-7">
+                        Popular Collections
+                        </h2>
+                        <Link to="/collections" className="exp style2">EXPLORE MORE</Link>
+                    </div>
                 </div>
-              ))
-            )}
-
-            {visible < data.length && (
-              <div className="col-md-12 wrap-inner load-more text-center">
-                <Link
-                  to="#"
-                  id="load-more"
-                  className="sc-button loadmore fl-button pri-3"
-                  onClick={showMoreItems}
-                >
-                  <span>Load More</span>
-                </Link>
-              </div>
-            )}
-          </div>
+                {data.length == 0 ? (
+                <h1></h1>
+                ) : (
+                data.map((item, index) => (
+                    <div className="col-xl-3 col-lg-3 col-md-6" key={index}>
+                        <SwiperSlide>
+                            <PopularCollectionItem item={item} />
+                        </SwiperSlide>
+                    </div>
+                ))
+                )}
+            </div>
         </div>
-      </div>
     </section>
   );
 };
@@ -67,7 +64,7 @@ const PopularCollectionItem = (props) => (
           <div className="sc-card-collection style-2 home2 fill-height-or-more">
             <Link to={`/collection/${props.item.symbol}`}>
               <div className="media-images-collection">
-                <img src={BACKEND_URL + props.item.featureImg} />
+                <img src={BACKEND_URL + props.item.featureImg} alt="feature" />
               </div>
             </Link>
             <div className="card-bottom flex-grow-1">

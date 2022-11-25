@@ -9,9 +9,10 @@ import TopSeller from '../components/layouts/TopSeller';
 import topSellerData from '../assets/fake-data/data-top-seller'
 import TodayPicks from '../components/layouts/TodayPicks';
 import todayPickData from '../assets/fake-data/data-today-pick';
-import PopularCollection from '../components/layouts/PopularCollection';
-import popularCollectionData from '../assets/fake-data/data-popular-collection';
 import Create from '../components/layouts/Create';
+import NewCollections from "../components/layouts/NewCollections";
+import PopularCollections from "../components/layouts/PopularCollections";
+import StillMintings from "../components/layouts/StillMintings";
 
 const Home01 = () => {
 
@@ -20,10 +21,12 @@ const Home01 = () => {
             <Header />
             <Slider data={heroSliderData} />
             <LiveAuction />
-            {/* <TopSeller data={topSellerData} />
-            <TodayPicks data={todayPickData} />
-            <PopularCollection data={popularCollectionData} />
-            <Create /> */}
+            {/* <TopSeller data={topSellerData} /> */}
+            {/* <TodayPicks data={todayPickData} /> */}
+            <NewCollections />
+            <PopularCollections />
+            <StillMintings />
+            {/* <Create /> */}
             <Footer />
         </div>
     );
