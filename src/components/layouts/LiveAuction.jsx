@@ -82,7 +82,7 @@ const LiveAuction = props => {
                                                                         </div> */}
                                                                     </div>
                                                                     <div className="card-title">
-                                                                        <h5><Link to={`/collection/${item.collection.col_name}/${item.details.token_id}`}>"{item.details.name}"</Link></h5>
+                                                                        <h5><Link to={`/collection/${item.collection.col_name}/${item.details.token_id}`}>"{item.details.name?item.details.name:(item.collection.name+"#"+item.details.token_id)}"</Link></h5>
                                                                         {/* <div className="tags">{item.details.description}</div> */}
                                                                     </div>
                                                                     <div className="meta-info">

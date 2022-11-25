@@ -1,4 +1,5 @@
 import React, { useState ,useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
 import logodark from '../../assets/images/logo/logo.png'
 import logofooter from '../../assets/images/logo/logo2.png'
@@ -6,78 +7,80 @@ const Footer = () => {
     const accountList = [
         {
             title: "My Profile",
-            link: "/authors-02"
-        },
-        {
-            title: "Collection",
-            link: "/wallet-connect"
+            link: "/profile/:address"
         },
         {
             title: "Edit Profile",
             link: "/edit-profile"
         },
-        {
-            title: "Create Item",
-            link: "/create-item"
-        },
     ]
-    const resourcesList = [
-        {
-            title: "Help & Support",
-            link: "/help-center"
-        },
-        {
-            title: "Live Auctions",
-            link: "/live-auctions"
-        },
-        {
-            title: "Activity",
-            link: "/activity-01"
-        },
-    ]
+    // const resourcesList = [
+    //     {
+    //         title: "Help & Support",
+    //         link: "/help-center"
+    //     },
+    //     {
+    //         title: "Live Auctions",
+    //         link: "/live-auctions"
+    //     },
+    //     {
+    //         title: "Activity",
+    //         link: "/activity-01"
+    //     },
+    // ]
     const companyList = [
         {
-            title: "Explore",
-            link: "/explore-04"
+            title: "Collections",
+            link: "/collections"
         },
         {
-            title: "Contact Us",
-            link: "/contact-02"
+            title: "Marketplace",
+            link: "/marketplace"
         },
-        {
-            title: "Our Blog",
-            link: "/blog"
-        },
-        {
-            title: "FAQ",
-            link: "/faq"
-        },
+        // {
+        //     title: "Our Blog",
+        //     link: "/blog"
+        // },
+        // {
+        //     title: "FAQ",
+        //     link: "/faq"
+        // },
     ]
-    const socialList = [
-        {
-            icon: "fab fa-twitter",
-            link: "#"
-        },
-        {
-            icon: "fab fa-telegram-plane",
-            link: "#"
-        },
-        {
-            icon: "fab fa-youtube",
-            link: "#"
-        },
-        {
-            icon: "icon-fl-tik-tok-2",
-            link: "#"
-        },
-        {
-            icon: "icon-fl-vt",
-            link: "#"
-        },
+    // const socialList = [
+    //     {
+    //         icon: "fab fa-twitter",
+    //         link: "#"
+    //     },
+    //     {
+    //         icon: "fab fa-telegram-plane",
+    //         link: "#"
+    //     },
+    //     {
+    //         icon: "fab fa-youtube",
+    //         link: "#"
+    //     },
+    //     {
+    //         icon: "icon-fl-tik-tok-2",
+    //         link: "#"
+    //     },
+    //     {
+    //         icon: "icon-fl-vt",
+    //         link: "#"
+    //     },
 
-    ]
+    // ]
 
     const [isVisible, setIsVisible] = useState(false);
+    const isAuthenticated = useSelector((store) => store.profile.isAuthenticated);
+    const [signer, setSigner] = useState(window.localStorage.getItem('vechain_signer'));
+
+    useEffect(() => {
+        if ( isAuthenticated ) {
+            const _signer = window.localStorage.getItem('vechain_signer');
+            setSigner(_signer);
+            console.log(_signer);
+        }
+    }, [isAuthenticated]);
 
     const scrollToTop = () => {
       window.scrollTo({
@@ -100,7 +103,6 @@ const Footer = () => {
       return () => window.removeEventListener("scroll", toggleVisibility);
     }, []);
 
-      
     return (
         <div>
             <footer id="footer" className="footer-light-style clearfix bg-style">
@@ -118,19 +120,23 @@ const Footer = () => {
                                 <p className="sub-widget-logo">The people's marketplace. Here to serve the VNFT space.</p>
                             </div>
                         </div>
-                        <div className="col-lg-2 col-md-4 col-sm-5 col-5">
-                            <div className="widget widget-menu style-1">
-                                <h5 className="title-widget">My Account</h5>
-                                <ul>
-                                    {
-                                        accountList.map((item,index) =>(
-                                            <li key={index}><Link to={item.link}>{item.title}</Link></li>
-                                        ))
-                                    }
-                                </ul>
+
+                        {isAuthenticated && signer &&
+                            <div className="col-lg-2 col-md-4 col-sm-5 col-5">
+                                <div className="widget widget-menu style-1">
+                                    <h5 className="title-widget">My Account</h5>
+                                    <ul>
+                                        {
+                                            accountList.map((item,index) =>(
+                                                <li key={index}><Link to={item.link.replace(":address", signer)}>{item.title}</Link></li>
+                                            ))
+                                        }
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
-                        <div className="col-lg-2 col-md-4 col-sm-7 col-7">
+                        }
+                        
+                        {/* <div className="col-lg-2 col-md-4 col-sm-7 col-7">
                             <div className="widget widget-menu style-2">
                                 <h5 className="title-widget">Resources</h5>
                                 <ul>
@@ -141,7 +147,7 @@ const Footer = () => {
                                     }
                                 </ul>
                             </div>
-                        </div>
+                        </div> */}
                         <div className="col-lg-2 col-md-4 col-sm-5 col-5">
                             <div className="widget widget-menu fl-st-3">
                                 <h5 className="title-widget">BlackVeMarket</h5>
@@ -154,7 +160,7 @@ const Footer = () => {
                                 </ul>
                             </div>
                         </div>
-                        <div className="col-lg-3 col-md-6 col-sm-7 col-12">
+                        {/* <div className="col-lg-3 col-md-6 col-sm-7 col-12">
                             <div className="widget widget-subcribe">
                                 <h5 className="title-widget">Subscribe to Keep up 2 Date</h5>
                                 <div className="form-subcribe">
@@ -173,7 +179,7 @@ const Footer = () => {
                                     </ul>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </footer>

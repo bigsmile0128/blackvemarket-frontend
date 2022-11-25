@@ -9,7 +9,7 @@ const Collections = () => {
   const collections = useSelector((store) => store.collections.collections);
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
-  const collection_list = ['vethugs', 'veshawties', 'vemons', 'gangster_gorillazs', 'concrete_jungles_buildings', 'concrete_jungles_plots', 'dragons_of_singapura_baby_dragons', 'dragons_of_singapura_eggs', 'dragons_of_singapura_elements', 'dragons_of_singapura_tamed_teens', 'dragons_of_singapura_weapons', 'dragons_of_singapura_wild_teens', 'banana_crack'];
+  const collection_list = ['union_memberships', 'nonerds_bullys', 'no_nerds_inc._tablets'];
 
   useEffect(() => {
     dispatch(clt_actions.getClts());
@@ -31,7 +31,7 @@ const Collections = () => {
     <section className="tf-section live-auctions">
       <div className="themesflat-container">
         <div className="col-md-12">
-          <h2 className="tf-title style-1 ct">BVM Studios</h2>
+          <h2 className="tf-title style-1 ct">No Nerds Incs</h2>
         </div>
 
         <div className="collection">

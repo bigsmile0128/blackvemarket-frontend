@@ -42,7 +42,6 @@ const Header = () => {
     logoutToggle.current.classList.toggle("active");
     dispatch(actions.logout());
     window.localStorage.removeItem("vechain_signer");
-    console.log("logout!!!");
   };
 
   const menuLeft = useRef(null);
@@ -60,7 +59,6 @@ const Header = () => {
   };
 
   const showLogoutToggle = () => {
-    console.log("Disconnect!!!");
     logoutToggle.current.classList.toggle("active");
   };
 
@@ -169,7 +167,7 @@ const Header = () => {
                   </ul>
                 </nav>
                 <div className="flat-search-btn flex">
-                  <div className="header-search flat-show-search" id="s1">
+                  {/* <div className="header-search flat-show-search" id="s1">
                     <Link
                       to="#"
                       className="show-search header-search-trigger"
@@ -202,8 +200,8 @@ const Header = () => {
                         </button>
                       </form>
                     </div>
-                  </div>
-
+                  </div> */}
+                  <div className="header-search flat-show-search" id="s1"></div>
                   <div className="sc-btn-top mg-r-12" id="site-header">
                     {walletButton}
                   </div>

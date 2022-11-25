@@ -66,7 +66,9 @@ export const fetchProfile = (walletaddr) => {
         });
         if (res.data) {
             if (res.data.status == "success") {
+              if ( res.data.user ) {
                 dispatch(walletConnectSuccess(res.data));
+              }
             }
         }
     };

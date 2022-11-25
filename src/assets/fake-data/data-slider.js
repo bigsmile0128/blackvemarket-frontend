@@ -1,5 +1,5 @@
-import img1 from '../images/slider/yregasrhtrgf.png';
-import img2 from '../images/slider/V_Pet_Nation_20220225193945.png';
+import img1 from '../images/slider/gangster.png';
+import img2 from '../images/slider/bully.png';
 import imgbg1 from '../images/slider/bg_slide_1.png'
 import imgbg2 from '../images/slider/bg_slide_1.png'
 

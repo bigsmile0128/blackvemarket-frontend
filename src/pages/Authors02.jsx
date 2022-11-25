@@ -216,7 +216,7 @@ const Authors02 = () => {
                                 <div className="card-title">
                                   <h5 className="style2">
                                     <Link to={`/collection/${data.collection.col_name}/${data.nft.token_id}`}>
-                                      {data.nft.name}
+                                      {data.nft.name?data.nft.name:(data.collection.name+'#'+data.nft.token_id)}
                                     </Link>
                                   </h5>
                                   <div className="price">

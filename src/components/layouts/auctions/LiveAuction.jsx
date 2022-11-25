@@ -69,7 +69,7 @@ const LiveAuctionItem = props => (
                 }
             </div>
             <div className="card-title">
-                <h5><Link to={`/collection/${props.item.collection.col_name}/${props.item.details.token_id}`}>{props.item.details.name}</Link></h5>
+                <h5><Link to={`/collection/${props.item.collection.col_name}/${props.item.details.token_id}`}>{props.item.details.name?props.item.details.name:(props.item.collection.name+"#"+props.item.details.token_id)}</Link></h5>
             </div>
             <div className="meta-info">
                 <div className="author">

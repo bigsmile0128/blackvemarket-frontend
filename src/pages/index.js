@@ -18,6 +18,7 @@ import FAQ from "./FAQ";
 import Contact02 from "./Contact02";
 import Collectibles from "./Collectibles";
 import BVMCollectibles from "./BVMCollectibles";
+import NNICollectibles from "./NNICollectibles";
 import CreateCollection from "./CreateCollection";
 import PlaceBids from "../components/layouts/auctions/PlaceBids";
 import ListItem from "./ListItem";
@@ -42,6 +43,7 @@ const routes = [
   { path: "/faq", component: <FAQ /> },
   { path: "/contact-02", component: <Contact02 /> },
   { path: "/bvm_studios", component: <BVMCollectibles /> },
+  { path: "/no_nerds_inc", component: <NNICollectibles /> },
   { path: "/collections", component: <Collectibles /> },
   { path: "/add-collection", component: <CreateCollection /> },
   { path: "/place-bid", component: <PlaceBids /> },

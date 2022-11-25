@@ -541,7 +541,7 @@ const ItemDetails01 = () => {
               <div className="col-xl-6 col-md-12">
                 <div className="content-right">
                   <div className="sc-item-details">
-                    <h2 className="style2"> {itemDetails?.name} </h2>
+                    <h2 className="style2"> {itemDetails?.name?itemDetails?.name:(collection?.name+'#'+itemDetails?.token_id)} </h2>
                     <Link to={`/collection/${collection?.col_name}`}><h6 className="style2"> {collection?.name} </h6></Link>
                     <p className="content-description mt-3">{itemDetails?.description}</p>
 
@@ -562,7 +562,7 @@ const ItemDetails01 = () => {
 
                     <div className="sc-card-detail">
                       <div className="content-row-item"><span>Name</span></div>
-                      <div className="content-row-detail">{itemDetails.name}</div>
+                      <div className="content-row-detail">{itemDetails.name?itemDetails.name:(collection.name+'#'+itemDetails.token_id)}</div>
                     </div>
                     <div className="sc-card-detail">
                       <div className="content-row-item"><span>Token ID</span></div>

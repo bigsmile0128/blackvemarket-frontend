@@ -15,7 +15,6 @@ import PopularCollections from "../components/layouts/PopularCollections";
 import StillMintings from "../components/layouts/StillMintings";
 
 const Home01 = () => {
-
     return (
         <div className='home-1'>
             <Header />

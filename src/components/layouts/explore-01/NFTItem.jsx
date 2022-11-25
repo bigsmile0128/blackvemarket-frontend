@@ -14,7 +14,7 @@ const NFTItem = (props) => (
       <div className="card-title">
         <h5 className="style2">
           <Link to={`/collection/${props.collection.col_name}/${props.item.token_id}`}>
-            {props.item.name}
+            {props.item.name?props.item.name:(props.collection.name+"#"+props.item.token_id)}
           </Link>
         </h5>
         <div className="price">
