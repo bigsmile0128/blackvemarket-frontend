@@ -1,9 +1,10 @@
-import React, { useReducer, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import Connex from "@vechain/connex";
+
 import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
-import Connex from "@vechain/connex";
 import * as actions from "../store/actions/profileActions";
 import img1 from "../assets/images/icon/VeThor.jpg";
 import img2 from "../assets/images/icon/Sync2.jpg";

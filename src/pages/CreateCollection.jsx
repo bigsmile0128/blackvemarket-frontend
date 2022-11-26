@@ -1,16 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import Connex from "@vechain/connex";
+import "react-tabs/style/react-tabs.css";
+
 import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
-import "react-tabs/style/react-tabs.css";
 import img1 from "../assets/images/box-item/image-box-6.jpg";
-import { useRef } from "react";
 import * as actions from "../store/actions/collectionActions";
 import * as abis from "../assets/constants/abis";
-import contracts from "../assets/contracts/status.json";
 import { NODE, NETWORK } from "../assets/constants";
-import Connex from "@vechain/connex";
 import { uriToHttp } from "../utils/utils";
 // import { create } from "ipfs-http-client";
 

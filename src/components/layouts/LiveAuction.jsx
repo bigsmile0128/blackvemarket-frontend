@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
-import Countdown from "react-countdown";
-import * as actions from "../../store/actions/collectionActions";
-
 import 'swiper/scss';
 import 'swiper/scss/navigation';
 import 'swiper/scss/pagination';
+import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
+import Countdown from "react-countdown";
+
+import * as actions from "../../store/actions/collectionActions";
 import { sliceAddress, toPriceFormat } from '../../utils/utils';
 
 const LiveAuction = props => {

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { SwiperSlide } from "swiper/react";
 import { useSelector, useDispatch } from "react-redux";
+
 import * as clt_actions from "../../store/actions/collectionActions";
 import { BACKEND_URL } from "../../assets/constants";
 
