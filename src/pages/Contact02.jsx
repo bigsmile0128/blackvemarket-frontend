@@ -34,9 +34,10 @@ const ContactUs = () => {
                                 <h2 className="tf-title-heading ct style-2 mg-bt-12">
                                     Drop Up A Message
                                 </h2>
-                                <h5 className="sub-title ct style-1 pad-0-15">
+                                <br/>
+                                {/* <h5 className="sub-title ct style-1 pad-0-15">
                                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum obcaecati dignissimos quae quo ad iste ipsum officiis deleniti asperiores sit.
-                                </h5>
+                                </h5> */}
                                 <div className="form-inner">
                                     <form id="contactform" noValidate="novalidate" className="form-submit">
                                         <input id="name" name="name" tabIndex="1" aria-required="true" required type="text" placeholder="Your Full Name" />
