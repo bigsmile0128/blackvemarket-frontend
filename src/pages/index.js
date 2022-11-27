@@ -15,7 +15,7 @@ import CreateItem from "./CreateItem";
 import EditProfile from "./EditProfile";
 import NoResult from "./NoResult";
 import FAQ from "./FAQ";
-import Contact02 from "./Contact02";
+import ContactUs from "./Contact02";
 import Collectibles from "./Collectibles";
 import BVMCollectibles from "./BVMCollectibles";
 import NNICollectibles from "./NNICollectibles";
@@ -41,7 +41,7 @@ const routes = [
   { path: "/edit-profile", component: <EditProfile /> },
   { path: "/no-result", component: <NoResult /> },
   { path: "/faq", component: <FAQ /> },
-  { path: "/contact-02", component: <Contact02 /> },
+  { path: "/contactus", component: <ContactUs /> },
   { path: "/bvm_studios", component: <BVMCollectibles /> },
   { path: "/no_nerds_inc", component: <NNICollectibles /> },
   { path: "/collections", component: <Collectibles /> },

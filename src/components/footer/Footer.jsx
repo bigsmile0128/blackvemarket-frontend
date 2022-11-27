@@ -37,38 +37,41 @@ const Footer = () => {
             title: "Marketplace",
             link: "/marketplace"
         },
+        {
+            title: "Contact Us",
+            link: "/contactus"
+        },
         // {
         //     title: "Our Blog",
         //     link: "/blog"
         // },
-        // {
-        //     title: "FAQ",
-        //     link: "/faq"
-        // },
+        {
+            title: "FAQ",
+            link: "/faq"
+        },
     ]
-    // const socialList = [
-    //     {
-    //         icon: "fab fa-twitter",
-    //         link: "#"
-    //     },
-    //     {
-    //         icon: "fab fa-telegram-plane",
-    //         link: "#"
-    //     },
-    //     {
-    //         icon: "fab fa-youtube",
-    //         link: "#"
-    //     },
-    //     {
-    //         icon: "icon-fl-tik-tok-2",
-    //         link: "#"
-    //     },
-    //     {
-    //         icon: "icon-fl-vt",
-    //         link: "#"
-    //     },
-
-    // ]
+    const socialList = [
+        {
+            icon: "fab fa-twitter",
+            link: "#"
+        },
+        {
+            icon: "fab fa-telegram-plane",
+            link: "#"
+        },
+        {
+            icon: "fab fa-youtube",
+            link: "#"
+        },
+        {
+            icon: "icon-fl-tik-tok-2",
+            link: "#"
+        },
+        {
+            icon: "icon-fl-vt",
+            link: "https://discord.gg/vs45Gj4n"
+        },
+    ]
 
     const [isVisible, setIsVisible] = useState(false);
     const isAuthenticated = useSelector((store) => store.profile.isAuthenticated);
@@ -160,7 +163,7 @@ const Footer = () => {
                                 </ul>
                             </div>
                         </div>
-                        {/* <div className="col-lg-3 col-md-6 col-sm-7 col-12">
+                        <div className="col-lg-3 col-md-6 col-sm-7 col-12">
                             <div className="widget widget-subcribe">
                                 <h5 className="title-widget">Subscribe to Keep up 2 Date</h5>
                                 <div className="form-subcribe">
@@ -173,13 +176,13 @@ const Footer = () => {
                                     <ul>
                                         {
                                             socialList.map((item,index) =>(
-                                                <li key={index}><Link to={item.link}><i className={item.icon}></i></Link></li>
+                                                <li key={index}><a href={item.link} target="_blank" rel="noreferer"><i className={item.icon}></i></a></li>
                                             ))
                                         }
                                     </ul>
                                 </div>
                             </div>
-                        </div> */}
+                        </div>
                     </div>
                 </div>
             </footer>
