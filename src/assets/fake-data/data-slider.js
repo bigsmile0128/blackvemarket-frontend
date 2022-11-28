@@ -5,7 +5,7 @@ import imgbg2 from '../images/slider/bg_slide_1.png'
 
 
 const heroSliderData = [{
-        title_1: "Collect, Create, Buy &",
+        title_1: "Collect, Trade, Buy &",
         title_2: "Sell extraordinary",
         title_3: "VeChain NFTs",
         description: "BlackVeMarket, the people's Marketplace. ",
@@ -13,7 +13,7 @@ const heroSliderData = [{
         imgbg: imgbg1
     },
     {
-        title_1: "Collect, Create, Buy &",
+        title_1: "Collect, Trade, Buy &",
         title_2: "Sell extraordinary",
         title_3: "VeChain NFTs",
         description: "BlackVeMarket, the people's Marketplace. ",

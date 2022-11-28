@@ -17,10 +17,11 @@ import Countdown from "react-countdown";
 import * as actions from "../store/actions/collectionActions";
 import * as profileActions from "../store/actions/profileActions";
 import { uriToHttp, uriToImage, sliceAddress, toWei, numberWithCommas, numberRound, fromWei, toPriceFormat } from "../utils/utils";
-import { NODE, NETWORK, BACKEND_URL } from "../assets/constants";
+import { NODE, NETWORK, BACKEND_URL, S3_URL } from "../assets/constants";
 import * as abis from "../assets/constants/abis";
 import Ticker from "../utils/ticker";
 import avt from "../assets/images/avatar/avt-author-tab.png";
+import CustomImage from "../components/layouts/CustomImage";
 
 const ItemDetails01 = () => {
   const { col_name, token_id } = useParams();
@@ -514,17 +515,30 @@ const ItemDetails01 = () => {
       <div className="item-details">
         <ToastContainer />
         <Header />
+        <section className="flat-title-page inner">
+            <div className="overlay"></div>
+            <div className="themesflat-container">
+                <div className="row">
+                    <div className="col-md-12">
+                        <div className="page-title-heading mg-bt-12">
+                            <h1 className="heading text-center">{itemDetails?.name?itemDetails?.name:(collection?.name+'#'+itemDetails?.token_id)}</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
         <div className="tf-section tf-item-details">
           <div className="themesflat-container" style={{marginTop: '3rem'}}>
-            <div className="row" style={{paddingBottom: "30px"}}>
+            <div className="row" style={{paddingBottom: "8rem"}}>
               <div className="col-xl-6 col-md-12">
-                <div className="content-left">
-                  <div className="media">
+                <div className="content-left" style={{height: '100%'}}>
+                  <div className="media" style={{height: '100%'}}>
                     {itemDetails && (
-                      <img
+                      <CustomImage
                         src={uriToImage(itemDetails.image)}
-                        style={{ borderRadius: "10px", width:"100%", height: "600px"}}
                         alt="Axies"
+                        customClassName='m-auto'
+                        className='b-radius'
                       />
                     )}
                   </div>
@@ -542,7 +556,7 @@ const ItemDetails01 = () => {
                       <div className="meta-info">
                           <div className="author">
                               <div className="avatar">
-                                  <img src={user&&user.avatar?BACKEND_URL + user.avatar:avt} alt="Avatar" />
+                                  <img src={user&&user.avatar?S3_URL + user.avatar:avt} alt="Avatar" />
                               </div>
                               <div className="info">
                                   <span>Owned By</span>
@@ -670,11 +684,19 @@ const ItemDetails01 = () => {
                     <div className="flat-tabs themesflat-tabs">
                       <Tabs>
                         <TabList>
-                          <Tab>Bids</Tab>
                           <Tab>Properties</Tab>
+                          <Tab>Bids</Tab>
                           <Tab>Details</Tab>
                         </TabList>
 
+                        <TabPanel>
+                          {itemDetails.attributes.map((item, idx) => (
+                            <div className="sc-card-detail" key={idx}>
+                              <div className="content-row-item"><span>{item['trait_type']?item['trait_type']:item['traitType']}</span></div>
+                              <div className="content-row-detail">{item["value"]}</div>
+                            </div>
+                          ))}
+                        </TabPanel>
                         <TabPanel>
                           <ul className="bid-history-list">
                             {offerList.map((item, index) => (
@@ -701,14 +723,6 @@ const ItemDetails01 = () => {
                               </li>
                             ))}
                           </ul>
-                        </TabPanel>
-                        <TabPanel>
-                          {itemDetails.attributes.map((item, idx) => (
-                            <div className="sc-card-detail" key={idx}>
-                              <div className="content-row-item"><span>{item['trait_type']?item['trait_type']:item['traitType']}</span></div>
-                              <div className="content-row-detail">{item["value"]}</div>
-                            </div>
-                          ))}
                         </TabPanel>
                         <TabPanel>
                           <div className="provenance">

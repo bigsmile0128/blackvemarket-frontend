@@ -74,19 +74,12 @@ export const fetchProfile = (walletaddr) => {
     };
 };
 
-export const editProfile = (profiles) => {
-  return (dispatch) => {
-    dispatch(itemsAreLoading());
-    axios
-      .post(`${BASE_URL}/users/edit-profile`, profiles)
-      .then((res) => {
-        if (res.data) {
-          console.log("edit profile actions: ", res.data);
-          dispatch(itemsFetchDataSuccess(res.data));
-        }
-      })
-      .catch(() => dispatch(itemsHaveError(true)));
-  };
+export const editProfile = async (profiles) => {
+  const res = await axios
+                    .post(`${BASE_URL}/users/edit-profile`, profiles);
+  if ( res.data ) {
+    console.log("edit profile actions: ", res.data);
+  }
 };
 
 export const userRegister = (walletaddr) => {

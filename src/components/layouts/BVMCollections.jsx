@@ -10,7 +10,6 @@ const Collections = () => {
   const collections = useSelector((store) => store.collections.collections);
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
-  const collection_list = ['vethugs', 'veshawties', 'vemons', 'gangster_gorillazs', 'concrete_jungles_buildings', 'concrete_jungles_plots', 'dragons_of_singapura_baby_dragons', 'dragons_of_singapura_eggs', 'dragons_of_singapura_elements', 'dragons_of_singapura_tamed_teens', 'dragons_of_singapura_weapons', 'dragons_of_singapura_wild_teens', 'banana_crack'];
 
   useEffect(() => {
     dispatch(clt_actions.getClts());
@@ -20,7 +19,7 @@ const Collections = () => {
     if ( collections && collections.length > 0 ) {
         const _data = [];
         for ( const collection of collections ) {
-            if ( collection_list.indexOf(collection.col_name) >= 0 ) {
+            if ( collection.bvm === true ) {
                 _data.push(collection);
             }
         }

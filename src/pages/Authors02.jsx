@@ -7,11 +7,12 @@ import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
 
 import avt from "../assets/images/avatar/avt-author-tab.png";
-import { BACKEND_URL } from "../assets/constants";
+import { BACKEND_URL, S3_URL } from "../assets/constants";
 import { ToastContainer } from "react-toastify";
 import { toast } from 'react-toastify';
 import * as actions from "../store/actions/profileActions";
 import { uriToHttp } from "../utils/utils";
+import CustomImage from "../components/layouts/CustomImage";
 
 const Authors02 = () => {
   const { address } = useParams();
@@ -19,16 +20,17 @@ const Authors02 = () => {
   const signer = window.localStorage.getItem("vechain_signer");
   const [collected, setCollected] = useState([]);
   const [filtered, setFiltered] = useState([]);
+  const [fetchCollections, setFetchCollections] = useState(false);
 
   const [menuTab] = useState([
     {
       class: "active",
       name: "Collected",
-    },
-    {
-      class: "",
-      name: "On Sale",
     }
+    // ,{
+    //   class: "",
+    //   name: "On Sale",
+    // }
   ]);
 
   const [sort, setSort] = useState(0);
@@ -51,6 +53,7 @@ const Authors02 = () => {
   const getUserProfile = async(walletaddr) => {
     const _user = await actions.getProfile(walletaddr);
     setUser(_user);
+    await setFetchCollections(false);
     const _collected = await actions.getCollected(walletaddr);
     const _collections = ["All Collections"];
     for ( const collected_item of _collected ) {
@@ -62,6 +65,7 @@ const Authors02 = () => {
     setFiltered(_collected);
     setVisible(8);
     setCollections(_collections);
+    setFetchCollections(true);
   }
 
   useEffect(() => {
@@ -72,13 +76,13 @@ const Authors02 = () => {
       }
       filtered_items = filtered_items.sort(function (a, b) {
         if ( sort == 0 ) {
-          return a.nft.token_id - b.nft.token_id;
-        } else if ( sort == 1 ) {
           return b.nft.token_id - a.nft.token_id;
+        } else if ( sort == 1 ) {
+          return a.nft.token_id - b.nft.token_id;
         } else if ( sort == 2 ) {
-          return a.nft.rarity - b.nft.rarity;
+          return b.nft.rarity??0 - a.nft.rarity??0;
         } else if ( sort == 3 ) {
-          return b.nft.rarity - a.nft.rarity;
+          return a.nft.rarity??0 - b.nft.rarity??0;
         }
       });
       setFiltered(filtered_items);
@@ -111,22 +115,40 @@ const Authors02 = () => {
     <div className="authors-2">
       <Header />
       <ToastContainer />
-      <section className="flat-title-page inner collection-title-page" style={{paddingTop: '0px'}}></section>
+      {/* <section className="flat-title-page inner collection-title-page" style={{paddingTop: '0px'}}></section> */}
+      <section className="flat-title-page inner">
+          <div className="overlay"></div>
+          <div className="themesflat-container">
+              <div className="row">
+                  <div className="col-md-12">
+                      <div className="page-title-heading mg-bt-12">
+                          <h1 className="heading text-center">My Profile</h1>
+                      </div>
+                  </div>
+              </div>
+          </div>                    
+      </section>
+      {user == null &&
+        <div className="spinner-container">
+            <div className="loading-spinner">
+            </div>
+        </div>
+      }
       {user && 
         <section className="tf-section authors">
           <div className="themesflat-container">
             <div className="flat-tabs tab-authors">
               <div className="author-profile flex">
                 <div className="feature-profile">
-                  <img
-                    src={user.avatar ? BACKEND_URL + user.avatar : avt}
+                  <CustomImage
+                    src={user.avatar ? S3_URL + user.avatar : avt}
                     alt="Axies"
                     className="avatar"
                   />
                 </div>
-                <div className="infor-profile">
-                  <h2 className="title">{user.name || ""}</h2>
-                  <p className="content">{user.bio || ""}</p>
+                <div className="infor-profile style2">
+                  <h2 className="title">{user.name || " "}&nbsp;</h2>
+                  <p className="content">{user.bio || " "}&nbsp;</p>
                   <form>
                     <input
                       type="text"
@@ -141,26 +163,30 @@ const Authors02 = () => {
                 </div>
                 <div className="widget-social style-3 ">
                   <ul className="ml-auto">
+                    {user.twitter&&
                     <li>
                       <a href={user.twitter?user.twitter:'#'} target="_blank" rel="noreferrer">
                         <i className="fab fa-twitter"></i>
                       </a>
-                    </li>
+                    </li>}
+                    {user.instagram&&
                     <li>
                       <a href={user.instagram?user.instagram:'#'} target="_blank" rel="noreferrer">
                         <i className="fab fa-instagram"></i>
                       </a>
-                    </li>
+                    </li>}
+                    {user.url&&
                     <li>
                       <a href={user.url?user.url:'#'} target="_blank" rel="noreferrer">
                         <i className="fa fa-globe"></i>
                       </a>
-                    </li>
+                    </li>}
+                    {user.email&&
                     <li className="style-2">
                       <a href={user.email?`mailto: ${user.email}`:'#'} target="_blank" rel="noreferrer">
                         <i className="fa fa-envelope"></i>
                       </a>
-                    </li>
+                    </li>}
                     {signer == address && 
                     <li>
                       <Link to="/edit-profile">
@@ -180,7 +206,7 @@ const Authors02 = () => {
                 <div className="content-tab">
                   <div className="content-inner">
                       <TabPanel style={{width: '100%'}} className="w-100 d-block">
-                        <div className="seclect-box style3" style={{float: 'none'}}>
+                        <div className="seclect-box style3 hidden-sm-down" style={{float: 'none'}}>
                             <div className="mr-5 flex">
                               <p className="m-auto">Select Project</p>
                             </div>
@@ -204,6 +230,11 @@ const Authors02 = () => {
                                 </ul>
                             </div>    
                         </div>
+                        {fetchCollections == false &&
+                        <div className="spinner-container">
+                            <div className="loading-spinner">
+                            </div>
+                        </div> }
                         <div className="row mt-5">
                           {filtered.slice(0, visible).map((data, index) => (
                             <div className="col-xl-3 col-lg-4 col-md-6 col-12" key={index}>
@@ -221,7 +252,7 @@ const Authors02 = () => {
                                   </h5>
                                   <div className="price">
                                     <span>Rank</span>
-                                    <h5 style={{overflow: 'initial'}}> {data.nft.rank}</h5>
+                                    <h5 style={{overflow: 'initial'}}> {data.nft.rank} &nbsp;</h5>
                                   </div>
                                 </div>
                                 <div className="meta-info">
@@ -255,7 +286,7 @@ const Authors02 = () => {
                           </div>
                         )}
                       </TabPanel>
-                      <TabPanel></TabPanel>
+                      {/* <TabPanel></TabPanel> */}
                       {/* {panelTab.map((item, index) => (
                         <TabPanel key={index}>
                           {item.dataContent

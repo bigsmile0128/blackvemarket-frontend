@@ -59,7 +59,7 @@ const TodayPicks = (props) => {
     <section className="tf-section sc-explore-1">
       {collection && (
         <div className="themesflat-container">
-          <div className="row">
+          <div className="row pt-5">
             <div className="col-md-12">
               <div className="wrap-box explore-1 flex mg-bt-40">
                 <div className="collection-header">
@@ -67,7 +67,7 @@ const TodayPicks = (props) => {
                     {numberWithCommas(collection.total_supply)} tokens
                   </span>
                 </div>
-                <div className="seclect-box style-2 box-right">
+                <div className="seclect-box style-2 box-right hidden-sm-down">
                   <div className="mx-5 flex">
                     <p className="m-auto">Sort by</p>
                   </div>
@@ -82,6 +82,12 @@ const TodayPicks = (props) => {
                 </div>
               </div>
             </div>
+            
+            {nfts.length === 0 &&
+            <div className="spinner-container m-auto">
+                <div className="loading-spinner">
+                </div>
+            </div> }
             {nfts.map((item, index) => (
               <NFTItem key={index} item={item} collection={collection} />
             ))}

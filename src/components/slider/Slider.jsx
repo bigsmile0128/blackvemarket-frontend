@@ -67,15 +67,27 @@ const SliderItem = (props) => (
                   <div className="flat-bt-slider flex style2">
                     <Link
                       to="/collections"
-                      className="sc-button header-slider style style-1 rocket fl-button pri-1"
+                      className="sc-button header-slider style hidden-sm-down style-1 rocket fl-button pri-1"
                     >
                       <span>Explore Collections</span>
                     </Link>
                     <Link
+                      to="/collections"
+                      className="sc-button header-slider style hidden-md-up style-1 fl-button pri-1"
+                    >
+                      <span className="pl-0">Collections</span>
+                    </Link>
+                    <Link
                       to="/marketplace"
-                      className="sc-button header-slider style style-1 note fl-button pri-1"
+                      className="sc-button header-slider style style-1 hidden-sm-down note fl-button pri-1"
                     >
                       <span>Marketplace</span>
+                    </Link>
+                    <Link
+                      to="/marketplace"
+                      className="sc-button header-slider style style-1 hidden-md-up fl-button pri-1"
+                    >
+                      <span className="pl-0">Marketplace</span>
                     </Link>
                   </div>
                 </div>

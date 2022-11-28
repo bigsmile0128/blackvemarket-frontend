@@ -3730,8 +3730,8 @@ section.today-picks {
 /* author-tab -----------------------------------------*/
 
 .tab-authors .author-profile {
-  /* background: url("../images/item-background/bg-authors.jpg") no-repeat center;
-  background-size: cover; */
+  background: url("../images/item-background/bg-profile.webp") no-repeat center;
+  background-size: cover;
   -webkit-border-radius: 12px 12px 0 0;
   -ms-border-radius: 12px 12px 0 0;
   -o-border-radius: 12px 12px 0 0;
@@ -3742,8 +3742,8 @@ section.today-picks {
 }
 
 .is_dark .tab-authors .author-profile {
-  /* background: url("../images/item-background/bg-authors2.jpg") no-repeat center; */
-  /* background-size: cover; */
+  background: url("../images/item-background/bg-profile.webp") no-repeat center;
+  background-size: cover;
   -webkit-border-radius: 12px 12px 0 0;
   -ms-border-radius: 12px 12px 0 0;
   -o-border-radius: 12px 12px 0 0;
@@ -8686,4 +8686,12 @@ button.accordion-button {
 .slider-labels .title {
   color: #8a8aa0;
   margin-right: 3px;
+}
+
+.meta-info .author .info h6 a {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 120px;
+  display: inline-block;
 }

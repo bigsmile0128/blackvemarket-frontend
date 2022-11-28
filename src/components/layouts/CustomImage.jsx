@@ -21,15 +21,18 @@ export default function CustomImage(props) {
     }, [loaded])
 
     return (
-        <div className="custom-image">
+        <div className={props.customClassName?(props.customClassName + " custom-image"):"custom-image"}>
             {!loaded && !errored && 
                 <div className="spinner-container">
                     <div className="loading-spinner">
                     </div>
                 </div>
             }
-            {errored && <img alt='' src='/assets/images/no_image.webp' />}
-            {<img alt='' src={props.src} style={imgStyle} onLoad={() => setLoaded(true)} onError={onErrorHandle} />}
+            {errored && <div className="spinner-container">
+                    <div className="loading-spinner">
+                    </div>
+                </div>}
+            {<img alt='' src={props.src} className={props.className?props.className:""} style={imgStyle} onLoad={() => setLoaded(true)} onError={onErrorHandle} />}
         </div>
     );
 }

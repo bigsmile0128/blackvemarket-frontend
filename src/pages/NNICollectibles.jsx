@@ -25,7 +25,7 @@ const NNICollectibles = () => {
                   <li>
                     <Link to="#">Collections</Link>
                   </li>
-                  <li>No Nerds Incs</li>
+                  <li>No Nerds Inc</li>
                 </ul>
               </div>
             </div>

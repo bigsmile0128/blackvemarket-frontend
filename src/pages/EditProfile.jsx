@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
-import { BACKEND_URL } from "../assets/constants";
+import { BACKEND_URL, S3_URL } from "../assets/constants";
 import * as actions from "../store/actions/profileActions";
 import avt from "../assets/images/avatar/avt-author-tab.png";
 
@@ -14,20 +14,41 @@ const EditProfile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const signer = window.localStorage.getItem("vechain_signer");
+  const [isUpdating, setIsUpdating] = useState(false);
 
-  const [selectedAvatar, setSelectedAvatar] = useState(
-    profileInfo.avatar ? BACKEND_URL + profileInfo.avatar : avt
-  );
+  const [selectedAvatar, setSelectedAvatar] = useState(avt);
   
   const [formData, setFormData] = useState({
-    name: profileInfo.name || "",
-    url: profileInfo.url || "",
-    email: profileInfo.email || "",
-    twitter: profileInfo.twitter || "",
-    instagram: profileInfo.instagram || "",
-    bio: profileInfo.bio || "",
-    avatar: profileInfo.avatar || {},
+    name: "",
+    url: "",
+    email: "",
+    twitter: "",
+    instagram: "",
+    bio: "",
+    avatar: {},
   });
+
+  useEffect(() => {
+    if ( profileInfo && profileInfo.name ) {
+      const data = {
+        name: profileInfo.name || "",
+        url: profileInfo.url || "",
+        email: profileInfo.email || "",
+        twitter: profileInfo.twitter || "",
+        instagram: profileInfo.instagram || "",
+        bio: profileInfo.bio || "",
+        avatar: profileInfo.avatar || {},
+      };
+      setFormData(data);
+      setSelectedAvatar(profileInfo.avatar ? S3_URL + profileInfo.avatar : avt);
+    }
+  }, [profileInfo]);
+
+  useEffect(() => {
+    if ( signer ) {
+      actions.fetchProfile(signer);
+    }
+  }, [signer]);
 
   const onInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -39,7 +60,8 @@ const EditProfile = () => {
     setFormData({ ...formData, [e.target.name]: e.target.files[0] });
     console.log(path);
   };
-  const uploadProfile = () => {
+  const uploadProfile = async () => {
+    await setIsUpdating(true);
     let fd = new FormData();
     fd.append("name", formData.name);
     fd.append("url", formData.url);
@@ -51,7 +73,8 @@ const EditProfile = () => {
     fd.append("walletaddr", signer);
 
     if (authentication) {
-      dispatch(actions.editProfile(fd));
+      await actions.editProfile(fd);
+      await setIsUpdating(false);
       navigate(`/profile/${signer}`);
     } else {
       alert("Please Connect Wallet!");
@@ -85,6 +108,13 @@ const EditProfile = () => {
           </div>
         </div>
       </section>
+      {(formData == null || isUpdating ) &&
+      <div className="spinner-container">
+          <div className="loading-spinner">
+          </div>
+      </div>
+      }
+      {formData && !isUpdating && 
       <div className="tf-create-item tf-section">
         <div className="themesflat-container">
           <div className="row">
@@ -240,7 +270,7 @@ const EditProfile = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> }
       <Footer />
     </div>
   );

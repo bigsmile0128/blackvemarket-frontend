@@ -1596,6 +1596,7 @@ header {
   position: absolute;
   right: 15px;
   top: 0px;
+  bottom: 0px;
   justify-content: end;
   align-items: center;
 }
@@ -3667,7 +3668,7 @@ code {
   padding-top: 80px;
 }
 
-.collection-overlay img.collection-logo {
+.collection-logo > img {
   position: absolute;
   bottom: -60px;
   left: 60px;
@@ -3729,6 +3730,14 @@ code {
   font-style: italic;
   font-size: 16px;
   line-height: 22px;
+}
+
+.body.light .sc-card-detail .content-row-detail {
+  color: #093a5f;
+}
+
+.body.light .content-description {
+  color: #093a5f;
 }
 
 .Toastify {
@@ -3813,4 +3822,52 @@ code {
   border-radius: 50%;
   animation: spinner 1.5s linear infinite;
   margin: 100px auto;
+}
+
+.tab-authors .author-profile .avatar {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+}
+
+@media (min-width: 768px) {
+  .tab-authors .author-profile .avatar {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+  }
+}
+
+@media (min-width: 1024px) {
+  .tab-authors .author-profile .avatar {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+  }
+}
+
+@media (min-width: 1430px) {
+  .tab-authors .author-profile .avatar {
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+  }
+}
+
+.b-radius {
+  border-radius: 30px;
+}
+
+.collection-detail-page .themesflat-container {
+  padding-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .collection-detail-page .themesflat-container {
+    padding-top: 80px;
+  }
+}
+
+.collection-heading {
+  color: inherit !important;
 }

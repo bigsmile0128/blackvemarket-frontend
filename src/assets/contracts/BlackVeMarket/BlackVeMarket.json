@@ -2,7 +2,7 @@
   "_format": "hh-sol-artifact-1",
   "contractName": "BlackVeMarket",
   "sourceName": "contracts/BlackVeMarket.sol",
-  "address": "0x58b3157e5b63c76864562dff7f5f4c60b72e33cd",
+  "address": "0x78e002fa186108b00b4cc193effcdc5ac5a45830",
   "abi": [
     {
       "inputs": [

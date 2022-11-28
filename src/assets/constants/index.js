@@ -8,6 +8,7 @@ const NETWORK = "main";
 
 const BASE_URL = process.env.NODE_ENV=="development"?"http://localhost:9999/api/v1":"https://blackvemarket-backend.herokuapp.com/api/v1";
 const BACKEND_URL = process.env.NODE_ENV=="development"?"http://localhost:9999/upload/":"https://blackvemarket-backend.herokuapp.com/upload/";
+const S3_URL = "https://bvm-marketplace.fra1.digitaloceanspaces.com/";
 
 //==========main heroku==========//
 
@@ -23,4 +24,4 @@ const ITEMSPERPAGE = 12;
 // const nftFactoryAddress = "0xa720D8fDdddedB9E80C9Adf75335E407cBD341D7";
 // const auctionAddress = "0x798807bb4d6673a2Bb2F55a0E119D5c1a1e8F901";
 
-export { API_URL, NODE, NETWORK, ITEMSPERPAGE, BASE_URL, BACKEND_URL };
+export { API_URL, NODE, NETWORK, ITEMSPERPAGE, BASE_URL, BACKEND_URL, S3_URL };

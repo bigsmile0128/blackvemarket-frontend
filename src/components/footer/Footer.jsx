@@ -37,10 +37,10 @@ const Footer = () => {
             title: "Marketplace",
             link: "/marketplace"
         },
-        {
-            title: "Contact Us",
-            link: "/contactus"
-        },
+        // {
+        //     title: "Contact Us",
+        //     link: "/contactus"
+        // },
         // {
         //     title: "Our Blog",
         //     link: "/blog"

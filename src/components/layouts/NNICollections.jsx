@@ -10,7 +10,6 @@ const Collections = () => {
   const collections = useSelector((store) => store.collections.collections);
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
-  const collection_list = ['union_memberships', 'nonerds_bullys', 'no_nerds_inc._tablets'];
 
   useEffect(() => {
     dispatch(clt_actions.getClts());
@@ -20,7 +19,7 @@ const Collections = () => {
     if ( collections && collections.length > 0 ) {
         const _data = [];
         for ( const collection of collections ) {
-            if ( collection_list.indexOf(collection.col_name) >= 0 ) {
+            if ( collection.no_nerds === true ) {
                 _data.push(collection);
             }
         }
@@ -32,7 +31,7 @@ const Collections = () => {
     <section className="tf-section live-auctions">
       <div className="themesflat-container">
         <div className="col-md-12">
-          <h2 className="tf-title style-1 ct">No Nerds Incs</h2>
+          <h2 className="tf-title style-1 ct">No Nerds Inc</h2>
         </div>
 
         <div className="collection">
