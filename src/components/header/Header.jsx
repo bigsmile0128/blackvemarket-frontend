@@ -150,12 +150,12 @@ const Header = () => {
                               <li
                                 key={submenu.id}
                                 className={
-                                  pathname === submenu.links.replaceAll(':address', signer)
+                                  pathname === submenu.links.replace(/:address/g, signer)
                                     ? "menu-item current-item"
                                     : "menu-item"
                                 }
                               >
-                                <Link to={submenu.links.replaceAll(':address', signer)}>{submenu.sub}</Link>
+                                <Link to={submenu.links.replace(/:address/g, signer)}>{submenu.sub}</Link>
                               </li>
                             ))}
                           </ul>

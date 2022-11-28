@@ -2,13 +2,14 @@ import { Link } from "react-router-dom";
 import { BACKEND_URL } from "../../../assets/constants";
 import { uriToHttp } from "../../../utils/utils";
 import avt from "../../../assets/images/avatar/avt-author-tab.png";
+import CustomImage from "../CustomImage";
 
 const NFTItem = (props) => (
   <div className="fl-item col-xl-3 col-lg-4 col-md-6 col-sm-6">
     <div className="sc-card-product">
       <div className="card-media">
         <Link to={`/collection/${props.collection.col_name}/${props.item.token_id}`}>
-          <img src={uriToHttp(props.item.image)} alt="axies" />
+          <CustomImage src={uriToHttp(props.item.image)} size={400} />
         </Link>
       </div>
       <div className="card-title">
@@ -25,7 +26,7 @@ const NFTItem = (props) => (
       <div className="meta-info">
         <div className="author">
             <div className="avatar">
-                <img src={props.collection.logoImg?BACKEND_URL + props.collection.logoImg:avt} alt="axies" />
+              <CustomImage src={props.collection.logoImg?BACKEND_URL + props.collection.logoImg:avt} size={400} />
             </div>
             <div className="info">
                 <h6> <Link to={`/collection/${props.collection.symbol}`}>{props.collection.name}</Link> </h6>

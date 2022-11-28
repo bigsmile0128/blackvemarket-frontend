@@ -516,14 +516,14 @@ const ItemDetails01 = () => {
         <Header />
         <div className="tf-section tf-item-details">
           <div className="themesflat-container" style={{marginTop: '3rem'}}>
-            <div className="row">
+            <div className="row" style={{paddingBottom: "30px"}}>
               <div className="col-xl-6 col-md-12">
                 <div className="content-left">
                   <div className="media">
                     {itemDetails && (
                       <img
                         src={uriToImage(itemDetails.image)}
-                        style={{ width: "100%" }}
+                        style={{ borderRadius: "10px", width:"100%", height: "600px"}}
                         alt="Axies"
                       />
                     )}

@@ -81,7 +81,6 @@ const Footer = () => {
         if ( isAuthenticated ) {
             const _signer = window.localStorage.getItem('vechain_signer');
             setSigner(_signer);
-            console.log(_signer);
         }
     }, [isAuthenticated]);
 

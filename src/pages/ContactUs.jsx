@@ -1,12 +1,55 @@
-import React from 'react';
-import { Link } from 'react-router-dom'
+import React, {useState, useEffect} from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { toast, ToastContainer } from 'react-toastify';
+
 import Header from '../components/header/Header';
 import Footer from '../components/footer/Footer';
+import * as actions from '../store/actions/otherActions';
 
 const ContactUs = () => {
+    const navigate = useNavigate();
+    const isAuthenticated = useSelector((store) => store.profile.isAuthenticated);
+    const [formData, setFormData] = useState({
+        fullname: "",
+        email: "",
+        subject: "",
+        message: "",
+        wallet_addr: window.localStorage.getItem("vechain_signer")
+    });
+
+    // useEffect = (() => {
+    //     if (isAuthenticated) {
+    //         const _signer = window.localStorage.getItem("vechain_signer");
+    //         setFormData({ ...formData, wallet_addr: _signer });
+    //     }
+    // }, [isAuthenticated])
+
+    const changeValue = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    }
+
+    const handleSubmit = async () => {
+        const result = await actions.contactUs(formData);
+        console.log("Contact Us: ", result)
+
+        if (result) {
+            if (result.status === "success") {
+                toast.success(result.msg);
+                // navigate("/");
+            } else if (result.status === "warning"){
+                toast.warning(result.msg);
+            }
+            else {
+                toast.error(result.msg);
+            }
+        }
+    }
+
     return (
         <div>
             <Header />
+            <ToastContainer />
             <section className="flat-title-page inner">
                 <div className="overlay"></div>
                 <div className="themesflat-container">
@@ -24,7 +67,7 @@ const ContactUs = () => {
                             </div>
                         </div>
                     </div>
-                </div>                    
+                </div>
             </section>
             <section className="tf-contact tf-section">
                 <div className="themesflat-container">
@@ -40,18 +83,19 @@ const ContactUs = () => {
                                 </h5> */}
                                 <div className="form-inner">
                                     <form id="contactform" noValidate="novalidate" className="form-submit">
-                                        <input id="name" name="name" tabIndex="1" aria-required="true" required type="text" placeholder="Your Full Name" />
-                                        <input id="email" name="email" tabIndex="2"  aria-required="true" required type="email" placeholder="Your Email Address" />
-                                         <div className="row-form style-2">
+                                        <input name="fullname" aria-required="true" required type="text" onChange={changeValue} placeholder="Your Full Name" />
+                                        <input name="email" aria-required="true" required type="email" onChange={changeValue} placeholder="Your Email Address" />
+                                        <input name="subject" aria-required="true" required type="text" onChange={changeValue} placeholder="Subject Name" />
+                                         {/* <div className="row-form style-2">
                                             <select id="subject">
                                                 <option value="1">Select subject</option>
                                                 <option value="2">Select subject</option>
                                                 <option value="3">Select subject</option>
                                             </select>
                                             <i className="icon-fl-down"></i>
-                                         </div>
-                                        <textarea id="message" name="message" tabIndex="3" aria-required="true" required placeholder="Message"></textarea>
-                                        <button className="submit">Send message</button>
+                                         </div> */}
+                                        <textarea name="message" aria-required="true" required onChange={changeValue} placeholder="Message"></textarea>
+                                        <button type="button" className="submit" onClick={()=>handleSubmit()}>Send message</button>
                                     </form>
                                 </div>
 

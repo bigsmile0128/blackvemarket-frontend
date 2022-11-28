@@ -249,11 +249,11 @@ const CreateCollection = () => {
     fd.append("user_id", userID);
 
     if (userID) {
-      const col_name = formData.name.replaceAll(" ", "_").toLowerCase();
+      const col_name = formData.name.replace(/ /g, "_").toLowerCase();
       const totalSupply = await getCollectionTotalSupply(formData.address);
       setTotalSupply(totalSupply);
       fd.append("total_supply", totalSupply);
-      await dispatch(actions.createClt(fd));
+      // await dispatch(actions.createClt(fd));
       setLoading(true);
       let startIndex = 1;
       let tokenId = 1;
@@ -263,12 +263,12 @@ const CreateCollection = () => {
           let meta_uri = await getNFTMetaData(formData.address, tokenId);
           if ( meta_uri ) {
             // if ( meta_uri.substr(-5).toLowerCase() != ".json" )
-            // meta_uri = meta_uri + ".json";
-            // console.log(meta_uri);
+            meta_uri = meta_uri + ".json";
+            console.log(meta_uri);
             // meta_uri = meta_uri.slice(0, -5);
-            // const meta_json = await fetchNFTItem(meta_uri);
+            const meta_json = await fetchNFTItem(meta_uri);
             // console.log(meta_json);
-            await dispatch(actions.addNFT(col_name, meta_uri, tokenId));
+            await dispatch(actions.addNFT(col_name, meta_json, tokenId));
             startIndex++;
           }
         } catch(err) {

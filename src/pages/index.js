@@ -15,7 +15,7 @@ import CreateItem from "./CreateItem";
 import EditProfile from "./EditProfile";
 import NoResult from "./NoResult";
 import FAQ from "./FAQ";
-import ContactUs from "./Contact02";
+import ContactUs from "./ContactUs";
 import Collectibles from "./Collectibles";
 import BVMCollectibles from "./BVMCollectibles";
 import NNICollectibles from "./NNICollectibles";

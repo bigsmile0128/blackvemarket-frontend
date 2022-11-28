@@ -62,7 +62,6 @@ const TodayPicks = (props) => {
           <div className="row">
             <div className="col-md-12">
               <div className="wrap-box explore-1 flex mg-bt-40">
-                <div></div>
                 <div className="collection-header">
                   <span>
                     {numberWithCommas(collection.total_supply)} tokens
