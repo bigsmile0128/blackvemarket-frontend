@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 
 const PlaceBids = ({ show, setShow, minPrice, connex, onBid }) => {
 
-  const minVET = numberWithCommas(numberRound(fromWei(minPrice), 2));
+  const minVET = numberWithCommas(numberRound(minPrice, 2));
   const [price, setPrice] = useState();
   const [balance, setBalance] = useState();
   const [newBalance, setNewBalance] = useState();
@@ -20,7 +20,7 @@ const PlaceBids = ({ show, setShow, minPrice, connex, onBid }) => {
   }
 
   const onSubmit = () => {
-    if ( price <= fromWei(minPrice) * 1 ) {
+    if ( price <= minPrice * 1 ) {
       toast.error('Price must be a at least ' + minVET + 'VET.', {
           position: "top-right",
           autoClose: 5000,

@@ -111,13 +111,14 @@ export const updateNFT = (col_name, token_id) => {
   };
 };
 
-export const getNFTs = async (col_name, sort, start, limit) => {
+export const getNFTs = async (col_name, sort, start, limit, filter) => {
   console.log("actions: ", start, limit);
   const res = await axios.post(`${BASE_URL}/collections/get-nfts`, {
     col_name,
     sort,
     start,
     limit,
+    filter,
   });
   if (res.data) {
     if (res.data.status == "success") {
@@ -142,8 +143,21 @@ export const getItemDetails = async (col_name, token_id) => {
     console.log("actions details: ", res.data);
     return res.data;
   }
-  return [];
+  return null;
 };
+
+export const getItemAuction = async (address, token_id, event) => {
+  const res = await axios.post(`${BASE_URL}/collections/get-item-auction`, {
+    address,
+    token_id,
+    event
+  });
+  if (res.data && res.data.status === "success") {
+    console.log("actions details: ", res.data);
+    return res.data;
+  }
+  return null;
+}
 
 export const getNFTDetail = async (address, token_id) => {
   const res = await axios.post(`${BASE_URL}/collections/nft`, {

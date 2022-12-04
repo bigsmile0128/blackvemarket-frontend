@@ -65,6 +65,10 @@ export function fromWei (val, decimals = 18) {
     return new BigNumber(val).div(`1e${decimals}`).toFixed(18, 1).replace(/0/g, ' ').trimEnd().replace(/ /g, '0')
 }
 
-export function toPriceFormat (val) {
-    return numberWithCommas(numberRound(fromWei(val), 2)) + " VET";
+export function toPriceFormat (val, decimals = 2) {
+    return numberWithCommas(numberRound(fromWei(val), decimals)) + " VET";
+}
+
+export function toVETFormat (val) {
+    return numberWithCommas(numberRound(val, 2)) + " VET";
 }
