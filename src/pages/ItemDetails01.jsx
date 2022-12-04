@@ -23,6 +23,7 @@ import Ticker from "../utils/ticker";
 import avt from "../assets/images/avatar/avt-author-tab.png";
 import CustomImage from "../components/layouts/CustomImage";
 import ChangePrice from "../components/layouts/auctions/ChangePrice";
+import TransferNFT from "../components/layouts/auctions/TransferNFT";
 
 const ItemDetails01 = () => {
   const { col_name, token_id } = useParams();
@@ -40,6 +41,7 @@ const ItemDetails01 = () => {
   const [status, setStatus] = useState();
   const [offerList, setOfferList] = useState([]);
   const [user, setUser] = useState(null);
+  const [isTransfer, setIsTransfer] = useState(false);
 
   const mainconnex = new Connex({
     node: "https://mainnet.vecha.in/",
@@ -212,6 +214,57 @@ const ItemDetails01 = () => {
       });
       await setTxID(result.txid);
       task(result.txid);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const onTransfer = () => {
+    setIsTransfer(true);
+  }
+
+  const onTransferNFT = async (toAddress) => {
+    toast.info('Interfacing with wallet...', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        pauseOnFocusLoss: false,
+        closeOnClick: true,
+        theme: "colored",
+    });
+
+    const abiTransferFrom = abis.ERC721Nft_ABI.find(({name}) => name === "transferFrom");
+    const itemTransferFrom = connex.thor
+        .account(collection.address)
+        .method(abiTransferFrom)
+        .asClause(owner, toAddress, itemDetails.token_id);
+
+    const transferFromAuction = {
+      ...itemTransferFrom
+    };
+
+    await setTxID(null);
+    try {
+      const clauses = [transferFromAuction];
+      const result = await connex.vendor
+        .sign('tx', clauses)
+        .signer(window.localStorage.getItem("vechain_signer"))
+        .comment("Transfer " + itemDetails.token_id + " token to " + toAddress)
+        .request();
+
+      toast.info('Transaction is pending...', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          pauseOnFocusLoss: false,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+      });
+      await setTxID(result.txid);
+      task(result.txid, false);
     } catch (err) {
       console.log(err);
     }
@@ -426,7 +479,7 @@ const ItemDetails01 = () => {
     }
   }
 
-  const task = async (txid) => {
+  const task = async (txid, isEvent = true) => {
     const txVisitor = connex.thor.transaction(txid);
     let receipt;
     do {
@@ -458,19 +511,26 @@ const ItemDetails01 = () => {
       await setShow(false);
       await setIsListing(false);
       await setIsChangePrice(false);
+      await setIsTransfer(false);
 
-      await getAuction(collection.address, token_id, event);
-      toast.success('Transaction success', {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnFocusLoss: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-      });
+      setTimeout(async () => {
+        if ( isEvent )
+          await getAuction(collection.address, token_id, event);
+        else
+          await getAuction(collection.address, token_id);
+  
+        toast.success('Transaction success', {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnFocusLoss: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+        });
+      }, 3000);
     }
     /*if ( ticker ) {
       ticker.stop();
@@ -685,6 +745,15 @@ const ItemDetails01 = () => {
                             <span>Sell</span>
                           </Link>
                       }
+                      {status == 1 &&
+                          <Link
+                            to="#"
+                            onClick={onTransfer}
+                            className="sc-button mx-5 w-100 fl-button pri-3"
+                          >
+                            <span>Transfer</span>
+                          </Link>
+                      }
                       {(status == 2 || status == 3 || status == 7) &&
                         <Link
                           to="#"
@@ -809,6 +878,7 @@ const ItemDetails01 = () => {
           <ChangePrice  show={isChangePrice} setShow={setIsChangePrice} minPrice={auctionSale.price} onChange={onUpdatPrice} />
         }
         <CreateListing show={isListing} setShow={setIsListing} onListing={onListing}/>
+        <TransferNFT show={isTransfer} setShow={setIsTransfer} item={itemDetails} onTransfer={onTransferNFT} />
         <LiveAuction />
         <Footer />
       </div>
