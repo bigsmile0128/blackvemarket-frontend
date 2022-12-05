@@ -3871,3 +3871,7 @@ code {
 .collection-heading {
   color: inherit !important;
 }
+
+.dropdown:hover ul {
+  z-index: 999;
+}

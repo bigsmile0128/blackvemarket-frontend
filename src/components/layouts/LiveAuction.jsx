@@ -9,7 +9,7 @@ import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
 import Countdown from "react-countdown";
 
 import * as actions from "../../store/actions/collectionActions";
-import { sliceAddress, toPriceFormat } from '../../utils/utils';
+import { sliceAddress, toPriceFormat, toVETFormat } from '../../utils/utils';
 
 const LiveAuction = props => {
     const [auctions, setAuctions] = useState([]);
@@ -84,6 +84,11 @@ const LiveAuction = props => {
                                                                     <div className="card-title">
                                                                         <h5><Link to={`/collection/${item.collection.col_name}/${item.details.token_id}`}>"{item.details.name?item.details.name:(item.collection.name+"#"+item.details.token_id)}"</Link></h5>
                                                                         {/* <div className="tags">{item.details.description}</div> */}
+                                                                        {item.details.rank&&
+                                                                        <div className="price">
+                                                                        <span>Rank</span>
+                                                                        <h5 style={{overflow: 'initial'}}>{item.details.rank}</h5>
+                                                                        </div>}
                                                                     </div>
                                                                     <div className="meta-info">
                                                                         <div className="author">
@@ -94,8 +99,8 @@ const LiveAuction = props => {
                                                                             </div>
                                                                         </div>
                                                                         <div className="price">
-                                                                            <span>{item.auctionSale.minPrice>0?'Current Bid':'Price'}</span>
-                                                                            <h5> {toPriceFormat(item.auctionSale.minPrice>0?(item.offer&&item.offer.offer>0?item.offer.offer:item.auctionSale.minPrice):item.auctionSale.fixedPrice)}</h5>
+                                                                            <span>{item.auctionSale.isAuction?'Current Bid':'Price'}</span>
+                                                                            <h5> {toVETFormat(item.auctionSale.isAuction?(item.offer&&item.offer.price>0?item.offer.price:item.auctionSale.price):item.auctionSale.price, 0)}</h5>
                                                                         </div>
                                                                     </div>
                                                                 </div>    	

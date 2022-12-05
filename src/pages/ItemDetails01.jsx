@@ -16,16 +16,19 @@ import CreateListing from "../components/layouts/auctions/CreateListing";
 import Countdown from "react-countdown";
 import * as actions from "../store/actions/collectionActions";
 import * as profileActions from "../store/actions/profileActions";
-import { uriToHttp, uriToImage, sliceAddress, toWei, numberWithCommas, numberRound, fromWei, toPriceFormat } from "../utils/utils";
+import { uriToHttp, uriToImage, sliceAddress, toWei, numberWithCommas, numberRound, fromWei, toPriceFormat, toVETFormat } from "../utils/utils";
 import { NODE, NETWORK, BACKEND_URL, S3_URL } from "../assets/constants";
 import * as abis from "../assets/constants/abis";
 import Ticker from "../utils/ticker";
 import avt from "../assets/images/avatar/avt-author-tab.png";
 import CustomImage from "../components/layouts/CustomImage";
+import ChangePrice from "../components/layouts/auctions/ChangePrice";
+import TransferNFT from "../components/layouts/auctions/TransferNFT";
 
 const ItemDetails01 = () => {
   const { col_name, token_id } = useParams();
   const [show, setShow] = useState(false);
+  const [isChangePrice, setIsChangePrice] = useState(false);
   const [isListing, setIsListing] = useState(false);
   const [itemDetails, setItemDetails] = useState(null);
   const [owner, setOwner] = useState();
@@ -38,6 +41,7 @@ const ItemDetails01 = () => {
   const [status, setStatus] = useState();
   const [offerList, setOfferList] = useState([]);
   const [user, setUser] = useState(null);
+  const [isTransfer, setIsTransfer] = useState(false);
 
   const mainconnex = new Connex({
     node: "https://mainnet.vecha.in/",
@@ -46,11 +50,11 @@ const ItemDetails01 = () => {
 
   const connex = new Connex({
     node: NODE,
-    network: "main",
+    network: NETWORK,
   });
 
 
-  const fetchAuctionStatus = async() => {
+  /*const fetchAuctionStatus = async() => {
     const abiAuctionSaleNftList = abis.BlackVeMarket_ABI.find(({name}) => name === "auctionSaleNftList");
 
     const result = await connex.thor
@@ -86,38 +90,31 @@ const ItemDetails01 = () => {
 
       await setHighestOffer(result.decoded);
     }
-  }
+  }*/
 
-  useEffect(() => {
-    if ( collection && collection.address && token_id ) {
-      fetchAuctionStatus();
-    }
-  }, [collection, token_id])
+  const getAuction = async (address, token_id, event = 0) => {
+    const resp = await actions.getItemAuction(address, token_id, event);
+    await setOwner(resp.owner);
+    await setUser(resp.ownerUser);
+    await setAuctionSale(resp.auction);
+    await setOfferList(resp.offers);
+    await setHighestOffer(resp.highestOffer);
+    await setSaleId(resp.saleId);
+  }
 
   useEffect(() => {
     const fetchItemDetails = async(col_name, token_id) => {
       const resp = await actions.getItemDetails(col_name, token_id);
-      setItemDetails(resp.details);
-      setCollection(resp.collection);
-      setOwner(await getTokenOwner(resp.collection.address, token_id));
+      if ( resp ) {
+        await setItemDetails(resp.details);
+        await setCollection(resp.collection);
+        await getAuction(resp.collection.address, token_id);
+      }
     }
     if ( col_name && token_id ) {
       fetchItemDetails(col_name, token_id);
     }
   }, [col_name, token_id]);
-
-  const fetchProfile = async (walletaddr) => {
-    const _user = await profileActions.getProfile(walletaddr);
-    setUser(_user);
-  }
-
-  useEffect(() => {
-    if ( owner && owner != abis.BlackVeMarket_Address ) {
-      fetchProfile(owner);
-    } else if ( owner && owner == abis.BlackVeMarket_Address && auctionSale && auctionSale.seller ) {
-      fetchProfile(auctionSale.seller);
-    }
-  }, [owner, auctionSale]);
 
   const onHandlePlace = () => {
     setShow(true);
@@ -139,7 +136,7 @@ const ItemDetails01 = () => {
     const itemBuyAuctionSale = connex.thor
         .account(abis.BlackVeMarket_Address)
         .method(abiBuyAuctionSale)
-        .value(auctionSale.fixedPrice)
+        .value(toWei(auctionSale.price))
         .asClause(saleId);
 
     const buyAuctionSale = {
@@ -222,43 +219,59 @@ const ItemDetails01 = () => {
     }
   }
 
+  const onTransfer = () => {
+    setIsTransfer(true);
+  }
+
+  const onTransferNFT = async (toAddress) => {
+    toast.info('Interfacing with wallet...', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        pauseOnFocusLoss: false,
+        closeOnClick: true,
+        theme: "colored",
+    });
+
+    const abiTransferFrom = abis.ERC721Nft_ABI.find(({name}) => name === "transferFrom");
+    const itemTransferFrom = connex.thor
+        .account(collection.address)
+        .method(abiTransferFrom)
+        .asClause(owner, toAddress, itemDetails.token_id);
+
+    const transferFromAuction = {
+      ...itemTransferFrom
+    };
+
+    await setTxID(null);
+    try {
+      const clauses = [transferFromAuction];
+      const result = await connex.vendor
+        .sign('tx', clauses)
+        .signer(window.localStorage.getItem("vechain_signer"))
+        .comment("Transfer " + itemDetails.token_id + " token to " + toAddress)
+        .request();
+
+      toast.info('Transaction is pending...', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          pauseOnFocusLoss: false,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+      });
+      await setTxID(result.txid);
+      task(result.txid, false);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   const onHandleListing = () => {
     setIsListing(true);
-  }
-  
-  const getTokenOwner = async (address, tokenId) => {
-    const abiTokenURI = abis.ERC721Nft_ABI.find(({name}) => name === "ownerOf");
-
-    const result = await connex.thor
-        .account(address)
-        .method(abiTokenURI)
-        .call(tokenId);
-
-    return result.decoded[0];
-  }
-
-  const fetchOffers = async (saleId) => {
-    const abiOffersCount = abis.BlackVeMarket_ABI.find(({name}) => name === "offersCount");
-    const abiOffersList = abis.BlackVeMarket_ABI.find(({name}) => name === "offersList");
-    
-    const resultCount = await connex.thor
-      .account(abis.BlackVeMarket_Address)
-      .method(abiOffersCount)
-      .call(saleId);
-    
-    const offerCount = resultCount.decoded[0];
-
-    const offersList = [];
-
-    for ( var i = offerCount - 1; i >= 0; i -- ) {
-      const result = await connex.thor
-          .account(abis.BlackVeMarket_Address)
-          .method(abiOffersList)
-          .call(saleId, i);
-        offersList.push(result.decoded);
-    }
-
-    setOfferList(offersList);
   }
 
   const onCancelListing = async () => {
@@ -299,6 +312,57 @@ const ItemDetails01 = () => {
           closeOnClick: true,
           pauseOnHover: true,
           pauseOnFocusLoss: false,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+      });
+      await setTxID(result.txid);
+      task(result.txid);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const onChangePrice = () => {
+    setIsChangePrice(true);
+  }
+
+  const onUpdatPrice = async (value) => {
+    toast.info('Interfacing with wallet...', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnFocusLoss: false,
+        theme: "colored",
+    });
+
+    const abiChangeAuctionSale = abis.BlackVeMarket_ABI.find(({name}) => name === "changeAuctionSale");
+    const itemChangeAuctionSale = connex.thor
+        .account(abis.BlackVeMarket_Address)
+        .method(abiChangeAuctionSale)
+        .asClause(saleId, toWei(value));
+    const priceAuction = {
+      ...itemChangeAuctionSale,
+    };
+
+    setIsListing(false);
+    await setTxID(null);
+    try {
+      const clauses = [priceAuction];
+      const result = await connex.vendor
+        .sign('tx', clauses)
+        .signer(window.localStorage.getItem("vechain_signer"))
+        .comment("Change the bid price")
+        .request();
+
+        toast.info('Transaction is pending...', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnFocusLoss: false,
+          pauseOnHover: true,
           draggable: true,
           progress: undefined,
           theme: "colored",
@@ -413,13 +477,62 @@ const ItemDetails01 = () => {
     } catch (err) {
       console.log(err);
     }
-
   }
 
-  let ticker;
+  const task = async (txid, isEvent = true) => {
+    const txVisitor = connex.thor.transaction(txid);
+    let receipt;
+    do {
+      await connex.thor.ticker().next();
+      receipt = await txVisitor.getReceipt();
+    } while (!receipt);
 
-  const task = (txid) => {
-    if ( ticker ) {
+    if ( receipt.reverted ) {
+      const transactionData = await txVisitor.get()
+      const explainedTransaction = await connex.thor.explain(transactionData.clauses)
+        .caller(transactionData.origin)
+        .execute()
+
+      const revertReasons = explainedTransaction.map(({ revertReason }) => revertReason).join(' ,')
+
+      toast.warning('Transaction reverted. (' + revertReasons + ')', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnFocusLoss: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    } else {
+      const event = receipt.meta.txID;
+      await setShow(false);
+      await setIsListing(false);
+      await setIsChangePrice(false);
+      await setIsTransfer(false);
+
+      setTimeout(async () => {
+        if ( isEvent )
+          await getAuction(collection.address, token_id, event);
+        else
+          await getAuction(collection.address, token_id);
+  
+        toast.success('Transaction success', {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnFocusLoss: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+        });
+      }, 3000);
+    }
+    /*if ( ticker ) {
       ticker.stop();
     }
     ticker = new Ticker(connex);
@@ -428,7 +541,6 @@ const ItemDetails01 = () => {
       const t = await txVisitor.getReceipt();
 
       if (t) {
-        console.log(t);
         if ( t.reverted ) {
           toast.warning('Transaction reverted', {
               position: "top-right",
@@ -442,6 +554,8 @@ const ItemDetails01 = () => {
               theme: "colored",
           });
         } else {
+          const event = t.meta.txID;
+          await getAuction(collection.address, token_id, event);
           toast.success('Transaction success', {
               position: "top-right",
               autoClose: 3000,
@@ -453,54 +567,57 @@ const ItemDetails01 = () => {
               progress: undefined,
               theme: "colored",
           });
-          await fetchAuctionStatus();
+          await setShow(false);
+          await setIsListing(false);
+          await setIsChangePrice(false);
         }
         setTxID(null);
         ticker && ticker.stop();
       }
-    })
+    })*/
+  }
+
+  const updateStatus = () => {
+    let isLiveAuction = false
+    if ( auctionSale ) {
+      isLiveAuction = Date.now() <= auctionSale.startedAt * 1000 + auctionSale.duration * 1000;
+    }
+    
+    let haveBidder = false;
+    if ( highestOffer && highestOffer.price > 0 )
+      haveBidder = true;
+
+    if ( owner === signer ) {
+      setStatus(1);
+    } else if ( auctionSale && auctionSale.isFinished == false ) {
+      const seller = auctionSale.seller.toLowerCase();
+      if ( auctionSale.isAuction ) {
+        if ( isLiveAuction ) {
+          if ( seller === signer && !haveBidder ) {
+            setStatus(2);
+          } else if ( seller !== signer ) {
+            setStatus(4);
+          }
+        } else {
+          if ( seller === signer && !haveBidder ) {
+            setStatus(3);
+          } else if ( seller !== signer && highestOffer && highestOffer.buyer.toLowerCase() === signer ) {
+            setStatus(5);
+          }
+        }
+      } else {
+        if ( seller === signer )
+          setStatus(7);
+        else
+          setStatus(6);
+      }
+    } else
+      setStatus(0);
   }
 
   useEffect(() => {
-    if ( txid == null ) {
-      let isAuction = false
-      if ( auctionSale ) {
-        isAuction = Date.now() <= auctionSale.startedAt * 1000 + auctionSale.duration * 1000;
-      }
-      
-      let haveBidder = false;
-      if ( highestOffer && highestOffer.offer > 0 )
-        haveBidder = true;
-
-      if ( owner == signer ) {
-        setStatus(1);
-      } else if ( owner === abis.BlackVeMarket_Address && saleId > 0 && auctionSale && auctionSale.seller === signer && auctionSale.finalPrice == 0 && !haveBidder ) {
-        if ( isAuction ) {
-          setStatus(2);
-        } else {
-          setStatus(3);
-        }
-      } else if ( owner === abis.BlackVeMarket_Address && auctionSale && auctionSale.seller !== signer && auctionSale.duration > 0 && auctionSale.minPrice > 0 && auctionSale.finalPrice == 0 ) {
-        if ( isAuction )
-          setStatus(4);
-        else if ( highestOffer && highestOffer.buyer == signer ) {
-          setStatus(5);
-        } else {
-          setStatus(0);
-        }
-      } else if ( owner === abis.BlackVeMarket_Address && auctionSale && auctionSale.seller !== signer && auctionSale.fixedPrice > 0 && auctionSale.finalPrice == 0 ) {
-        setStatus(6);
-      } else {
-        setStatus(0);
-      }
-    }
+    updateStatus();
   }, [txid, owner, signer, saleId, auctionSale, highestOffer])
-
-  useEffect(() => {
-    if ( saleId > 0 ) {
-      fetchOffers(saleId);
-    }
-  }, [saleId]);
 
   const getDateString = (_date) => {
     const date = new Date(_date);
@@ -537,7 +654,7 @@ const ItemDetails01 = () => {
                       <CustomImage
                         src={uriToImage(itemDetails.image)}
                         alt="Axies"
-                        customClassName='m-auto'
+                        customClassName='mx-auto'
                         className='b-radius'
                       />
                     )}
@@ -548,10 +665,9 @@ const ItemDetails01 = () => {
                 <div className="content-right">
                   <div className="sc-item-details">
                     <h2 className="style2"> {itemDetails?.name?itemDetails?.name:(collection?.name+'#'+itemDetails?.token_id)} </h2>
-                    <Link to={`/collection/${collection?.col_name}`}><h6 className="style2"> {collection?.name} </h6></Link>
+                    <Link to={`/collection/${collection?.symbol}`}><h6 className="style2"> {collection?.name} </h6></Link>
                     <p className="content-description mt-3">{itemDetails?.description}</p>
-
-                    {user && user.address &&
+                    {owner &&
                     <div className="client-infor sc-card-product mt-5">
                       <div className="meta-info">
                           <div className="author">
@@ -560,11 +676,11 @@ const ItemDetails01 = () => {
                               </div>
                               <div className="info">
                                   <span>Owned By</span>
-                                  <h6> <Link to={`/profile/${user.address}`}>{user.name??sliceAddress(user.address)}</Link> </h6>
+                                  <h6> <Link to={`/profile/${user?user.address:owner}`}>{owner===signer?"You":(user?.name??owner)}</Link> </h6>
                               </div>
                           </div>
                       </div>
-                    </div> }
+                    </div>}
 
                     <div className="sc-card-detail">
                       <div className="content-row-item"><span>Name</span></div>
@@ -578,19 +694,20 @@ const ItemDetails01 = () => {
                       <div className="content-row-item"><span>Address</span></div>
                       <div className="content-row-detail">{collection.address && sliceAddress(collection.address)}</div>
                     </div>
+                    {itemDetails.rank&&
                     <div className="sc-card-detail">
                       <div className="content-row-item"><span>Rank</span></div>
                       <div className="content-row-detail">{itemDetails.rank}</div>
-                    </div>
+                    </div>}
                     <hr/>
-                    {owner === abis.BlackVeMarket_Address && auctionSale && auctionSale.duration > 0 && auctionSale.minPrice > 0 && auctionSale.finalPrice == 0 && Date.now() <= auctionSale.startedAt * 1000 + auctionSale.duration * 1000 &&
+                    {owner === abis.BlackVeMarket_Address && auctionSale && auctionSale.isAuction === true && auctionSale.isFinished === false && Date.now() <= auctionSale.startedAt * 1000 + auctionSale.duration * 1000 &&
                       <div className="meta-item-details style2">
                       
                         <div className="item meta-price">
                           <span className="heading">{highestOffer&&highestOffer.offer>0?'Highest Bid':'Reserve Price'}</span>
                           <div className="price">
                             <div className="price-box">
-                              <h5> {toPriceFormat(highestOffer&&highestOffer.offer>0?highestOffer.offer:auctionSale.minPrice)} </h5>
+                              <h5> {toVETFormat(highestOffer&&highestOffer.offer>0?highestOffer.offer:auctionSale.price)} </h5>
                             </div>
                           </div>
                         </div>
@@ -602,85 +719,90 @@ const ItemDetails01 = () => {
                         </div>
                       </div>
                     }
-                    {owner === abis.BlackVeMarket_Address && auctionSale && auctionSale.fixedPrice > 0 && auctionSale.finalPrice == 0 &&
+                    {(status == 6 || status == 7) &&
                       <div className="meta-item-details style2">
                       
                         <div className="item meta-price">
                           <span className="heading">Price</span>
                           <div className="price">
                             <div className="price-box">
-                              <h5> {toPriceFormat(auctionSale.fixedPrice)} </h5>
+                              <h5> {toVETFormat(auctionSale.price)}</h5>
                             </div>
                           </div>
                         </div>
                       </div>
                     }
-                    {status == 6 &&
-                      <div className="meta-item-details style2">
-                      
-                        <div className="item meta-price">
-                          <span className="heading">Price</span>
-                          <div className="price">
-                            <div className="price-box">
-                              <h5> {toPriceFormat(auctionSale.fixedPrice)}</h5>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                    {saleId > 0 && highestOffer&&highestOffer.buyer.toLowerCase()==signer&&
+                      <p className="sc-highest-bidder">You are the highest bidder.</p>
                     }
-                    {status == 1 &&
-                        <Link
-                          to="#"
-                          onClick={onHandleListing}
-                          className="sc-button loadmore style fl-button pri-3"
-                        >
-                          <span>Sell</span>
-                        </Link>
-                    }
-                    {(status == 2 || status == 3) &&
-                      <Link
-                        to="#"
-                        onClick={onCancelListing}
-                        className="sc-button loadmore style fl-button pri-3"
-                      >
-                        <span>
-                          {status == 2?"Cancel Listing":"Refund"}
-                        </span>
-                      </Link>
-                    }
-                    {saleId > 0 && highestOffer&&highestOffer.buyer==signer&&
-                    <p className="sc-highest-bidder">You are the highest bidder.</p>
-                    }
-                    {(status == 4 || status == 5) &&
-                      (
-                        status == 4?
+                    <div className="d-flex w-100">
+                      {status == 1 &&
                           <Link
                             to="#"
-                            onClick={onHandlePlace}
-                            className="sc-button loadmore style fl-button pri-3"
+                            onClick={onHandleListing}
+                            className="sc-button mx-5 w-100 fl-button pri-3"
                           >
-                            <span>Place a bid</span>
+                            <span>Sell</span>
                           </Link>
-                        :
+                      }
+                      {status == 1 &&
                           <Link
                             to="#"
-                            onClick={onHandleClaim}
-                            className="sc-button loadmore style fl-button pri-3"
+                            onClick={onTransfer}
+                            className="sc-button mx-5 w-100 fl-button pri-3"
                           >
-                            <span>Claim</span>
+                            <span>Transfer</span>
                           </Link>
-                      )
-                    }
-                    {
-                      status == 6 &&
+                      }
+                      {(status == 2 || status == 3 || status == 7) &&
                         <Link
                           to="#"
-                          onClick={onHandleBuy}
-                          className="sc-button loadmore style fl-button pri-3"
+                          onClick={onCancelListing}
+                          className="sc-button mx-5 w-100 fl-button pri-3"
                         >
-                          <span>Buy Now</span>
+                          <span>Cancel Sale</span>
                         </Link>
-                    }
+                      }
+                      {status == 2 &&
+                        <Link
+                          to="#"
+                          onClick={onChangePrice}
+                          className="sc-button mx-5 w-100 fl-button pri-3"
+                        >
+                          <span>Change Price</span>
+                        </Link>
+                      }
+                      {(status == 4 || status == 5) &&
+                        (
+                          status == 4?
+                            <Link
+                              to="#"
+                              onClick={onHandlePlace}
+                              className="sc-button mx-5 w-100 fl-button pri-3"
+                            >
+                              <span>Place a bid</span>
+                            </Link>
+                          :
+                            <Link
+                              to="#"
+                              onClick={onHandleClaim}
+                              className="sc-button mx-5 w-100 fl-button pri-3"
+                            >
+                              <span>Claim</span>
+                            </Link>
+                        )
+                      }
+                      {
+                        status == 6 &&
+                          <Link
+                            to="#"
+                            onClick={onHandleBuy}
+                            className="sc-button mx-5 w-100 fl-button pri-3"
+                          >
+                            <span>Buy Now</span>
+                          </Link>
+                      }
+                    </div>
                     <div className="flat-tabs themesflat-tabs">
                       <Tabs>
                         <TabList>
@@ -703,21 +825,31 @@ const ItemDetails01 = () => {
                               <li key={index} item={item}>
                                 <div className="content">
                                   <div className="client">
-                                    <div className="sc-author-box style-2">
+                                    <div className="sc-author-box style-2 w-auto">
+                                      <div className="author-avatar">
+                                        <Link to={`/profile/${item.buyer}`}>
+                                          <img
+                                            src={item.user&&item.user.avatar?S3_URL + item.user.avatar:avt}
+                                            alt="User Avatar"
+                                            className="avatar"
+                                          />
+                                        </Link>
+                                        <div className="badge"></div>
+                                      </div>
                                       <div className="author-infor">
                                         <div className="name">
                                           <h6>
                                             <Link to="/author-02">
-                                              {item.buyer}{" "}
+                                              {item.buyer.toLowerCase()==signer?"You":(item.user&&item.user.name?item.user.name:item.buyer)}{" "}
                                             </Link>
                                           </h6>
                                         </div>
-                                        <span className="time">{getDateString(item.date * 1000)}</span>
+                                        <span className="time">{getDateString(item.bidAt * 1000)}</span>
                                       </div>
                                     </div>
                                   </div>
                                   <div className="price">
-                                    <h5>{toPriceFormat(item.offer)}</h5>
+                                    <h5>{toVETFormat(item.price)}</h5>
                                   </div>
                                 </div>
                               </li>
@@ -739,10 +871,14 @@ const ItemDetails01 = () => {
             </div>
           </div>
         </div>
-        {auctionSale && 
-          <PlaceBids show={show} setShow={setShow} minPrice={highestOffer&&highestOffer.offer>0?highestOffer.offer:auctionSale.minPrice} connex={connex} onBid={onBid} />
+        {auctionSale && auctionSale.isAuction && 
+          <PlaceBids show={show} setShow={setShow} minPrice={highestOffer&&highestOffer.offer>0?highestOffer.offer:auctionSale.price} connex={connex} onBid={onBid} />
+        }
+        {auctionSale &&
+          <ChangePrice  show={isChangePrice} setShow={setIsChangePrice} minPrice={auctionSale.price} onChange={onUpdatPrice} />
         }
         <CreateListing show={isListing} setShow={setIsListing} onListing={onListing}/>
+        <TransferNFT show={isTransfer} setShow={setIsTransfer} item={itemDetails} onTransfer={onTransferNFT} />
         <LiveAuction />
         <Footer />
       </div>
