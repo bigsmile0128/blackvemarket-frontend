@@ -151,7 +151,7 @@ const EditProfile = () => {
                       <h4 className="title-infor-account">Display name</h4>
                       <input
                         type="text"
-                        placeholder="Trista Francis"
+                        placeholder="Godfather Murtagh"
                         name="name"
                         value={formData.name || ""}
                         onChange={onInputChange}
@@ -162,7 +162,7 @@ const EditProfile = () => {
                       <h4 className="title-infor-account">Custom URL</h4>
                       <input
                         type="text"
-                        placeholder="Axies.Trista Francis.com/"
+                        placeholder="BVM Collector"
                         name="url"
                         value={formData.url || ""}
                         onChange={onInputChange}
