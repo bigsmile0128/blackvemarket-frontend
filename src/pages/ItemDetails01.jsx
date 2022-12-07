@@ -877,7 +877,7 @@ const ItemDetails01 = () => {
         {auctionSale &&
           <ChangePrice  show={isChangePrice} setShow={setIsChangePrice} minPrice={auctionSale.price} onChange={onUpdatPrice} />
         }
-        <CreateListing show={isListing} setShow={setIsListing} onListing={onListing}/>
+        <CreateListing show={isListing} setShow={setIsListing} onListing={onListing} collection={collection} />
         <TransferNFT show={isTransfer} setShow={setIsTransfer} item={itemDetails} onTransfer={onTransferNFT} />
         <LiveAuction />
         <Footer />
