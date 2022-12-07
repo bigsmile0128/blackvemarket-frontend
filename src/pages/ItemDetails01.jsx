@@ -837,7 +837,7 @@ const ItemDetails01 = () => {
                                             <div className="sc-card-detail">
                                                 <div className="content-row-item">
                                                     <span>
-                                                        Creator sRoyalty
+                                                        Creators Royalty
                                                     </span>
                                                 </div>
                                                 <div className="content-row-detail">
