@@ -699,6 +699,11 @@ const ItemDetails01 = () => {
                       <div className="content-row-item"><span>Rank</span></div>
                       <div className="content-row-detail">{itemDetails.rank}</div>
                     </div>}
+                    {collection?.royalty>0?
+                    <div className="sc-card-detail">
+                      <div className="content-row-item"><span>Royalty</span></div>
+                      <div className="content-row-detail">{collection?.royalty}</div>
+                    </div>}
                     <hr/>
                     {owner === abis.BlackVeMarket_Address && auctionSale && auctionSale.isAuction === true && auctionSale.isFinished === false && Date.now() <= auctionSale.startedAt * 1000 + auctionSale.duration * 1000 &&
                       <div className="meta-item-details style2">
