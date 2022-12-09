@@ -151,7 +151,7 @@ const EditProfile = () => {
                       <h4 className="title-infor-account">Display name</h4>
                       <input
                         type="text"
-                        placeholder="Godfather Murtagh"
+                        placeholder="Your name"
                         name="name"
                         value={formData.name || ""}
                         onChange={onInputChange}
