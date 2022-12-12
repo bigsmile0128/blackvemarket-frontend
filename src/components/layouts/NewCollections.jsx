@@ -10,7 +10,7 @@ const Collections = () => {
   const collections = useSelector((store) => store.collections.collections);
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
-  const collection_list = ['concrete_jungles_buildings', 'concrete_jungles_plots', 'banana_crack', 'puraties'];
+  const collection_list = ['concrete_jungles_buildings', 'concrete_jungles_plots', 'banana_crack', 'puraties', 'doodle_thugs'];
 
   useEffect(() => {
     dispatch(clt_actions.getClts());
