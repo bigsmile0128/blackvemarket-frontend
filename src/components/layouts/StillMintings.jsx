@@ -13,7 +13,7 @@ const Collections = () => {
     const collection_list = [
         { name: 'puraties', link: 'https://dragonsofsingapura.com/tribes1Mint' },
         { name: 'concrete_jungles_plots', link: ' https://gangstergorillaz.io/mint-concretejungle' },
-        { name: 'concrete_jungles_buildings', link: 'https://gangstergorillaz.io/mint-concretejungle' },
+        { name: 'doodle_thugs', link: 'https://thugsparadisev.com' },
         { name: '420vefam_vebudzs', link: 'https://420vefam.com' },
     ];
   
