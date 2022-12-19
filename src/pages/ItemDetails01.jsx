@@ -158,6 +158,7 @@ const ItemDetails01 = () => {
             const clauses = [buyAuctionSale];
             const result = await connex.vendor
                 .sign("tx", clauses)
+                .delegate('https://sponsor.vechain.energy/by/69')
                 .signer(window.localStorage.getItem("vechain_signer"))
                 .comment("Buy fixed item")
                 .request();
@@ -208,6 +209,7 @@ const ItemDetails01 = () => {
             const clauses = [claimAuction];
             const result = await connex.vendor
                 .sign("tx", clauses)
+                .delegate('https://sponsor.vechain.energy/by/69')
                 .signer(window.localStorage.getItem("vechain_signer"))
                 .comment("Cancel the auction")
                 .request();
@@ -261,12 +263,13 @@ const ItemDetails01 = () => {
             const clauses = [transferFromAuction];
             const result = await connex.vendor
                 .sign("tx", clauses)
+                .delegate('https://sponsor.vechain.energy/by/69')
                 .signer(window.localStorage.getItem("vechain_signer"))
                 .comment(
                     "Transfer " +
-                        itemDetails.token_id +
-                        " token to " +
-                        toAddress
+                    itemDetails.token_id +
+                    " token to " +
+                    toAddress
                 )
                 .request();
 
@@ -320,6 +323,7 @@ const ItemDetails01 = () => {
             const clauses = [cancelAuction];
             const result = await connex.vendor
                 .sign("tx", clauses)
+                .delegate('https://sponsor.vechain.energy/by/69')
                 .signer(window.localStorage.getItem("vechain_signer"))
                 .comment("Cancel the auction")
                 .request();
@@ -373,6 +377,7 @@ const ItemDetails01 = () => {
             const clauses = [priceAuction];
             const result = await connex.vendor
                 .sign("tx", clauses)
+                .delegate('https://sponsor.vechain.energy/by/69')
                 .signer(window.localStorage.getItem("vechain_signer"))
                 .comment("Change the bid price")
                 .request();
@@ -423,6 +428,7 @@ const ItemDetails01 = () => {
             const clauses = [bidAuction];
             const result = await connex.vendor
                 .sign("tx", clauses)
+                .delegate('https://sponsor.vechain.energy/by/69')
                 .signer(window.localStorage.getItem("vechain_signer"))
                 .comment("Place a bid on the auction")
                 .request();
@@ -490,6 +496,7 @@ const ItemDetails01 = () => {
             const clauses = [approveNFT, createAuction];
             const result = await connex.vendor
                 .sign("tx", clauses)
+                .delegate('https://sponsor.vechain.energy/by/69')
                 .signer(window.localStorage.getItem("vechain_signer"))
                 .comment("Creates and begins a new auction")
                 .request();
@@ -633,6 +640,8 @@ const ItemDetails01 = () => {
                         setStatus(2);
                     } else if (seller !== signer) {
                         setStatus(4);
+                    } else {
+                        setStatus(0);
                     }
                 } else {
                     if (seller === signer && !haveBidder) {
@@ -643,6 +652,8 @@ const ItemDetails01 = () => {
                         highestOffer.buyer.toLowerCase() === signer
                     ) {
                         setStatus(5);
+                    } else {
+                        setStatus(0);
                     }
                 }
             } else {
@@ -651,6 +662,8 @@ const ItemDetails01 = () => {
             }
         } else setStatus(0);
     };
+
+    console.log(status)
 
     useEffect(() => {
         updateStatus();
@@ -692,8 +705,8 @@ const ItemDetails01 = () => {
                                         {itemDetails?.name
                                             ? itemDetails?.name
                                             : collection?.name +
-                                              "#" +
-                                              itemDetails?.token_id}
+                                            "#" +
+                                            itemDetails?.token_id}
                                     </h1>
                                 </div>
                             </div>
@@ -736,8 +749,8 @@ const ItemDetails01 = () => {
                                             {itemDetails?.name
                                                 ? itemDetails?.name
                                                 : collection?.name +
-                                                  "#" +
-                                                  itemDetails?.token_id}{" "}
+                                                "#" +
+                                                itemDetails?.token_id}{" "}
                                         </h2>
                                         <Link
                                             to={`/collection/${collection?.symbol}`}
@@ -758,9 +771,9 @@ const ItemDetails01 = () => {
                                                             <img
                                                                 src={
                                                                     user &&
-                                                                    user.avatar
+                                                                        user.avatar
                                                                         ? S3_URL +
-                                                                          user.avatar
+                                                                        user.avatar
                                                                         : avt
                                                                 }
                                                                 alt="Avatar"
@@ -773,17 +786,16 @@ const ItemDetails01 = () => {
                                                             <h6>
                                                                 {" "}
                                                                 <Link
-                                                                    to={`/profile/${
-                                                                        user
-                                                                            ? user.address
-                                                                            : owner
-                                                                    }`}
+                                                                    to={`/profile/${user
+                                                                        ? user.address
+                                                                        : owner
+                                                                        }`}
                                                                 >
                                                                     {owner ===
-                                                                    signer
+                                                                        signer
                                                                         ? "You"
                                                                         : user?.name ??
-                                                                          owner}
+                                                                        owner}
                                                                 </Link>{" "}
                                                             </h6>
                                                         </div>
@@ -800,8 +812,8 @@ const ItemDetails01 = () => {
                                                 {itemDetails.name
                                                     ? itemDetails.name
                                                     : collection.name +
-                                                      "#" +
-                                                      itemDetails.token_id}
+                                                    "#" +
+                                                    itemDetails.token_id}
                                             </div>
                                         </div>
                                         <div className="sc-card-detail">
@@ -851,14 +863,14 @@ const ItemDetails01 = () => {
                                             auctionSale.isAuction === true &&
                                             auctionSale.isFinished === false &&
                                             Date.now() <=
-                                                auctionSale.startedAt * 1000 +
-                                                    auctionSale.duration *
-                                                        1000 && (
+                                            auctionSale.startedAt * 1000 +
+                                            auctionSale.duration *
+                                            1000 && (
                                                 <div className="meta-item-details style2">
                                                     <div className="item meta-price">
                                                         <span className="heading">
                                                             {highestOffer &&
-                                                            highestOffer.offer >
+                                                                highestOffer.offer >
                                                                 0
                                                                 ? "Highest Bid"
                                                                 : "Reserve Price"}
@@ -870,7 +882,7 @@ const ItemDetails01 = () => {
                                                                     {toVETFormat(
                                                                         highestOffer &&
                                                                             highestOffer.offer >
-                                                                                0
+                                                                            0
                                                                             ? highestOffer.offer
                                                                             : auctionSale.price
                                                                     )}{" "}
@@ -885,9 +897,9 @@ const ItemDetails01 = () => {
                                                         <Countdown
                                                             date={
                                                                 auctionSale.startedAt *
-                                                                    1000 +
+                                                                1000 +
                                                                 auctionSale.duration *
-                                                                    1000
+                                                                1000
                                                             }
                                                         >
                                                             <span>
@@ -920,7 +932,7 @@ const ItemDetails01 = () => {
                                         {saleId > 0 &&
                                             highestOffer &&
                                             highestOffer.buyer.toLowerCase() ==
-                                                signer && (
+                                            signer && (
                                                 <p className="sc-highest-bidder">
                                                     You are the highest bidder.
                                                 </p>
@@ -947,14 +959,14 @@ const ItemDetails01 = () => {
                                             {(status == 2 ||
                                                 status == 3 ||
                                                 status == 7) && (
-                                                <Link
-                                                    to="#"
-                                                    onClick={onCancelListing}
-                                                    className="sc-button mx-5 w-100 fl-button pri-3"
-                                                >
-                                                    <span>Cancel Sale</span>
-                                                </Link>
-                                            )}
+                                                    <Link
+                                                        to="#"
+                                                        onClick={onCancelListing}
+                                                        className="sc-button mx-5 w-100 fl-button pri-3"
+                                                    >
+                                                        <span>Cancel Sale</span>
+                                                    </Link>
+                                                )}
                                             {status == 2 && (
                                                 <Link
                                                     to="#"
@@ -1013,17 +1025,17 @@ const ItemDetails01 = () => {
                                                                             "trait_type"
                                                                         ]
                                                                             ? item[
-                                                                                  "trait_type"
-                                                                              ]
+                                                                            "trait_type"
+                                                                            ]
                                                                             : item[
-                                                                                  "traitType"
-                                                                              ]}
+                                                                            "traitType"
+                                                                            ]}
                                                                     </span>
                                                                 </div>
                                                                 <div className="content-row-detail">
                                                                     {
                                                                         item[
-                                                                            "value"
+                                                                        "value"
                                                                         ]
                                                                     }
                                                                 </div>
@@ -1049,13 +1061,13 @@ const ItemDetails01 = () => {
                                                                                         <img
                                                                                             src={
                                                                                                 item.user &&
-                                                                                                item
-                                                                                                    .user
-                                                                                                    .avatar
+                                                                                                    item
+                                                                                                        .user
+                                                                                                        .avatar
                                                                                                     ? S3_URL +
-                                                                                                      item
-                                                                                                          .user
-                                                                                                          .avatar
+                                                                                                    item
+                                                                                                        .user
+                                                                                                        .avatar
                                                                                                     : avt
                                                                                             }
                                                                                             alt="User Avatar"
@@ -1069,23 +1081,23 @@ const ItemDetails01 = () => {
                                                                                         <h6>
                                                                                             <Link to="/author-02">
                                                                                                 {item.buyer.toLowerCase() ==
-                                                                                                signer
+                                                                                                    signer
                                                                                                     ? "You"
                                                                                                     : item.user &&
-                                                                                                      item
-                                                                                                          .user
-                                                                                                          .name
-                                                                                                    ? item
-                                                                                                          .user
-                                                                                                          .name
-                                                                                                    : item.buyer}{" "}
+                                                                                                        item
+                                                                                                            .user
+                                                                                                            .name
+                                                                                                        ? item
+                                                                                                            .user
+                                                                                                            .name
+                                                                                                        : item.buyer}{" "}
                                                                                             </Link>
                                                                                         </h6>
                                                                                     </div>
                                                                                     <span className="time">
                                                                                         {getDateString(
                                                                                             item.bidAt *
-                                                                                                1000
+                                                                                            1000
                                                                                         )}
                                                                                     </span>
                                                                                 </div>
