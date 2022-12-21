@@ -34,10 +34,12 @@ import avt from "../assets/images/avatar/avt-author-tab.png";
 import CustomImage from "../components/layouts/CustomImage";
 import ChangePrice from "../components/layouts/auctions/ChangePrice";
 import TransferNFT from "../components/layouts/auctions/TransferNFT";
+import MakerOffer from "../components/layouts/auctions/MakeOffer";
 
 const ItemDetails01 = () => {
     const { col_name, token_id } = useParams();
     const [show, setShow] = useState(false);
+    const [isMakeOffer, setIsMakeOffer] = useState(false);
     const [isChangePrice, setIsChangePrice] = useState(false);
     const [isListing, setIsListing] = useState(false);
     const [itemDetails, setItemDetails] = useState(null);
@@ -50,8 +52,10 @@ const ItemDetails01 = () => {
     const [highestOffer, setHighestOffer] = useState();
     const [status, setStatus] = useState();
     const [offerList, setOfferList] = useState([]);
+    const [nofferList, setNOfferList] = useState([]);
     const [user, setUser] = useState(null);
     const [isTransfer, setIsTransfer] = useState(false);
+    const [noffer, setNOffer] = useState(null);
 
     const mainconnex = new Connex({
         node: "https://mainnet.vecha.in/",
@@ -111,12 +115,27 @@ const ItemDetails01 = () => {
         await setSaleId(resp.saleId);
     };
 
+    const getNOffers = async (col_name, token_id) => {
+        const resp = await actions.getNOffers(col_name, token_id);
+        await setNOfferList(resp.offers);
+
+        const offers = resp.offers;
+        for (const offer of offers) {
+            if (offer.buyer.toLowerCase() == signer.toLowerCase()) {
+                setNOffer(offer);
+                return;
+            }
+        }
+        setNOffer(null);
+    }
+
     useEffect(() => {
         const fetchItemDetails = async (col_name, token_id) => {
             const resp = await actions.getItemDetails(col_name, token_id);
             if (resp) {
                 await setItemDetails(resp.details);
                 await setCollection(resp.collection);
+                await getNOffers(col_name, token_id);
                 await getAuction(resp.collection.address, token_id);
             }
         };
@@ -128,6 +147,10 @@ const ItemDetails01 = () => {
     const onHandlePlace = () => {
         setShow(true);
     };
+
+    const onMakeOffer = () => {
+        setIsMakeOffer(true);
+    }
 
     const onHandleBuy = async () => {
         if (saleId == 0) return;
@@ -399,6 +422,27 @@ const ItemDetails01 = () => {
             console.log(err);
         }
     };
+
+    const onMake = async (offer, value) => {
+        await actions.makeOffer(col_name, token_id, signer, value, offer?._id);
+        setIsMakeOffer(false);
+        await getNOffers(col_name, token_id);
+    }
+
+    const onCancelOffer = async (offer) => {
+        await actions.cancelOffer(offer._id);
+        setIsMakeOffer(false);
+        await getNOffers(col_name, token_id);
+    }
+
+    const onAcceptOffer = async (_id) => {
+    }
+
+    const onRejectOffer = async (_id) => {
+        await actions.cancelOffer(_id);
+        setIsMakeOffer(false);
+        await getNOffers(col_name, token_id);
+    }
 
     const onBid = async (value) => {
         toast.info("Interfacing with wallet...", {
@@ -976,6 +1020,15 @@ const ItemDetails01 = () => {
                                                     <span>Change Price</span>
                                                 </Link>
                                             )}
+                                            {(status == 0 || status == 4 || status == 5 || status == 6) &&
+                                                <Link
+                                                    to="#"
+                                                    onClick={onMakeOffer}
+                                                    className="sc-button mx-5 w-100 fl-button pri-3"
+                                                >
+                                                    <span>{noffer ? 'Edit Offer' : 'Make Offer'}</span>
+                                                </Link>
+                                            }
                                             {(status == 4 || status == 5) &&
                                                 (status == 4 ? (
                                                     <Link
@@ -1008,6 +1061,7 @@ const ItemDetails01 = () => {
                                             <Tabs>
                                                 <TabList>
                                                     <Tab>Properties</Tab>
+                                                    <Tab>Offers</Tab>
                                                     <Tab>Bids</Tab>
                                                     <Tab>Details</Tab>
                                                 </TabList>
@@ -1045,6 +1099,84 @@ const ItemDetails01 = () => {
                                                 </TabPanel>
                                                 <TabPanel>
                                                     <ul className="bid-history-list">
+                                                        {nofferList.map(
+                                                            (item, index) => (
+                                                                <li
+                                                                    key={index}
+                                                                    item={item}
+                                                                >
+                                                                    <div className="content">
+                                                                        <div className="client">
+                                                                            <div className="sc-author-box style-2 w-auto">
+                                                                                <div className="author-avatar">
+                                                                                    <Link
+                                                                                        to={`/profile/${item.buyer}`}
+                                                                                    >
+                                                                                        <img
+                                                                                            src={
+                                                                                                item.user &&
+                                                                                                    item
+                                                                                                        .user
+                                                                                                        .avatar
+                                                                                                    ? S3_URL +
+                                                                                                    item
+                                                                                                        .user
+                                                                                                        .avatar
+                                                                                                    : avt
+                                                                                            }
+                                                                                            alt="User Avatar"
+                                                                                            className="avatar"
+                                                                                        />
+                                                                                    </Link>
+                                                                                    <div className="badge"></div>
+                                                                                </div>
+                                                                                <div className="author-infor">
+                                                                                    <div className="name">
+                                                                                        <h6>
+                                                                                            <Link to={`/profile/${item.buyer}`}>
+                                                                                                {item.buyer.toLowerCase() ==
+                                                                                                    signer
+                                                                                                    ? "You"
+                                                                                                    : item.user &&
+                                                                                                        item
+                                                                                                            .user
+                                                                                                            .name
+                                                                                                        ? item
+                                                                                                            .user
+                                                                                                            .name
+                                                                                                        : item.buyer}{" "}
+                                                                                            </Link>
+                                                                                        </h6>
+                                                                                    </div>
+                                                                                    <span className="time">
+                                                                                        {getDateString(
+                                                                                            item.createdAt
+                                                                                        )}
+                                                                                    </span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="price">
+                                                                            <h5>
+                                                                                {toVETFormat(
+                                                                                    item.price
+                                                                                )}
+                                                                            </h5>
+                                                                        </div>
+                                                                        {/* {(status == 1 || status == 2 || status == 3 || status == 7) && */}
+                                                                        <div>
+                                                                            <Link to="#" className="sc-button mx-5 w-100 mb-3 fl-button pri-3" onClick={() => onAcceptOffer(item._id)}> Accept </Link>
+                                                                            <Link to="#" className="sc-button mx-5 w-100 mb-3 fl-button pri-3" onClick={() => onRejectOffer(item._id)}> Reject </Link>
+                                                                        </div>
+                                                                        {/* } */}
+                                                                    </div>
+                                                                </li>
+                                                            )
+                                                        )}
+                                                    </ul>
+                                                </TabPanel>
+                                                <TabPanel>
+                                                    <ul className="bid-history-list">
                                                         {offerList.map(
                                                             (item, index) => (
                                                                 <li
@@ -1079,7 +1211,7 @@ const ItemDetails01 = () => {
                                                                                 <div className="author-infor">
                                                                                     <div className="name">
                                                                                         <h6>
-                                                                                            <Link to="/author-02">
+                                                                                            <Link to={`/profile/${item.buyer}`}>
                                                                                                 {item.buyer.toLowerCase() ==
                                                                                                     signer
                                                                                                     ? "You"
@@ -1146,6 +1278,14 @@ const ItemDetails01 = () => {
                         onBid={onBid}
                     />
                 )}
+                <MakerOffer
+                    show={isMakeOffer}
+                    setShow={setIsMakeOffer}
+                    offer={noffer}
+                    onMake={onMake}
+                    onCancel={onCancelOffer}
+                    connex={connex}
+                />
                 {auctionSale && (
                     <ChangePrice
                         show={isChangePrice}

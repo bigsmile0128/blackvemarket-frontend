@@ -96,7 +96,7 @@ export const addNFT = (col_name, meta_json, token_id) => {
         meta_json,
         token_id,
       })
-      .then((res) => {});
+      .then((res) => { });
   };
 };
 
@@ -107,26 +107,57 @@ export const updateNFT = (col_name, token_id) => {
         col_name,
         token_id,
       })
-      .then((res) => {});
+      .then((res) => { });
   };
 };
 
-export const getNFTs = async (col_name, sort, start, limit, filter) => {
+export const makeOffer = async (col_name, token_id, buyer, price, _id) => {
+  await axios
+    .post(`${BASE_URL}/collections/make-offer`, {
+      col_name,
+      token_id,
+      buyer,
+      price,
+      _id
+    });
+};
+
+export const cancelOffer = async (_id) => {
+  await axios
+    .post(`${BASE_URL}/collections/cancel-offer`, {
+      _id
+    });
+};
+
+export const getNFTs = async (col_name, sort, start, limit, filters) => {
   console.log("actions: ", start, limit);
   const res = await axios.post(`${BASE_URL}/collections/get-nfts`, {
     col_name,
     sort,
     start,
     limit,
-    filter,
+    filters,
   });
   if (res.data) {
     if (res.data.status == "success") {
-      return res.data.nfts;
+      return {
+        nfts: res.data.nfts,
+        length: res.data.length
+      };
     }
   }
   return [];
 };
+
+export const getTraits = async (col_name) => {
+  const res = await axios.get(`${BASE_URL}/collections/get-traits/${col_name}`);
+  if (res.data) {
+    if (res.data.status == "success") {
+      return res.data.traits;
+    }
+  }
+  return [];
+}
 
 export const storeNftsToReducer = (nfts) => {
   return async (dispatch) => {
@@ -151,6 +182,18 @@ export const getItemAuction = async (address, token_id, event) => {
     address,
     token_id,
     event
+  });
+  if (res.data && res.data.status === "success") {
+    console.log("actions details: ", res.data);
+    return res.data;
+  }
+  return null;
+}
+
+export const getNOffers = async (col_name, token_id) => {
+  const res = await axios.post(`${BASE_URL}/collections/get-offers`, {
+    col_name,
+    token_id,
   });
   if (res.data && res.data.status === "success") {
     console.log("actions details: ", res.data);
